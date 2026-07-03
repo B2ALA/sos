@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MediHelp Admin</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="MediHelp" class="logo" />
+      <div>
+        <h1>Admin Panel</h1>
+        <p class="tag">Manage doctors, hospitals, users & emergencies</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn">Back to Site</a>
+    </div>
+  </header>
+
+  <main class="container admin-container">
+    <aside class="admin-sidebar">
+      <nav>
+        <button data-tab="dashboard" class="tab active">Dashboard</button>
+        <button data-tab="doctors" class="tab">Doctors</button>
+        <button data-tab="hospitals" class="tab">Hospitals</button>
+        <button data-tab="requests" class="tab">Emergency Requests</button>
+        <button data-tab="donors" class="tab">Blood Donors</button>
+        <button data-tab="users" class="tab">Users</button>
+      </nav>
+    </aside>
+
+    <section class="admin-main">
+      <div id="dashboard" class="admin-tab active">
+        <h2>Dashboard</h2>
+        <div class="stats-grid">
+          <div class="stat-card">Doctors <div id="statDoctors" class="stat-num">0</div></div>
+          <div class="stat-card">Hospitals <div id="statHospitals" class="stat-num">0</div></div>
+          <div class="stat-card">Donors <div id="statDonors" class="stat-num">0</div></div>
+          <div class="stat-card">Active SOS <div id="statSOS" class="stat-num">0</div></div>
+        </div>
+      </div>
+
+      <div id="doctors" class="admin-tab">
+        <h2>Doctors</h2>
+        <button id="addDoctorBtn" class="btn primary">Add Doctor</button>
+        <div id="doctorsTable" class="table"></div>
+      </div>
+
+      <div id="hospitals" class="admin-tab">
+        <h2>Hospitals</h2>
+        <button id="addHospitalBtn" class="btn primary">Add Hospital</button>
+        <div id="hospitalsTable" class="table"></div>
+      </div>
+
+      <div id="requests" class="admin-tab">
+        <h2>Emergency Requests</h2>
+        <div id="requestsList" class="list"></div>
+      </div>
+
+      <div id="donors" class="admin-tab">
+        <h2>Blood Donors</h2>
+        <div id="adminDonorList" class="list"></div>
+      </div>
+
+      <div id="users" class="admin-tab">
+        <h2>Registered Users</h2>
+        <div id="adminUserList" class="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
