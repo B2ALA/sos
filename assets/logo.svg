@@ -1,0 +1,7 @@
+<!-- Simple placeholder logo -->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect rx="12" width="64" height="64" fill="#0b84ff"/>
+  <g transform="translate(12,12)" fill="#fff">
+    <path d="M20 0c-5.523 0-10 4.477-10 10v2h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v2c0 5.523 4.477 10 10 10s10-4.477 10-10V10C30 4.477 25.523 0 20 0z"/>
+  </g>
+</svg>
