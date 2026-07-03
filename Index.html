@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediHelp — AI Powered Emergency Healthcare Platform</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══ TOP BAR ══ -->
+<header class="topbar">
+  <div class="brand"><span class="pulse-dot"></span> MediHelp 🩺</div>
+  <div class="topbar-actions">
+    <button class="icon-btn" onclick="openM('notifM')" title="Notifications">🔔</button>
+    <button class="icon-btn" onclick="toggleDark()" title="Dark mode">🌙</button>
+    <span id="authArea"></span>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- ══ TAB: HOME ══ -->
+  <section id="tab-home" class="tab-panel">
+    <div id="homeGeoBar" class="section-sub">📍 Getting your live location…</div>
+
+    <!-- Monitoring banner (shown after SOS is triggered) -->
+    <div id="sosMonitorBanner" class="monitor-banner hidden">
+      <div class="monitor-dot"></div>
+      <div>
+        <strong>🚨 You are under monitoring</strong>
+        <div class="small muted">Your live location is being tracked and shared with your emergency contacts.</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="openM('sosStatusM')">View</button>
+    </div>
+
+    <div id="sosIdle" class="sos-wrap">
+      <button class="sos-btn" onclick="openSOSConfirm()">SOS</button>
+      <p class="sos-caption">Tap in a medical emergency. We'll alert your emergency contacts, nearby hospitals, and volunteer groups with your live location. 🆘</p>
+    </div>
+
+    <h2 class="section-title">⚡ Quick Actions</h2>
+    <div class="quick-grid">
+      <button class="quick-tile" onclick="showTab('doctors')"><span class="qi">👨‍⚕️</span>Doctors</button>
+      <button class="quick-tile" onclick="showTab('hospitals')"><span class="qi">🏥</span>Hospitals</button>
+      <button class="quick-tile" onclick="openNearby('pharmacy')"><span class="qi">💊</span>Pharmacy</button>
+      <button class="quick-tile" onclick="openNearby('police station')"><span class="qi">🚓</span>Police</button>
+      <button class="quick-tile" onclick="openNearby('fire station')"><span class="qi">🚒</span>Fire Station</button>
+      <button class="quick-tile" onclick="showTab('blood')"><span class="qi">🩸</span>Blood Donors</button>
+      <button class="quick-tile" onclick="showTab('volunteers')"><span class="qi">🙋</span>Volunteers</button>
+      <button class="quick-tile" onclick="showTab('shelters')"><span class="qi">🏫</span>Schools/Colleges</button>
+    </div>
+
+    <h2 class="section-title">🗺️ Nearby (opens Google Maps)</h2>
+    <div class="quick-grid">
+      <button class="quick-tile" onclick="openNearby('hospital')"><span class="qi">🏥</span>Hospitals</button>
+      <button class="quick-tile" onclick="openNearby('clinic')"><span class="qi">🩺</span>Clinics</button>
+      <button class="quick-tile" onclick="openNearby('school')"><span class="qi">🏫</span>Schools</button>
+      <button class="quick-tile" onclick="openNearby('college')"><span class="qi">🎓</span>Colleges</button>
+    </div>
+  </section>
+
+  <!-- ══ TAB: DOCTORS ══ -->
+  <section id="tab-doctors" class="tab-panel hidden">
+    <h2 class="section-title">👨‍⚕️ Find a Doctor</h2>
+    <div class="card">
+      <input type="text" id="docSearch" placeholder="🔍 Search by name, specialization, hospital…" oninput="renderDoctors()">
+      <div class="flex gap-8" style="margin-top:10px;">
+        <select id="docSpecFilter" onchange="renderDoctors()"><option value="all">All Specializations</option></select>
+        <select id="docSort" onchange="renderDoctors()">
+          <option value="name">Sort: Name</option>
+          <option value="distance">Sort: Distance</option>
+          <option value="rating">Sort: Rating</option>
+        </select>
+      </div>
+    </div>
+    <div id="doctorList" class="grid grid-2" style="margin-top:14px;"></div>
+  </section>
+
+  <!-- ══ TAB: HOSPITALS ══ -->
+  <section id="tab-hospitals" class="tab-panel hidden">
+    <h2 class="section-title">🏥 Hospitals & Emergency Centers</h2>
+    <div class="card">
+      <input type="text" id="hospSearch" placeholder="🔍 Search hospitals…" oninput="renderHospitals()">
+      <select id="hospTypeFilter" onchange="renderHospitals()" style="margin-top:10px;">
+        <option value="all">All Types</option>
+        <option value="Government">Government</option>
+        <option value="Private">Private</option>
+        <option value="Clinic">Clinic</option>
+        <option value="Emergency Center">Emergency Center</option>
+      </select>
+    </div>
+    <div id="hospitalList" class="grid grid-2" style="margin-top:14px;"></div>
+  </section>
+
+  <!-- ══ TAB: BLOOD DONORS ══ -->
+  <section id="tab-blood" class="tab-panel hidden">
+    <h2 class="section-title">🩸 Blood Donor Network</h2>
+    <div class="flex gap-8" style="margin-bottom:12px;">
+      <button class="btn btn-primary btn-sm" onclick="openM('bloodRequestM')">🆘 Request Blood</button>
+      <button class="btn btn-outline btn-sm" onclick="openM('donorRegM')">🩸 Register as Donor</button>
+    </div>
+    <div class="card">
+      <div class="flex gap-8">
+        <select id="donorBloodFilter" onchange="renderDonors()">
+          <option value="all">All Blood Groups</option>
+          <option>O+</option><option>O-</option><option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option><option>AB+</option><option>AB-</option>
+        </select>
+        <label class="flex gap-8" style="align-items:center;margin:0;font-weight:500;">
+          <input type="checkbox" id="donorAvailOnly" style="width:auto;" onchange="renderDonors()"> Available only
+        </label>
+      </div>
+    </div>
+    <div id="donorList" class="grid grid-2" style="margin-top:14px;"></div>
+  </section>
+
+  <!-- ══ TAB: VOLUNTEERS ══ -->
+  <section id="tab-volunteers" class="tab-panel hidden">
+    <h2 class="section-title">🙋 Volunteer Groups</h2>
+    <p class="section-sub">Join a group to receive emergency alerts for your category and area.</p>
+    <div id="volunteerList" class="grid grid-2"></div>
+  </section>
+
+  <!-- ══ TAB: SHELTERS ══ -->
+  <section id="tab-shelters" class="tab-panel hidden">
+    <h2 class="section-title">🏫 Nearby Schools & Colleges</h2>
+    <p class="section-sub">Usable as emergency shelters during disasters. Sorted by distance from you.</p>
+    <div id="shelterList" class="grid grid-2"></div>
+  </section>
+
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="nav-home" onclick="showTab('home')"><span class="ni-icon">🏠</span>Home</button>
+  <button class="nav-item" id="nav-doctors" onclick="showTab('doctors')"><span class="ni-icon">👨‍⚕️</span>Doctors</button>
+  <button class="nav-item" id="nav-hospitals" onclick="showTab('hospitals')"><span class="ni-icon">🏥</span>Hospitals</button>
+  <button class="nav-item" id="nav-blood" onclick="showTab('blood')"><span class="ni-icon">🩸</span>Blood</button>
+  <button class="nav-item" id="nav-volunteers" onclick="showTab('volunteers')"><span class="ni-icon">🙋</span>Groups</button>
+</nav>
+
+<!-- ══ CHATBOT ══ -->
+<button class="chat-fab" onclick="toggleChat()">🤖</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <span style="font-size:22px;">🤖</span>
+    <div><strong>MediBot</strong><br><span>AI Health Assistant · Online 🟢</span></div>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-quick" id="chatQuick"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask about symptoms, first aid, medicines…" onkeydown="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: SOS CONFIRM ══ -->
+<div class="modal-overlay" id="sosConfirmM">
+  <div class="modal">
+    <div class="modal-head"><h3>🚨 Confirm Emergency</h3><button class="modal-close" onclick="closeM('sosConfirmM')">✕</button></div>
+    <p>This will immediately start tracking your live location and alert your emergency contacts, nearby hospitals, and volunteer groups.</p>
+    <div class="flex gap-8" style="margin-top:16px;">
+      <button class="btn btn-primary btn-block" onclick="confirmSOS()">🆘 Yes, Send SOS</button>
+      <button class="btn btn-ghost" onclick="closeM('sosConfirmM')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: SOS STATUS ══ -->
+<div class="modal-overlay" id="sosStatusM">
+  <div class="modal">
+    <div class="modal-head"><h3>🚨 Emergency Active</h3><button class="modal-close" onclick="closeM('sosStatusM')">✕</button></div>
+    <div id="sosStatusDetail"></div>
+    <button class="btn btn-outline btn-block" style="margin-top:16px;" onclick="cancelSOS()">✅ I'm Safe — Cancel SOS</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: NOTIFICATIONS ══ -->
+<div class="modal-overlay" id="notifM">
+  <div class="modal">
+    <div class="modal-head"><h3>🔔 Notifications</h3><button class="modal-close" onclick="closeM('notifM')">✕</button></div>
+    <div id="notifList"></div>
+  </div>
+</div>
+
+<!-- ══ MODAL: BLOOD REQUEST ══ -->
+<div class="modal-overlay" id="bloodRequestM">
+  <div class="modal">
+    <div class="modal-head"><h3>🆘 Request Blood</h3><button class="modal-close" onclick="closeM('bloodRequestM')">✕</button></div>
+    <form onsubmit="requestBlood(event)">
+      <label>Blood Group Needed</label>
+      <select id="reqBloodGroup" required><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select>
+      <label>Your Name</label>
+      <input type="text" id="reqName" required>
+      <label>Contact Number</label>
+      <input type="tel" id="reqPhone" required>
+      <button class="btn btn-primary btn-block" style="margin-top:16px;" type="submit">📢 Broadcast Request</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ MODAL: DONOR REGISTRATION ══ -->
+<div class="modal-overlay" id="donorRegM">
+  <div class="modal">
+    <div class="modal-head"><h3>🩸 Register as Donor</h3><button class="modal-close" onclick="closeM('donorRegM')">✕</button></div>
+    <form onsubmit="registerDonor(event)">
+      <label>Full Name</label><input type="text" id="donName" required>
+      <label>Blood Group</label>
+      <select id="donBlood" required><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select>
+      <label>Phone Number</label><input type="tel" id="donPhone" required>
+      <label>Location / Area</label><input type="text" id="donLocation" required>
+      <label>Last Donation Date (optional)</label><input type="date" id="donLast">
+      <button class="btn btn-primary btn-block" style="margin-top:16px;" type="submit">🩸 Register</button>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<footer class="site-footer">
+  MediHelp — AI Powered Emergency Healthcare Platform · <a href="developer.html">Developer</a> · In a real emergency always dial <strong>108</strong>.
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // Notifications data (same style as production feed)
+  const notifs=[
+    {ico:'🦟',title:'Dengue Alert — Salem',detail:'Surge reported in Hasthampatty & Ammapet zones. Use mosquito repellent.',time:'2 hrs ago'},
+    {ico:'⛈️',title:'Heavy Rain Warning',detail:'IMD alert: Moderate to heavy rain expected tonight near Salem district. Avoid low-lying areas.',time:'4 hrs ago'},
+    {ico:'💊',title:'Medicine Reminder',detail:'Metformin 500mg — Take with dinner today at 8 PM.',time:'Scheduled'},
+    {ico:'🏥',title:'Appointment Reminder',detail:'Dr. Lakshmi Narayanan — Tomorrow 10:30 AM, Salem Govt Medical College Hospital.',time:'Tomorrow'},
+    {ico:'🩸',title:'Blood Donation Camp',detail:'Salem Red Cross drive at Shevapet Community Hall on Saturday.',time:'3 days ago'},
+  ];
+  function renderNotifs(){
+    document.getElementById('notifList').innerHTML=notifs.map(n=>`
+      <div class="card" style="margin-bottom:10px;display:flex;gap:10px;">
+        <div style="font-size:22px;">${n.ico}</div>
+        <div><div style="font-weight:700;font-size:13.5px;">${n.title}</div>
+        <div class="small muted">${n.detail}</div>
+        <div class="small" style="color:var(--teal-500);margin-top:2px;">${n.time}</div></div>
+      </div>`).join('');
+  }
+  renderNotifs();
+</script>
+</body>
+</html>
