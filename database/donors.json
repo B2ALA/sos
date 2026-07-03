@@ -1,0 +1,5 @@
+[
+  {"id":"bd_001","name":"Ravi Kumar","blood":"O+","phone":"+91 98765 43210","location":"Hasthampatty","lastDonation":"2025-11-10","available":true},
+  {"id":"bd_002","name":"Priya S","blood":"A+","phone":"+91 98765 43211","location":"Ammapet","lastDonation":"2026-02-20","available":true},
+  {"id":"bd_003","name":"Karthik","blood":"B+","phone":"+91 98765 43212","location":"Shevapet","lastDonation":"2025-08-05","available":false}
+]
