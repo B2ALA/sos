@@ -1,86 +1,194 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MediHelp — Emergency Healthcare, Salem</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/theme.css">
-<link rel="stylesheet" href="css/dashboard.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MediHelp — Emergency Healthcare Platform</title>
+  <meta name="description" content="MediHelp connects you to nearby hospitals, ambulances, blood banks, police and pharmacies across Salem, Tamil Nadu in seconds." />
+  <link rel="stylesheet" href="css/vendor/leaflet.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a class="logo" href="index.html">
+          <div class="logo-mark">⚕️</div>
+          <div class="logo-text">Medi<span>Help</span></div>
+        </a>
+        <nav class="nav-links">
+          <a class="nav-link" id="nav-hosp" onclick="openNearby('hospital')">Hospitals</a>
+          <a class="nav-link" id="nav-doc" onclick="openDoctors()">Doctors</a>
+          <a class="nav-link" id="nav-pharm" onclick="openNearby('pharmacy')">Pharmacy</a>
+          <a class="nav-link" onclick="openVolunteer()">Volunteers</a>
+          <a class="nav-link" onclick="openM('chatM')">AI Chat</a>
+        </nav>
+      </div>
 
-<!-- ══ NAV ══ -->
-<nav class="mh-nav">
-  <div class="mh-logo">🩺 MediHelp</div>
-  <div class="mh-nav-links">
-    <a href="index.html">Dashboard</a>
-    <a href="profile.html">Profile</a>
-    <a href="developer.html">About</a>
-  </div>
-  <div style="display:flex;gap:10px;">
-    <a href="login.html" class="btn btn-ghost">Log in</a>
-  </div>
-</nav>
+      <div class="nav-right">
+        <div class="loc-pill" id="navLocPill" onclick="requestLocation(true)">📍 <span id="navLocText">Salem, TN</span></div>
+        <button class="nav-cta" onclick="sendEmergency()">🆘 SOS</button>
+        <a class="nav-cta" href="login.html" style="background:linear-gradient(135deg,#0E7C66,#0A5C4C);">Login</a>
+      </div>
+    </div>
+  </header>
 
-<!-- ══ HERO ══ -->
-<header class="mh-hero">
-  <h1>👋 Stay ready, stay safe.</h1>
-  <p>Emergency help, nearby care, and your medical info — all in one place.</p>
-</header>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-layout">
+        <div>
+          <div class="hero-eyebrow"><span class="dot-live"></span> Live — Salem, Tamil Nadu</div>
+          <h1 class="hero-h1">Emergency help, wherever you are <span class="hl">in Salem</span></h1>
+          <p class="hero-p">MediHelp connects you instantly to nearby hospitals, ambulances, blood banks, police stations and pharmacies — using your live location.</p>
 
-<!-- ══ QUICK ACTIONS (each opens a modal) ══ -->
-<section class="mh-grid">
-  <button class="card mh-tile" onclick="openM('sosM')"><span class="ico">🆘</span><span class="lbl">SOS Emergency</span></button>
-  <button class="card mh-tile" onclick="openM('locShareM')"><span class="ico">📍</span><span class="lbl">Share Location</span></button>
-  <button class="card mh-tile" onclick="openM('notifM')"><span class="ico">🔔</span><span class="lbl">Notifications</span></button>
-  <button class="card mh-tile" onclick="openM('midM')"><span class="ico">🪪</span><span class="lbl">Medical ID</span></button>
-  <button class="card mh-tile"><span class="ico">🚑</span><span class="lbl">Ambulance</span></button>
-  <button class="card mh-tile"><span class="ico">👮</span><span class="lbl">Police</span></button>
-  <button class="card mh-tile"><span class="ico">🩸</span><span class="lbl">Blood Bank</span></button>
-  <button class="card mh-tile"><span class="ico">🛏️</span><span class="lbl">Hospital Beds</span></button>
-  <button class="card mh-tile"><span class="ico">🩹</span><span class="lbl">Symptom Check</span></button>
-  <button class="card mh-tile"><span class="ico">👨‍⚕️</span><span class="lbl">Find a Doctor</span></button>
-</section>
+          <div class="hero-actions">
+            <button class="hbtn hbtn-primary" onclick="sendEmergency()">🆘 Emergency SOS</button>
+            <button class="hbtn hbtn-secondary" onclick="openNearby('hospital')">🏥 Find Nearby Hospital</button>
+            <button class="hbtn hbtn-secondary" onclick="openM('chatM')">🤖 Ask AI</button>
+          </div>
 
-<!-- ══ FLOATING SOS ══ -->
-<button class="mh-sos-fab" onclick="openM('sosM')">SOS</button>
+          <div class="hero-stats">
+            <div class="hstat"><b id="avgResp">4 min</b><span>Avg Response</span></div>
+            <div class="hstat"><b id="hospCount">120+</b><span>Hospitals</span></div>
+            <div class="hstat"><b>98%</b><span>Uptime</span></div>
+            <div class="hstat"><b>24/7</b><span>Available</span></div>
+          </div>
+        </div>
 
-<!-- ══ MODAL: SOS ══ -->
-<div class="mh-modal-backdrop" id="sosM">
-  <div class="mh-modal">
-    <div class="mh-modal-head"><h3>🆘 Emergency SOS</h3><button class="mh-modal-close" onclick="closeM('sosM')">✕</button></div>
-    <div class="geo-bar" id="sosGeoBar">📍 Getting your location…</div>
-    <p style="font-size:13px;color:var(--ink-3);">Pressing confirm will alert your emergency contacts and share your live location with them.</p>
-    <button class="btn btn-emergency" style="width:100%;">Confirm — Send SOS</button>
-  </div>
-</div>
+        <div class="hero-card">
+          <div class="hero-card-head">
+            <div class="hc-title">Find help near you</div>
+            <div class="hc-badge">⚡ Live</div>
+          </div>
 
-<!-- ══ MODAL: LOCATION SHARE ══ -->
-<div class="mh-modal-backdrop" id="locShareM">
-  <div class="mh-modal">
-    <div class="mh-modal-head"><h3>📍 Share Live Location</h3><button class="mh-modal-close" onclick="closeM('locShareM')">✕</button></div>
-    <div id="locShareContacts"></div>
-  </div>
-</div>
+          <div class="svc-grid">
+            <div class="svc-tile" onclick="openNearby('hospital')"><span class="si">🏥</span><span class="sl">Hospitals</span></div>
+            <div class="svc-tile" onclick="openNearby('pharmacy')"><span class="si">💊</span><span class="sl">Pharmacy</span></div>
+            <div class="svc-tile" onclick="openM('ambulanceM')"><span class="si">🚑</span><span class="sl">Ambulance</span></div>
+            <div class="svc-tile" onclick="openM('bloodM')"><span class="si">🩸</span><span class="sl">Blood Bank</span></div>
+          </div>
 
-<!-- ══ MODAL: NOTIFICATIONS ══ -->
-<div class="mh-modal-backdrop" id="notifM">
-  <div class="mh-modal">
-    <div class="mh-modal-head"><h3>🔔 Notifications</h3><button class="mh-modal-close" onclick="closeM('notifM')">✕</button></div>
-    <div id="notifList"></div>
-  </div>
-</div>
+          <div class="hc-loc-status" id="hcLocStatus">
+            <span class="pulse-pin"></span>
+            <span id="hcLocText">Using default location: Salem, Tamil Nadu</span>
+            <span class="hc-loc-btn" onclick="requestLocation(true)">Use my location</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- ══ MODAL: OFFLINE MEDICAL ID ══ -->
-<div class="mh-modal-backdrop" id="midM">
-  <div class="mh-modal">
-    <div class="mh-modal-head"><h3>🪪 Medical ID (works offline)</h3><button class="mh-modal-close" onclick="closeM('midM')">✕</button></div>
-    <div id="offlineMID" style="font-size:14px;line-height:1.8;"></div>
-  </div>
-</div>
+  <!-- MAIN SECTION: Map + Lists -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="sec-eyebrow">Map & Nearby</div>
+        <div class="sec-title">Live Map — Nearby Services</div>
+        <div class="sec-sub">Tap a marker to view details, call or navigate. Toggle layers for hospitals, pharmacies, police and shelters.</div>
+      </div>
+      <div>
+        <select id="layerSelect" class="d-input" onchange="toggleLayer(this.value)">
+          <option value="hospital">Hospitals</option>
+          <option value="pharmacy">Pharmacies</option>
+          <option value="clinic">Clinics</option>
+          <option value="bloodbank">Blood Banks</option>
+          <option value="police">Police</option>
+          <option value="fire">Fire Stations</option>
+          <option value="shelter">Shelters</option>
+        </select>
+      </div>
+    </div>
 
-<script src="js/app.js"></script>
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:18px;">
+      <div id="map" class="map"></div>
+
+      <aside style="max-height:640px;overflow:auto;">
+        <div style="margin-bottom:12px;">
+          <input id="searchNearby" class="d-input" placeholder="Search nearby (name, area)..." oninput="filterNearby()" />
+        </div>
+
+        <div id="nearbyList"></div>
+
+        <hr style="margin:12px 0;" />
+        <div>
+          <h4 style="margin-bottom:8px;">Quick Actions</h4>
+          <button class="btn-full btn-red" onclick="sendEmergency()">🆘 One-tap SOS</button>
+          <button class="btn-full btn-brand" onclick="openM('chatM')">🤖 Ask AI Medical Bot</button>
+          <button class="btn-full btn-amber" onclick="openM('bloodM')">🩸 Blood Donors</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FEATURE GRID -->
+  <section class="section">
+    <div class="feat-grid">
+      <div class="feat-card" onclick="openM('medIdM')"><div class="feat-ico-box fi-1">❤️</div><h4>Medical ID Card</h4><p>Scannable medical ID with allergies, meds & emergency contact.</p></div>
+      <div class="feat-card" onclick="openM('symptomM')"><div class="feat-ico-box fi-4">🤖</div><h4>AI Symptom Checker</h4><p>Quick guidance and emergency suggestions.</p></div>
+      <div class="feat-card" onclick="openDoctors()"><div class="feat-ico-box fi-3">🩺</div><h4>Find Doctors</h4><p>Search by specialization, rating and distance.</p></div>
+      <div class="feat-card" onclick="openVolunteer()"><div class="feat-ico-box fi-2">🧑‍🚒</div><h4>Volunteer Groups</h4><p>Join rescue, fire or medical volunteer groups.</p></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand"><div class="logo-mark">⚕️</div><div class="ftxt">MediHelp</div></div>
+        <p class="fdesc">Emergency healthcare platform serving Salem, Tamil Nadu — connecting people to hospitals, ambulances, blood banks and emergency services in real time.</p>
+      </div>
+
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a onclick="openNearby('hospital')">Hospitals</a></li>
+          <li><a onclick="openNearby('pharmacy')">Pharmacies</a></li>
+          <li><a onclick="openM('ambulanceM')">Ambulance</a></li>
+          <li><a onclick="openM('bloodM')">Blood Banks</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Emergency</h5>
+        <ul>
+          <li><a href="tel:112">112 — National Emergency</a></li>
+          <li><a href="tel:108">108 — Ambulance</a></li>
+          <li><a href="tel:100">100 — Police</a></li>
+          <li><a href="tel:101">101 — Fire</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="admin.html">Admin Portal</a></li>
+          <li><a href="developer.html">Developer</a></li>
+          <li><a onclick="openM('notifsM')">Notifications</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 MediHelp. Built for Salem, Tamil Nadu.</span>
+      <span>Emergency platform · Final-year project</span>
+    </div>
+  </footer>
+
+  <!-- Floating SOS -->
+  <button class="fab-sos" onclick="sendEmergency()" title="Emergency SOS">🆘</button>
+
+  <!-- MODALS & COMPONENTS (kept minimal here; full modals are in app.js) -->
+  <div id="modals"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="js/vendor/leaflet.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/maps.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>
