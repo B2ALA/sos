@@ -1,0 +1,47 @@
+const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+const locations = [
+  "Five Roads",
+  "Hasthampatty",
+  "Suramangalam",
+  "Fairlands",
+  "Ammapet",
+  "Kondalampatti",
+  "Seelanaickenpatti",
+  "Gugai",
+  "Alagapuram",
+  "Kannankurichi",
+  "Omalur",
+  "Attur",
+  "Mettur",
+  "Rasipuram",
+  "Edappadi",
+  "Sankagiri",
+  "Salem Junction",
+  "Yercaud Main Road"
+];
+
+const firstNames = [
+  "Arun","Priya","Vijay","Karthik","Divya","Suresh","Meena",
+  "Saravanan","Keerthana","Prakash","Nandhini","Manikandan",
+  "Revathi","Dinesh","Harini","Gokul","Deepika","Senthil",
+  "Pavithra","Ramesh","Ajith","Anitha","Kavin","Lavanya",
+  "Mohan","Nisha","Rahul","Sneha","Varun","Yamini"
+];
+
+const donors = [];
+
+for (let i = 1; i <= 250; i++) {
+  const donor = {
+    id: `BD${i}`,
+    name: `${firstNames[i % firstNames.length]} ${String.fromCharCode(65 + (i % 26))}`,
+    blood: bloodGroups[i % bloodGroups.length],
+    phone: `+91 9${Math.floor(100000000 + Math.random() * 900000000)}`,
+    location: locations[i % locations.length],
+    lastDonation: `2026-${String((i % 12) + 1).padStart(2, "0")}-${String((i % 28) + 1).padStart(2, "0")}`,
+    available: Math.random() > 0.3
+  };
+
+  donors.push(donor);
+}
+
+console.log(JSON.stringify(donors, null, 2));
