@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — MediHelp</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a href="index.html" class="brand" style="text-decoration:none;"><span class="pulse-dot"></span> MediHelp 🩺</a>
+</header>
+
+<div class="auth-shell" style="max-width:640px;">
+  <div class="auth-card">
+    <div class="auth-logo">📝 Create Your MediHelp Profile</div>
+    <p class="auth-sub">This information helps first responders help you faster in an emergency.</p>
+
+    <form onsubmit="registerUser(event)">
+      <h3 style="margin:6px 0;font-size:15px;color:var(--teal-700);">👤 Personal Details</h3>
+      <div class="form-grid">
+        <div><label>Full Name</label><input type="text" id="regName" required></div>
+        <div><label>Age</label><input type="number" id="regAge" min="0" max="120" required></div>
+        <div><label>Gender</label>
+          <select id="regGender" required><option>Female</option><option>Male</option><option>Other</option><option>Prefer not to say</option></select>
+        </div>
+        <div><label>Date of Birth</label><input type="date" id="regDob"></div>
+        <div><label>Blood Group</label>
+          <select id="regBlood" required><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>Unknown</option></select>
+        </div>
+        <div><label>Profile Picture</label><input type="file" id="regPhoto" accept="image/*"></div>
+      </div>
+
+      <h3 style="margin:16px 0 6px;font-size:15px;color:var(--teal-700);">📞 Contact Details</h3>
+      <div class="form-grid">
+        <div><label>Mobile Number</label><input type="tel" id="regMobile" required></div>
+        <div><label>Emergency Contact Number</label><input type="tel" id="regEmergency" required></div>
+        <div style="grid-column:1/-1;"><label>Address</label><input type="text" id="regAddress" required></div>
+        <div><label>District</label><input type="text" id="regDistrict" value="Salem" required></div>
+        <div><label>State</label><input type="text" id="regState" value="Tamil Nadu" required></div>
+        <div style="grid-column:1/-1;"><label>Email</label><input type="email" id="regEmail" required></div>
+        <div style="grid-column:1/-1;"><label>Password</label><input type="password" id="regPassword" minlength="4" required></div>
+      </div>
+
+      <h3 style="margin:16px 0 6px;font-size:15px;color:var(--teal-700);">🩺 Medical Details</h3>
+      <label>Medical Conditions (if any)</label><textarea id="regConditions" rows="2" placeholder="e.g. Diabetes, Asthma…"></textarea>
+      <label>Allergies</label><textarea id="regAllergies" rows="2" placeholder="e.g. Penicillin, Peanuts…"></textarea>
+      <label>Current Medications</label><textarea id="regMedications" rows="2"></textarea>
+      <label>Insurance Details</label><input type="text" id="regInsurance" placeholder="Provider & policy number">
+      <label class="flex gap-8" style="align-items:center;margin-top:14px;">
+        <input type="checkbox" id="regOrganDonor" style="width:auto;"> 🫀 I am registered / willing to be an organ donor
+      </label>
+
+      <button class="btn btn-primary btn-block" style="margin-top:20px;" type="submit">✅ Create My Profile</button>
+    </form>
+    <p class="small text-center" style="margin-top:14px;">Already have an account? <a href="login.html" style="color:var(--teal-700);font-weight:600;">Log in</a></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/data.js"></script>
+<script>
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),3200);
+}
+</script>
+<script src="js/auth.js"></script>
+</body>
+</html>
