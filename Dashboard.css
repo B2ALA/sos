@@ -1,0 +1,70 @@
+/* ══ DASHBOARD (index.html) ══ */
+
+.mh-hero{
+  padding:28px 20px 18px;
+  background:linear-gradient(180deg,var(--primary-tint) 0%,var(--bg) 100%);
+}
+.mh-hero h1{font-size:22px;margin:0 0 4px;color:var(--ink-1);}
+.mh-hero p{margin:0;color:var(--ink-3);font-size:14px;}
+
+/* quick-action grid (opens modals via openM()) */
+.mh-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;padding:18px 20px;
+}
+.mh-tile{
+  padding:18px 14px;text-align:center;transition:transform .15s ease,box-shadow .15s ease;
+}
+.mh-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-pop);}
+.mh-tile .ico{font-size:26px;display:block;margin-bottom:8px;}
+.mh-tile .lbl{font-size:12.5px;font-weight:600;color:var(--ink-2);}
+
+/* floating SOS button — the one place the emergency red appears at rest */
+.mh-sos-fab{
+  position:fixed;right:20px;bottom:24px;z-index:60;
+  width:64px;height:64px;border-radius:50%;
+  background:var(--emergency);color:#fff;font-weight:800;font-size:13px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  box-shadow:0 8px 22px rgba(214,69,65,.45);
+  animation:sosPulse 2.4s ease-in-out infinite;
+}
+@keyframes sosPulse{
+  0%,100%{box-shadow:0 8px 22px rgba(214,69,65,.45);}
+  50%{box-shadow:0 8px 30px rgba(214,69,65,.7);}
+}
+
+/* modal shell (openM/closeM target these) */
+.mh-modal-backdrop{
+  position:fixed;inset:0;background:rgba(15,27,29,.45);
+  display:none;align-items:flex-end;justify-content:center;z-index:100;
+}
+.mh-modal-backdrop.open{display:flex;}
+.mh-modal{
+  background:var(--card);width:100%;max-width:480px;max-height:82vh;overflow-y:auto;
+  border-radius:20px 20px 0 0;padding:20px;
+}
+@media(min-width:640px){
+  .mh-modal-backdrop{align-items:center;}
+  .mh-modal{border-radius:var(--radius-lg);}
+}
+.mh-modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.mh-modal-head h3{margin:0;font-size:17px;}
+.mh-modal-close{font-size:20px;color:var(--ink-4);width:32px;height:32px;border-radius:50%;}
+.mh-modal-close:hover{background:var(--bg);}
+
+/* legacy classes referenced by existing app.js — kept 1:1 so behavior is unchanged */
+.loc-share-item,.notif-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 4px;border-bottom:1px solid var(--card-border);gap:10px;
+}
+.loc-share-item:last-child,.notif-item:last-child{border-bottom:none;}
+.notif-ico{font-size:19px;width:34px;height:34px;border-radius:10px;background:var(--primary-tint);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.notif-text .nt{font-weight:700;font-size:13px;color:var(--ink-1);}
+.notif-text .nd{font-size:12px;color:var(--ink-3);margin:2px 0;}
+.notif-text .nt-time{font-size:11px;color:var(--ink-4);}
+
+.geo-bar{
+  display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:var(--radius-sm);
+  background:var(--primary-tint);color:var(--primary-dark);font-size:12.5px;font-weight:600;margin-bottom:14px;
+}
