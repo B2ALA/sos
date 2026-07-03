@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — MediHelp</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a href="index.html" class="brand" style="text-decoration:none;"><span class="pulse-dot"></span> MediHelp 🩺</a>
+</header>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-logo">🔐 Welcome Back</div>
+    <p class="auth-sub">Log in to access your medical profile and emergency contacts.</p>
+    <form onsubmit="loginUser(event)">
+      <label>Email</label><input type="email" id="loginEmail" required>
+      <label>Password</label><input type="password" id="loginPassword" required>
+      <button class="btn btn-primary btn-block" style="margin-top:18px;" type="submit">➡️ Log In</button>
+    </form>
+    <p class="small text-center" style="margin-top:14px;">New here? <a href="register.html" style="color:var(--teal-700);font-weight:600;">Create a profile</a></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="js/data.js"></script>
+<script>
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),3200);
+}
+</script>
+<script src="js/auth.js"></script>
+</body>
+</html>
