@@ -1,0 +1,5 @@
+[
+  {"id":"v_001","group":"Fire Group 1","type":"Fire","members":["u_1001","u_1002","u_1003"]},
+  {"id":"v_002","group":"Medical Group 1","type":"Medical","members":["u_1004","u_1005"]},
+  {"id":"v_003","group":"Rescue Group 1","type":"Rescue","members":["u_1006","u_1007","u_1008","u_1009"]}
+]
