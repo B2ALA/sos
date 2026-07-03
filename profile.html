@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile — MediHelp</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="MediHelp" class="logo" />
+      <div>
+        <h1>Profile</h1>
+        <p class="tag">Manage your account & emergency info</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="index.html" class="btn">Home</a>
+      <button id="logoutBtn" class="btn ghost">Logout</button>
+    </div>
+  </header>
+
+  <main class="container profile-container">
+    <section class="profile-card">
+      <div class="profile-left">
+        <img id="profileAvatar" src="assets/placeholder-avatar.png" alt="avatar" class="avatar" />
+        <h2 id="profileName">User</h2>
+        <div id="profileEmail" class="muted">email</div>
+        <div class="profile-actions">
+          <button id="editProfile" class="btn">Edit Profile</button>
+          <button id="downloadID" class="btn">Download ID (Demo)</button>
+        </div>
+      </div>
+      <div class="profile-right">
+        <h3>Medical ID</h3>
+        <div id="medID" class="med-id"></div>
+        <h3>Emergency Contacts</h3>
+        <div id="emContacts" class="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Load current user
+    const current = JSON.parse(localStorage.getItem('mh_current')||'null');
+    if(!current) window.location.href = 'login.html';
+    document.getElementById('profileName').textContent = current.name;
+    document.getElementById('profileEmail').textContent = current.email;
+    if(current.avatar) document.getElementById('profileAvatar').src = current.avatar;
+    document.getElementById('medID').innerHTML = `
+      <strong>Blood:</strong> ${current.blood || 'N/A'}<br>
+      <strong>Allergies:</strong> ${current.allergies || 'N/A'}<br>
+      <strong>Conditions:</strong> ${current.conditions || 'N/A'}<br>
+      <strong>Emergency Contact:</strong> ${current.emContact || 'N/A'}
+    `;
+    document.getElementById('emContacts').innerHTML = `<div class="list-item">${current.emContact || 'No emergency contact set'}</div>`;
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      localStorage.removeItem('mh_current');
+      window.location.href = 'index.html';
+    });
+    document.getElementById('editProfile').addEventListener('click', ()=> window.location.href = 'register.html');
+  </script>
+</body>
+</html>
