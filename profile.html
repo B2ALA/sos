@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Profile — MediHelp</title><link rel="stylesheet" href="css/styles.css" /></head>
+<body>
+  <header class="nav"><div class="nav-inner"><div class="nav-left"><a class="logo" href="index.html"><div class="logo-mark">⚕️</div><div class="logo-text">Medi<span>Help</span></div></a></div><div class="nav-right"><button class="nav-cta" onclick="logout()">Logout</button></div></div></header>
+
+  <section class="section" style="max-width:900px;margin:18px auto">
+    <div style="display:flex;gap:18px">
+      <div style="flex:1;background:var(--surface);padding:18px;border-radius:12px;box-shadow:var(--shadow)">
+        <h3>My Profile</h3>
+        <div id="profileCard"></div>
+        <div style="margin-top:12px">
+          <button class="btn-full btn-brand" onclick="editProfile()">Edit Profile</button>
+        </div>
+      </div>
+
+      <aside style="width:320px">
+        <div style="background:var(--surface);padding:12px;border-radius:12px;box-shadow:var(--shadow)">
+          <h4>Medical ID</h4>
+          <div id="offlineMID"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <script>
+    function logout(){ localStorage.removeItem('medi_user'); window.location.href='index.html'; }
+    function loadProfile(){
+      const u = JSON.parse(localStorage.getItem('medi_user') || 'null');
+      if (!u) { window.location.href='login.html'; return; }
+      document.getElementById('profileCard').innerHTML = `<div style="font-weight:800">${u.name}</div><div style="color:var(--muted)">${u.email}</div><div style="margin-top:8px">Mobile: ${u.mobile || '—'}</div><div>Emergency: ${u.emergency || '—'}</div><div style="margin-top:8px">Blood: ${u.blood || '—'}</div><div style="margin-top:8px">Medical: ${u.medical || '—'}</div>`;
+      document.getElementById('offlineMID').innerHTML = `<strong>Name:</strong> ${u.name}<br><strong>Blood:</strong> ${u.blood || '—'}<br><strong>Emergency:</strong> ${u.emergency || '—'}`;
+    }
+    function editProfile(){ alert('Edit profile (demo)'); }
+    window.addEventListener('load', loadProfile);
+  </script>
+</body>
+</html>
