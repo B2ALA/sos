@@ -1,0 +1,5 @@
+[
+  {"id":"D1","name":"Dr. Lakshmi Narayanan","specialization":"General Medicine","hospital":"Salem Govt Medical College","contact":"+91 98765 33333","availability":"24/7","rating":4.6,"emergency":true,"location":"Five Roads"},
+  {"id":"D2","name":"Dr. Senthil Kumar","specialization":"Cardiology","hospital":"Vinayaka Mission Hospital","contact":"+91 98765 44444","availability":"Mon-Fri 9-5","rating":4.7,"emergency":true,"location":"Sankari Road"},
+  {"id":"D3","name":"Dr. Revathi Subramani","specialization":"Gynaecology","hospital":"SKS Hospital","contact":"+91 98765 55555","availability":"Tue-Thu 10-4","rating":4.5,"emergency":false,"location":"Suramangalam"}
+]
