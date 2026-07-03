@@ -1,0 +1,129 @@
+[
+  {
+    "keywords":["first aid","first-aid","firstaid"],
+    "answer":"First aid basics: ensure scene safety, call emergency services if needed, stop bleeding, maintain airway and breathing, and treat for shock. For specific injuries ask me for step-by-step guidance.",
+    "quick":["First aid for bleeding","First aid for burns"],
+    "urgent":false
+  },
+  {
+    "keywords":["heart attack","chest pain","myocardial"],
+    "answer":"If someone has chest pain with sweating, nausea or breathlessness, call 108/112 immediately. Keep them calm, help them sit upright and loosen tight clothing. If trained, start CPR if they lose consciousness.",
+    "urgent":true
+  },
+  {
+    "keywords":["poison","ingestion","poisoning"],
+    "answer":"For suspected poisoning, call local poison control immediately and do not induce vomiting unless instructed. If the person is unconscious, place them in recovery position and call emergency services.",
+    "urgent":true
+  },
+  {
+    "keywords":["bleeding","heavy bleeding","blood loss"],
+    "answer":"Apply direct pressure using a clean cloth or bandage. Elevate the injured area if possible. If bleeding is severe or does not stop within a few minutes, call emergency services immediately.",
+    "quick":["How to stop bleeding","Need ambulance"],
+    "urgent":true
+  },
+  {
+    "keywords":["burn","burns","hot water burn"],
+    "answer":"Cool the burn under running water for 10-20 minutes. Do not apply ice, toothpaste, or butter. Cover with a clean cloth and seek medical help for large or deep burns.",
+    "urgent":false
+  },
+  {
+    "keywords":["fracture","broken bone","bone injury"],
+    "answer":"Keep the injured part still and avoid moving it. Use a splint if trained and seek medical care immediately.",
+    "urgent":true
+  },
+  {
+    "keywords":["snake bite","snakebite"],
+    "answer":"Keep the person calm and immobilize the affected limb. Do not cut the wound or suck the venom. Seek emergency medical care immediately.",
+    "urgent":true
+  },
+  {
+    "keywords":["dog bite","animal bite"],
+    "answer":"Wash the wound thoroughly with soap and water for at least 15 minutes. Apply a clean dressing and seek medical attention for rabies and tetanus evaluation.",
+    "urgent":true
+  },
+  {
+    "keywords":["fainting","passed out","unconscious"],
+    "answer":"Lay the person flat and raise their legs slightly. Check breathing and loosen tight clothing. If they do not wake up quickly, call emergency services.",
+    "urgent":true
+  },
+  {
+    "keywords":["choking","can't breathe","food stuck"],
+    "answer":"Encourage the person to cough. If they cannot breathe or speak, perform abdominal thrusts if trained and call emergency services immediately.",
+    "urgent":true
+  },
+  {
+    "keywords":["stroke","face drooping","slurred speech"],
+    "answer":"Remember FAST: Face drooping, Arm weakness, Speech difficulty, Time to call emergency services. Immediate treatment is critical.",
+    "urgent":true
+  },
+  {
+    "keywords":["seizure","fits","convulsion"],
+    "answer":"Move dangerous objects away and protect the person's head. Do not put anything in their mouth. Call emergency services if the seizure lasts more than 5 minutes.",
+    "urgent":true
+  },
+  {
+    "keywords":["electric shock","electrocution"],
+    "answer":"Turn off the power source before touching the victim. Check breathing and pulse and begin CPR if necessary. Call emergency services immediately.",
+    "urgent":true
+  },
+  {
+    "keywords":["drowning","near drowning"],
+    "answer":"Remove the person from the water if safe to do so. Check breathing and begin CPR if they are not breathing. Call emergency services immediately.",
+    "urgent":true
+  },
+  {
+    "keywords":["nose bleed","nosebleed"],
+    "answer":"Sit upright and lean slightly forward. Pinch the soft part of the nose for 10-15 minutes. Seek medical care if bleeding continues.",
+    "urgent":false
+  },
+  {
+    "keywords":["fever","high temperature"],
+    "answer":"Drink plenty of fluids and rest. Seek medical attention if the fever is very high, lasts several days, or is accompanied by difficulty breathing or confusion.",
+    "urgent":false
+  },
+  {
+    "keywords":["dehydration","lack of water"],
+    "answer":"Drink water or oral rehydration solution slowly. Seek medical care if there is confusion, severe weakness, or inability to drink fluids.",
+    "urgent":false
+  },
+  {
+    "keywords":["allergy","allergic reaction"],
+    "answer":"For mild reactions, avoid the allergen and monitor symptoms. If there is swelling of the face, difficulty breathing, or collapse, call emergency services immediately.",
+    "urgent":true
+  },
+  {
+    "keywords":["heat stroke","heat exhaustion","sun stroke"],
+    "answer":"Move the person to a cool place, remove excess clothing, and cool them with wet cloths. Seek emergency care if they become confused or unconscious.",
+    "urgent":true
+  },
+  {
+    "keywords":["hypothermia","extreme cold"],
+    "answer":"Move the person to a warm place and remove wet clothing. Warm them gradually and seek medical attention if severe.",
+    "urgent":true
+  },
+  {
+    "keywords":["asthma","breathing problem","wheezing"],
+    "answer":"Help the person sit upright and use their prescribed inhaler. Call emergency services if breathing does not improve.",
+    "urgent":true
+  },
+  {
+    "keywords":["diabetes","low sugar","hypoglycemia"],
+    "answer":"If the person is conscious, give a sugary drink or glucose tablets. If unconscious, seek emergency medical help immediately.",
+    "urgent":true
+  },
+  {
+    "keywords":["eye injury","something in eye"],
+    "answer":"Do not rub the eye. Rinse with clean water if appropriate and seek medical care for persistent pain or vision problems.",
+    "urgent":false
+  },
+  {
+    "keywords":["cut","minor wound","laceration"],
+    "answer":"Wash the wound with clean water, apply an antiseptic, and cover with a sterile dressing.",
+    "urgent":false
+  },
+  {
+    "keywords":["sprain","twisted ankle"],
+    "answer":"Follow the RICE method: Rest, Ice, Compression, and Elevation.",
+    "urgent":false
+  }
+]
