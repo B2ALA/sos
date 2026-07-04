@@ -55,3 +55,26 @@
   <script src="app.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediHelp Admin - Login</title>
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="login-box">
+    <h1>🛡️ Admin Login</h1>
+    <form id="adminLoginForm">
+      <div class="field"><label>Username</label><input type="text" id="username" required /></div>
+      <div class="field"><label>Password</label><input type="password" id="password" required /></div>
+      <button type="submit" class="btn-primary">Log In</button>
+      <div id="formMsg"></div>
+    </form>
+    <p class="hint-text">Default seed login: admin / admin123 — change this in production.</p>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
