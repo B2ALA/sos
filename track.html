@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediHelp - Live Tracking</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1>📍 Live Emergency Tracking</h1>
+    </header>
+
+    <div class="status-banner" id="statusBanner">
+      <span class="pulse-dot"></span>
+      <strong id="statusText">You are under monitoring.</strong>
+      <p style="margin:6px 0 0; font-size:13px; color:var(--muted);">
+        Your live location is being tracked. Emergency teams and volunteers have been notified. Please stay calm.
+      </p>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="info-card">
+      <h3>Emergency Contacts Notified</h3>
+      <ul id="contactsList"></ul>
+    </div>
+
+    <div class="info-card">
+      <h3>Nearby Volunteers Alerted</h3>
+      <ul id="volunteersList"></ul>
+    </div>
+
+    <div class="info-card">
+      <h3>Nearby Hospitals Notified</h3>
+      <ul id="hospitalsList"></ul>
+    </div>
+
+    <button class="small-btn" id="resolveBtn" style="width:100%;">✅ I'm Safe — End Monitoring</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="track.js"></script>
+</body>
+</html>
