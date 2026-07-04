@@ -140,3 +140,38 @@ router.post('/volunteers/:groupType/:groupNumber/members', (req, res) => {
 });
 
 module.exports = router;
+// admin/admin.js — admin login page logic
+
+const form = document.getElementById('adminLoginForm');
+const formMsg = document.getElementById('formMsg');
+
+// If already logged in, skip straight to dashboard
+if (localStorage.getItem('mh_admin_token')) {
+  window.location.href = 'dashboard.html';
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+
+  try {
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      formMsg.innerHTML = `<p class="error-text">${data.error}</p>`;
+      return;
+    }
+
+    localStorage.setItem('mh_admin_token', data.token);
+    window.location.href = 'dashboard.html';
+  } catch (err) {
+    console.error(err);
+    formMsg.innerHTML = `<p class="error-text">Something went wrong. Please try again.</p>`;
+  }
+});
