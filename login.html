@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediHelp - Login</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="index.html">🚨 SOS</a>
+    <a href="chatbot.html">🤖 Chatbot</a>
+    <a href="finder.html">📍 Finder</a>
+    <a href="register.html">📝 Register</a>
+    <a href="login.html" class="active">🔑 Login</a>
+  </nav>
+
+  <div class="container">
+    <div class="login-box">
+      <h1>🔑 Login</h1>
+      <form id="loginForm">
+        <div class="field"><label>Username</label><input type="text" id="username" required /></div>
+        <div class="field"><label>Password</label><input type="password" id="password" required /></div>
+        <button type="submit" class="btn-primary">Log In</button>
+        <div id="formMsg"></div>
+      </form>
+      <p class="hint-text">No account yet? <a href="register.html" style="color:var(--danger);">Register here</a></p>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
