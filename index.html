@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediHelp - Emergency SOS</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1>🚑 MediHelp SOS</h1>
+      <p>Tap the button below only in a real emergency</p>
+    </header>
+
+    <div class="emergency-types" id="typeGrid">
+      <div class="type-chip" data-type="medical"><span class="emoji">🩺</span>Medical</div>
+      <div class="type-chip" data-type="fire"><span class="emoji">🔥</span>Fire</div>
+      <div class="type-chip" data-type="rescue"><span class="emoji">🌊</span>Rescue / Disaster</div>
+      <div class="type-chip" data-type="accident"><span class="emoji">🚗</span>Accident</div>
+    </div>
+
+    <div class="sos-wrap">
+      <button class="sos-button" id="sosBtn">SOS</button>
+    </div>
+
+    <p style="text-align:center; color:var(--muted); font-size:13px;">
+      Select an emergency type, then press SOS.<br/>
+      Your live location will be shared with emergency contacts, nearby volunteers, and hospitals.
+    </p>
+  </div>
+
+  <!-- Confirmation modal -->
+  <div class="overlay" id="confirmOverlay">
+    <div class="modal">
+      <h2>⚠️ Confirm Emergency SOS</h2>
+      <p>This will immediately alert your emergency contacts, nearby volunteers, and hospitals with your live location.</p>
+      <div class="actions">
+        <button class="btn btn-cancel" id="cancelBtn">Cancel</button>
+        <button class="btn btn-confirm" id="confirmBtn">Confirm SOS</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
