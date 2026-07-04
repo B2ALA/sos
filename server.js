@@ -191,3 +191,38 @@ app.get('/api/sos', (req, res) => {
 app.listen(PORT, () => {
   console.log(`MediHelp SOS server running on http://localhost:${PORT}`);
 });
+// server.js
+// MediHelp Emergency Platform — main entry point.
+// Mounts all feature routers. Plain Node + Express + file-based JSON storage
+// (swap lib/store.js's readJSON/writeJSON for a real DB when you're ready).
+
+const express = require('express');
+const path = require('path');
+const { ensureDefaultAdmin } = require('./lib/auth');
+
+const authRoutes = require('./routes/auth');
+const { router: directoryRoutes } = require('./routes/directory');
+const sosRoutes = require('./routes/sos');
+const chatbotRoutes = require('./routes/chatbot');
+const adminRoutes = require('./routes/admin');
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Seed a default admin login on first run
+ensureDefaultAdmin();
+
+// ---------- Mount routers ----------
+app.use('/api/auth', authRoutes);
+app.use('/api', directoryRoutes); // /api/doctors, /api/pharmacies, /api/donors, /api/shelters, /api/hospitals, /api/volunteers
+app.use('/api/sos', sosRoutes);
+app.use('/api/chatbot', chatbotRoutes);
+app.use('/api/admin', adminRoutes);
+
+app.listen(PORT, () => {
+  console.log(`MediHelp server running on http://localhost:${PORT}`);
+  console.log(`Admin dashboard: http://localhost:${PORT}/admin/`);
+});
