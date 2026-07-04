@@ -1,0 +1,241 @@
+:root {
+  --danger: #e11d3f;
+  --danger-dark: #b3102f;
+  --bg: #0f1115;
+  --card: #171a21;
+  --text: #f1f2f4;
+  --muted: #9aa0a8;
+  --ok: #22c55e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px 60px;
+}
+
+header.app-header {
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+header.app-header h1 {
+  font-size: 22px;
+  margin: 0;
+}
+
+header.app-header p {
+  color: var(--muted);
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+/* SOS Button */
+.sos-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 24px;
+}
+
+.sos-button {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(circle at 30% 30%, #ff4d6a, var(--danger));
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 0 0 rgba(225, 29, 63, 0.6);
+  animation: pulse 2s infinite;
+  transition: transform 0.15s ease;
+}
+
+.sos-button:active {
+  transform: scale(0.96);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(225, 29, 63, 0.55); }
+  70% { box-shadow: 0 0 0 30px rgba(225, 29, 63, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(225, 29, 63, 0); }
+}
+
+.emergency-types {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.type-chip {
+  background: var(--card);
+  border: 1px solid #2a2e37;
+  color: var(--text);
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.type-chip.selected {
+  border-color: var(--danger);
+  background: rgba(225, 29, 63, 0.12);
+}
+
+.type-chip .emoji {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 16px;
+}
+
+.overlay.visible { display: flex; }
+
+.modal {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid #2a2e37;
+}
+
+.modal h2 { margin-top: 0; color: var(--danger); }
+
+.modal .actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-confirm {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-cancel {
+  background: #2a2e37;
+  color: var(--text);
+}
+
+/* Status page */
+.status-banner {
+  background: rgba(225, 29, 63, 0.12);
+  border: 1px solid var(--danger);
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.status-banner.resolved {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: var(--ok);
+}
+
+.status-banner .pulse-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger);
+  margin-right: 6px;
+  animation: pulse 1.4s infinite;
+}
+
+#map {
+  height: 320px;
+  width: 100%;
+  border-radius: 14px;
+  margin: 16px 0;
+  border: 1px solid #2a2e37;
+}
+
+.info-card {
+  background: var(--card);
+  border: 1px solid #2a2e37;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.info-card h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-card ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+.info-card li { margin-bottom: 4px; }
+
+.small-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #2a2e37;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card);
+  border: 1px solid #2a2e37;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: none;
+}
+
+.toast.visible { display: block; }
