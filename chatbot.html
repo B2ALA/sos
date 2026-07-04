@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediHelp - AI Medical Assistant</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="index.html">🚨 SOS</a>
+    <a href="chatbot.html" class="active">🤖 Chatbot</a>
+    <a href="finder.html">📍 Finder</a>
+    <a href="register.html">📝 Register</a>
+    <a href="login.html">🔑 Login</a>
+  </nav>
+
+  <div class="container">
+    <header class="app-header">
+      <h1>🤖 MediHelp AI Assistant</h1>
+      <p>First-aid guidance, symptom help &amp; emergency info</p>
+    </header>
+
+    <div class="quick-replies" id="quickReplies"></div>
+
+    <div class="chat-window" id="chatWindow"></div>
+
+    <div class="chat-input-bar">
+      <button class="icon-btn" id="micBtn" title="Voice input">🎤</button>
+      <input type="text" id="chatInput" placeholder="Describe your symptom or ask a question..." />
+      <button class="icon-btn" id="speakToggle" title="Toggle text-to-speech">🔊</button>
+      <button class="icon-btn" id="sendBtn" title="Send">➤</button>
+    </div>
+  </div>
+
+  <script src="chatbot.js"></script>
+</body>
+</html>
