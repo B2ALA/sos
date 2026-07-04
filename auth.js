@@ -80,3 +80,90 @@ module.exports = {
   requireAdmin,
   ensureDefaultAdmin,
 };
+// routes/auth.js
+// User registration (full profile per spec) + login/logout + "who am I".
+
+const express = require('express');
+const { readJSON, writeJSON } = require('../lib/store');
+const { hashPassword, verifyPassword, createSession, destroySession, requireAuth } = require('../lib/auth');
+
+const router = express.Router();
+
+function sanitizeUser(user) {
+  const { password, ...safe } = user;
+  return safe;
+}
+
+// POST /api/auth/register
+router.post('/register', (req, res) => {
+  const {
+    // Account
+    username,
+    password,
+    // Personal
+    fullName, age, gender, dob, bloodGroup, height, weight,
+    address, district, state, pincode, phone, email,
+    // Emergency contact
+    emergencyContact, // { contactPersonName, relationship, contactNumber }
+    // Medical info
+    medicalInfo, // { allergies, diseases, currentMedications, disabilities, insuranceDetails }
+  } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'username and password are required' });
+  }
+  if (!fullName || !phone) {
+    return res.status(400).json({ error: 'fullName and phone are required' });
+  }
+
+  const users = readJSON('users', {});
+  if (users[username]) {
+    return res.status(409).json({ error: 'Username already taken' });
+  }
+
+  const user = {
+    username,
+    password: hashPassword(password),
+    fullName, age, gender, dob, bloodGroup, height, weight,
+    address, district, state, pincode, phone, email,
+    emergencyContact: emergencyContact || {},
+    medicalInfo: medicalInfo || {},
+    createdAt: new Date().toISOString(),
+  };
+
+  users[username] = user;
+  writeJSON('users', users);
+
+  const token = createSession(username, 'user');
+  res.status(201).json({ token, user: sanitizeUser(user) });
+});
+
+// POST /api/auth/login
+router.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const users = readJSON('users', {});
+  const user = users[username];
+
+  if (!user || !verifyPassword(password, user.password)) {
+    return res.status(401).json({ error: 'Invalid username or password' });
+  }
+
+  const token = createSession(username, 'user');
+  res.json({ token, user: sanitizeUser(user) });
+});
+
+// POST /api/auth/logout
+router.post('/logout', requireAuth, (req, res) => {
+  destroySession(req.token);
+  res.json({ success: true });
+});
+
+// GET /api/auth/me
+router.get('/me', requireAuth, (req, res) => {
+  const users = readJSON('users', {});
+  const user = users[req.user.username];
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json(sanitizeUser(user));
+});
+
+module.exports = router;
