@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Directory — MediHelp</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="brand"><span class="pulse-dot"></span> MediHelp</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="pharmacies.html">Pharmacies</a></li>
+      <li><a href="sos.html" class="nav-cta">SOS</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode"><i class="fa-solid fa-circle-half-stroke"></i></button>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Salem, Tamil Nadu</span>
+    <h1>Find a doctor</h1>
+
+    <div class="card" style="margin-bottom:26px;">
+      <div class="form-grid">
+        <div class="field">
+          <label>Specialization</label>
+          <select id="filter-specialization">
+            <option value="">All specializations</option>
+            <option>General Physician</option><option>Cardiologist</option><option>Neurologist</option>
+            <option>Orthopedic</option><option>Pediatrician</option><option>ENT Specialist</option>
+            <option>Dentist</option><option>Psychiatrist</option><option>Dermatologist</option><option>Gynecologist</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Hospital or area</label>
+          <input type="text" id="filter-hospital" placeholder="e.g. Government Hospital">
+        </div>
+      </div>
+      <div class="flex gap-12">
+        <button class="btn btn-primary" id="search-btn">Search</button>
+        <button class="btn btn-outline" id="near-me-btn"><i class="fa-solid fa-location-crosshairs"></i> Near me</button>
+      </div>
+    </div>
+
+    <p id="result-count" style="font-size:0.85rem;"></p>
+    <div class="grid grid-3" id="results"></div>
+  </div>
+</section>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script>
+let nearMeCoords = null;
+
+function renderDoctors(list) {
+  document.getElementById("result-count").textContent = `${list.length} doctors found`;
+  document.getElementById("results").innerHTML = list.map((d) => `
+    <div class="card card-hover">
+      <span class="badge">${d.specialization}</span>
+      <h3 style="margin-top:12px; font-size:1.1rem;">${d.name}</h3>
+      <p style="margin:0 0 4px;"><i class="fa-solid fa-hospital"></i> ${d.hospital}</p>
+      <p style="margin:0 0 4px;"><i class="fa-solid fa-location-dot"></i> ${d.location}${d.distanceKm != null ? ` · ${d.distanceKm} km away` : ""}</p>
+      <p style="margin:0 0 4px;"><i class="fa-solid fa-star" style="color:var(--gold);"></i> ${d.rating} · ${d.experience} experience</p>
+      <p style="margin:0 0 10px; font-size:0.85rem;">${d.availability}</p>
+      <a class="btn btn-primary btn-block" href="tel:${d.phone}"><i class="fa-solid fa-phone"></i> Call ${d.phone}</a>
+    </div>
+  `).join("") || "<p>No doctors matched your search.</p>";
+}
+
+async function loadDoctors() {
+  const specialization = document.getElementById("filter-specialization").value;
+  const hospital = document.getElementById("filter-hospital").value;
+  const params = new URLSearchParams();
+  if (specialization) params.set("specialization", specialization);
+  if (hospital) params.set("hospital", hospital);
+  if (nearMeCoords) { params.set("lat", nearMeCoords.latitude); params.set("lng", nearMeCoords.longitude); }
+
+  try {
+    const res = await MediHelpAPI.get(`/doctors?${params.toString()}`);
+    renderDoctors(res.data);
+  } catch (err) {
+    document.getElementById("results").innerHTML = `<p>Couldn't load doctors right now. ${err.message}</p>`;
+  }
+}
+
+document.getElementById("search-btn").onclick = loadDoctors;
+document.getElementById("near-me-btn").onclick = async () => {
+  try {
+    nearMeCoords = await getCurrentPosition();
+    showToast("Sorting by distance from you.");
+    loadDoctors();
+  } catch (e) { showToast("Couldn't access your location.", "error"); }
+};
+
+loadDoctors();
+</script>
+</body>
+</html>
