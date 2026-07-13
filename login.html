@@ -55,3 +55,52 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — MediHelp</title>
+<link rel="stylesheet" href="../frontend/css/styles.css">
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body style="background:var(--teal-deep); min-height:100vh; display:flex; align-items:center; justify-content:center;">
+
+<div class="card" style="max-width:380px; width:100%;">
+  <div class="text-center" style="margin-bottom:18px;">
+    <i class="fa-solid fa-user-shield" style="font-size:2rem; color:var(--teal);"></i>
+    <h1 style="font-size:1.5rem; margin-top:10px;">MediHelp Admin</h1>
+    <p style="font-size:0.85rem;">Restricted access — authorized personnel only.</p>
+  </div>
+  <form id="admin-login-form">
+    <div class="field"><label>Username</label><input type="text" name="username" required></div>
+    <div class="field"><label>Password</label><input type="password" name="password" required></div>
+    <button type="submit" class="btn btn-primary btn-block" id="login-btn">Log in</button>
+  </form>
+</div>
+
+<script src="../frontend/js/config.js"></script>
+<script src="../frontend/js/main.js"></script>
+<script>
+document.getElementById("admin-login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("login-btn");
+  const { username, password } = Object.fromEntries(new FormData(e.target).entries());
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Verifying...';
+  try {
+    const res = await MediHelpAPI.post("/admin/login", { username, password });
+    localStorage.setItem("medihelp_token", res.token);
+    localStorage.setItem("medihelp_admin", JSON.stringify(res.admin));
+    window.location.href = "index.html";
+  } catch (err) {
+    showToast(err.message || "Login failed.", "error");
+    btn.disabled = false;
+    btn.textContent = "Log in";
+  }
+});
+</script>
+</body>
+</html>
