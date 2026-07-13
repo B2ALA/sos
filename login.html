@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — MediHelp</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="brand"><span class="pulse-dot"></span> MediHelp</a>
+    <ul class="nav-links">
+      <li><a href="register.html">Register</a></li>
+      <li><a href="sos.html" class="nav-cta">SOS</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode"><i class="fa-solid fa-circle-half-stroke"></i></button>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container" style="max-width:420px;">
+    <h1 class="text-center">Welcome back</h1>
+    <form id="login-form" class="card">
+      <div class="field"><label>Username</label><input type="text" name="username" required></div>
+      <div class="field"><label>Password</label><input type="password" name="password" required></div>
+      <button type="submit" class="btn btn-primary btn-block" id="login-btn">Log in</button>
+      <p class="text-center" style="margin-top:14px;"><small>New here? <a href="register.html">Create an account</a></small></p>
+    </form>
+  </div>
+</section>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("login-btn");
+  const { username, password } = Object.fromEntries(new FormData(e.target).entries());
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Logging in...';
+  try {
+    const res = await MediHelpAPI.post("/auth/login", { username, password });
+    MediHelpAuth.saveSession(res.token, res.user);
+    showToast("Logged in successfully.");
+    setTimeout(() => window.location.href = "index.html", 700);
+  } catch (err) {
+    showToast(err.message || "Login failed.", "error");
+    btn.disabled = false;
+    btn.textContent = "Log in";
+  }
+});
+</script>
+</body>
+</html>
