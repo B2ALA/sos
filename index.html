@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediHelp — Emergency Healthcare for Salem, Tamil Nadu</title>
+<meta name="description" content="MediHelp connects Salem residents to emergency SOS response, doctors, pharmacies, blood donors, volunteers, and shelters — instantly.">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="brand"><span class="pulse-dot"></span> MediHelp</a>
+    <ul class="nav-links">
+      <li><a href="chatbot.html">AI Assistant</a></li>
+      <li><a href="doctors.html">Doctors</a></li>
+      <li><a href="pharmacies.html">Pharmacies</a></li>
+      <li><a href="blood-donors.html">Blood Donors</a></li>
+      <li><a href="volunteers.html">Volunteers</a></li>
+      <li><a href="shelters.html">Shelters</a></li>
+      <li id="nav-auth-slot"><a href="login.html">Log in</a></li>
+      <li><a href="sos.html" class="nav-cta">SOS</a></li>
+    </ul>
+    <div class="flex gap-12 items-center">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode"><i class="fa-solid fa-circle-half-stroke"></i></button>
+      <button class="nav-burger" onclick="toggleNav()" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="section" style="padding-top:56px;">
+  <div class="container" style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:40px; align-items:center;">
+    <div>
+      <span class="eyebrow">Salem · Tamil Nadu · Live 24/7</span>
+      <h1 style="margin-top:10px;">Help finds you faster. <br>Every second, mapped.</h1>
+      <p style="font-size:1.1rem; max-width:520px;">MediHelp puts Salem's emergency network — hospitals, pharmacies, blood donors, and trained volunteers — one tap away, with live location shared the moment you need it.</p>
+      <div class="flex gap-12" style="margin-top:26px; flex-wrap:wrap;">
+        <a href="sos.html" class="btn btn-alert"><i class="fa-solid fa-truck-medical"></i> Activate SOS</a>
+        <a href="chatbot.html" class="btn btn-outline"><i class="fa-solid fa-comment-medical"></i> Ask the AI Assistant</a>
+      </div>
+      <div class="pulse-divider" style="margin-top:38px; max-width:480px;">
+        <svg viewBox="0 0 480 46" preserveAspectRatio="none">
+          <path class="pulse-line-path" d="M0,23 L100,23 L120,6 L140,40 L160,23 L200,23 L215,10 L230,36 L245,23 L480,23"></path>
+        </svg>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="badge badge-alert" style="margin-bottom:14px;">Live network status</div>
+      <div class="grid grid-2" style="gap:16px;">
+        <div><h2 id="stat-doctors" style="margin:0;">520+</h2><small>Doctors on file</small></div>
+        <div><h2 id="stat-pharmacies" style="margin:0;">510+</h2><small>Pharmacies mapped</small></div>
+        <div><h2 id="stat-donors" style="margin:0;">1,020+</h2><small>Blood donors</small></div>
+        <div><h2 id="stat-volunteers" style="margin:0;">57</h2><small>Trained volunteers</small></div>
+      </div>
+      <p style="margin-top:16px; font-size:0.82rem;">Sample seed-data counts shown for demo. Connect Supabase to see live figures.</p>
+    </div>
+  </div>
+</header>
+
+<!-- SERVICES -->
+<section class="section" style="background:var(--surface-2);">
+  <div class="container">
+    <span class="eyebrow">Everything in one place</span>
+    <h2>Six ways MediHelp responds</h2>
+    <div class="grid grid-3" style="margin-top:26px;">
+      <a href="sos.html" class="card card-hover">
+        <i class="fa-solid fa-truck-medical" style="font-size:1.6rem; color:var(--alert);"></i>
+        <h3 style="margin-top:14px;">Emergency SOS</h3>
+        <p>One tap shares your live GPS location with the nearest volunteer team and notifies your emergency contact.</p>
+      </a>
+      <a href="chatbot.html" class="card card-hover">
+        <i class="fa-solid fa-comment-medical" style="font-size:1.6rem; color:var(--teal);"></i>
+        <h3 style="margin-top:14px;">AI Health Assistant</h3>
+        <p>Ask about symptoms, first aid, or CPR steps and get guidance drawn from a 1,000+ question medical knowledge base.</p>
+      </a>
+      <a href="doctors.html" class="card card-hover">
+        <i class="fa-solid fa-user-doctor" style="font-size:1.6rem; color:var(--teal);"></i>
+        <h3 style="margin-top:14px;">Doctor Directory</h3>
+        <p>Search Salem specialists by department, hospital, or distance from your current location.</p>
+      </a>
+      <a href="blood-donors.html" class="card card-hover">
+        <i class="fa-solid fa-droplet" style="font-size:1.6rem; color:var(--alert);"></i>
+        <h3 style="margin-top:14px;">Blood Donor Network</h3>
+        <p>Filter donors by blood group and district, then call directly when every minute counts.</p>
+      </a>
+      <a href="volunteers.html" class="card card-hover">
+        <i class="fa-solid fa-people-group" style="font-size:1.6rem; color:var(--gold);"></i>
+        <h3 style="margin-top:14px;">Volunteer Teams</h3>
+        <p>Fire, medical, and rescue groups are matched automatically based on the emergency you report.</p>
+      </a>
+      <a href="shelters.html" class="card card-hover">
+        <i class="fa-solid fa-school-flag" style="font-size:1.6rem; color:var(--teal);"></i>
+        <h3 style="margin-top:14px;">Emergency Shelters</h3>
+        <p>Locate the nearest school, college, or community hall designated as a disaster shelter.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">In an emergency</span>
+    <h2>What happens after you press SOS</h2>
+    <div class="grid grid-4" style="margin-top:26px;">
+      <div class="card">
+        <span class="badge">Step 1</span>
+        <h3 style="margin-top:12px; font-size:1.1rem;">Confirm & classify</h3>
+        <p>A quick warning screen confirms the alert and captures the emergency type.</p>
+      </div>
+      <div class="card">
+        <span class="badge">Step 2</span>
+        <h3 style="margin-top:12px; font-size:1.1rem;">Locate</h3>
+        <p>Your live GPS coordinates and timestamp are captured automatically.</p>
+      </div>
+      <div class="card">
+        <span class="badge">Step 3</span>
+        <h3 style="margin-top:12px; font-size:1.1rem;">Notify</h3>
+        <p>The nearest matching volunteer team, your emergency contact, and the admin monitoring desk are alerted in real time.</p>
+      </div>
+      <div class="card">
+        <span class="badge">Step 4</span>
+        <h3 style="margin-top:12px; font-size:1.1rem;">Track</h3>
+        <p>A live tracking screen keeps you and responders updated until the situation is resolved.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="brand" style="color:#fff;"><span class="pulse-dot"></span> MediHelp</div>
+      <p style="color:#BFE0DB; max-width:260px; margin-top:10px;">An emergency healthcare network built for Salem, Tamil Nadu.</p>
+    </div>
+    <div>
+      <h4 style="color:#fff;">Platform</h4>
+      <p><a href="chatbot.html">AI Assistant</a></p>
+      <p><a href="register.html">Register</a></p>
+      <p><a href="sos.html">Emergency SOS</a></p>
+    </div>
+    <div>
+      <h4 style="color:#fff;">Directories</h4>
+      <p><a href="doctors.html">Doctors</a></p>
+      <p><a href="pharmacies.html">Pharmacies</a></p>
+      <p><a href="blood-donors.html">Blood Donors</a></p>
+      <p><a href="shelters.html">Shelters</a></p>
+    </div>
+    <div>
+      <h4 style="color:#fff;">About</h4>
+      <p><a href="developer.html">Developer</a></p>
+      <p><a href="admin/login.html">Admin</a></p>
+    </div>
+  </div>
+  <small>MediHelp is a civic-tech demo project. In a life-threatening emergency, always call your national emergency number as well.</small>
+</footer>
+
+<button class="floating-sos" onclick="window.location.href='sos.html'" aria-label="Emergency SOS">
+  <i class="fa-solid fa-triangle-exclamation"></i> SOS
+</button>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
