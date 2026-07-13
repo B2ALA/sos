@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blood Donor Network — MediHelp</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="brand"><span class="pulse-dot"></span> MediHelp</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="volunteers.html">Volunteers</a></li>
+      <li><a href="sos.html" class="nav-cta">SOS</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode"><i class="fa-solid fa-circle-half-stroke"></i></button>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Salem District</span>
+    <h1>Blood donor network</h1>
+    <p>Search available donors by blood group and location, or register as a donor yourself.</p>
+
+    <div class="card" style="margin-bottom:26px;">
+      <div class="form-grid">
+        <div class="field">
+          <label>Blood group</label>
+          <select id="filter-bg">
+            <option value="">Any group</option>
+            <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+          </select>
+        </div>
+        <div class="field"><label>District</label><input type="text" id="filter-district" value="Salem"></div>
+      </div>
+      <div class="flex gap-12">
+        <button class="btn btn-alert" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i> Emergency donor search</button>
+        <button class="btn btn-outline" id="register-donor-btn"><i class="fa-solid fa-heart"></i> Register as donor</button>
+      </div>
+    </div>
+
+    <p id="result-count" style="font-size:0.85rem;"></p>
+    <div class="grid grid-3" id="results"></div>
+  </div>
+</section>
+
+<!-- Donor registration modal -->
+<div class="modal-backdrop" id="donor-modal">
+  <div class="modal-glass" style="text-align:left;">
+    <h2>Register as a blood donor</h2>
+    <form id="donor-form">
+      <div class="field"><label>Full name</label><input type="text" name="name" required></div>
+      <div class="field"><label>Blood group</label>
+        <select name="bloodGroup" required><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select>
+      </div>
+      <div class="field"><label>Phone number</label><input type="tel" name="phone" required></div>
+      <div class="field"><label>Location / area</label><input type="text" name="location" placeholder="e.g. Fairlands"></div>
+      <input type="hidden" name="district" value="Salem">
+      <div class="flex gap-12">
+        <button type="button" class="btn btn-outline btn-block" onclick="document.getElementById('donor-modal').classList.remove('open')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script>
+function renderDonors(list) {
+  document.getElementById("result-count").textContent = `${list.length} donors found`;
+  document.getElementById("results").innerHTML = list.map((d) => `
+    <div class="card card-hover">
+      <span class="badge badge-alert">${d.blood_group}</span>
+      <h3 style="margin-top:12px; font-size:1.1rem;">${d.name}</h3>
+      <p style="margin:0 0 4px;"><i class="fa-solid fa-location-dot"></i> ${d.location}, ${d.district}</p>
+      <a class="btn btn-primary btn-block" href="tel:${d.phone}"><i class="fa-solid fa-phone"></i> Call donor</a>
+    </div>
+  `).join("") || "<p>No available donors matched your search.</p>";
+}
+
+async function searchDonors() {
+  const bloodGroup = document.getElementById("filter-bg").value;
+  const district = document.getElementById("filter-district").value;
+  const params = new URLSearchParams();
+  if (bloodGroup) params.set("bloodGroup", bloodGroup);
+  if (district) params.set("district", district);
+  try {
+    const res = await MediHelpAPI.get(`/donors/search?${params.toString()}`);
+    renderDonors(res.data);
+  } catch (err) {
+    document.getElementById("results").innerHTML = `<p>Couldn't load donors right now. ${err.message}</p>`;
+  }
+}
+
+document.getElementById("search-btn").onclick = searchDonors;
+document.getElementById("register-donor-btn").onclick = () => document.getElementById("donor-modal").classList.add("open");
+
+document.getElementById("donor-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target).entries());
+  try {
+    await MediHelpAPI.post("/donors", { name: data.name, blood_group: data.bloodGroup, phone: data.phone, location: data.location, district: data.district, available: true });
+    showToast("Thank you for registering as a donor!");
+    document.getElementById("donor-modal").classList.remove("open");
+    e.target.reset();
+    searchDonors();
+  } catch (err) {
+    showToast(err.message || "Couldn't register right now.", "error");
+  }
+});
+
+searchDonors();
+</script>
+</body>
+</html>
