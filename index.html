@@ -223,6 +223,13 @@ textarea.m-input{resize:vertical;min-height:80px;}
   padding:13px 14px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;transition:.15s var(--ease);}
 .place-card:hover{border-color:var(--brand-light);box-shadow:var(--shadow-sm);}
 .p-ico-box{width:42px;height:42px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;}
+.p-ico-h{background:var(--red-tint);}
+.p-ico-ph{background:var(--brand-tint);}
+.p-ico-c{background:var(--blue-tint);}
+.p-ico-d{background:var(--amber-tint);}
+.p-ico-b{background:var(--red-tint);}
+.p-ico-f{background:#FFEAD5;}
+.p-ico-ps{background:var(--blue-tint);}
 .p-name{font-weight:700;font-size:13.5px;color:var(--ink);margin-bottom:2px;}
 .p-addr{font-size:11.5px;color:var(--ink-3);line-height:1.5;}
 .p-meta{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap;}
@@ -409,6 +416,7 @@ textarea.m-input{resize:vertical;min-height:80px;}
     </div>
     <div class="nav-right">
       <div class="loc-pill" id="navLocPill" onclick="requestLocation(true)">📍 <span id="navLocText">Salem, Tamil Nadu</span></div>
+      <a class="loc-pill" id="acctLink" href="registration.html" style="background:var(--blue-tint);border-color:#B2DDFF;color:var(--blue-dark);">👤 <span id="acctLinkText">Create Medical ID</span></a>
       <button class="nav-cta" onclick="sendEmergency()">🆘 SOS</button>
       <button class="nav-burger" onclick="toggleDrawer()">☰</button>
     </div>
@@ -446,6 +454,12 @@ textarea.m-input{resize:vertical;min-height:80px;}
     <div class="drawer-item" onclick="openM('locShareM')"><span class="di-ico">🛰️</span> Live Location Share</div>
     <div class="drawer-item" onclick="openM('notifsM')"><span class="di-ico">🔔</span> Smart Notifications</div>
     <div class="drawer-item" onclick="openM('offlineM')"><span class="di-ico">🌐</span> Offline Emergency Mode</div>
+  </div>
+
+  <div class="drawer-sec">
+    <div class="drawer-label">Account</div>
+    <div class="drawer-item" onclick="window.location.href='registration.html'"><span class="di-ico">📝</span> Create / Update Medical ID</div>
+    <div class="drawer-item" onclick="window.location.href='developer.html'"><span class="di-ico">👨‍💻</span> About the Developer</div>
   </div>
 
   <div class="drawer-sec">
@@ -555,7 +569,8 @@ textarea.m-input{resize:vertical;min-height:80px;}
     <div>
       <h5>Company</h5>
       <ul>
-        <li><a href="/admin">Admin Portal</a></li>
+        <li><a href="registration.html">Create Medical ID</a></li>
+        <li><a href="developer.html">About the Developer</a></li>
         <li><a onclick="openM('recordsM')">Medical Records</a></li>
         <li><a onclick="openM('notifsM')">Notifications</a></li>
       </ul>
@@ -734,6 +749,7 @@ textarea.m-input{resize:vertical;min-height:80px;}
         <div class="tab-pane active">
           <div class="id-card" id="renderedIDCard"></div>
           <p style="text-align:center;font-size:11px;color:var(--ink-4);">Emergency responders can scan the QR to view this card instantly.</p>
+          <p style="text-align:center;font-size:11px;color:var(--ink-4);margin-top:6px;">Want this filled with your real details? <a href="registration.html" style="color:var(--brand-dark);font-weight:700;text-decoration:underline;">Create your Medical ID</a>.</p>
         </div>
         <div class="tab-pane">
           <input class="m-input" id="midName" placeholder="Full Name" value="Karthik Subramaniam">
@@ -974,11 +990,6 @@ let doctors=[
   {name:'Dr. Anbu Selvan',       address:'Fairlands',          city:'Salem', state:'Tamil Nadu', qualification:'MBBS, Orthopaedics'},
   {name:'Dr. Kavitha Rajendran', address:'Ammapettai',         city:'Salem', state:'Tamil Nadu', qualification:'BDS, MDS Dental'},
 ];
-let employees=[
-  {name:'Murugan S',  age:34,city:'Salem',  state:'Tamil Nadu',id:'EMP001',vehicle:'TN30AB1234',mobile:'+91 98765 43210'},
-  {name:'Latha R',    age:29,city:'Salem',  state:'Tamil Nadu',id:'EMP002',vehicle:'TN30CD5678',mobile:'+91 99887 76655'},
-  {name:'Vignesh K',  age:36,city:'Salem',  state:'Tamil Nadu',id:'EMP003',vehicle:'TN30EF3344',mobile:'+91 97654 32109'},
-];
 const ambulances=[
   {id:'AMB-001',driver:'Mohan Raj',     age:45,contact:'+91 98765 43210',plate:'TN30-AB-1234',equipped:'ACLS, Defibrillator',status:'Available'},
   {id:'AMB-002',driver:'Velu Pandian',  age:38,contact:'+91 98765 99999',plate:'TN30-EF-7890',equipped:'BLS, Oxygen',        status:'On Duty'},
@@ -1046,13 +1057,60 @@ const nearbyTitles={
   clinic:'🩺 Clinics & Doctors',diagnostic:'🧪 Diagnostic Centers',
   bloodbank:'🩸 Blood Banks',fire:'🚒 Fire Stations',police:'👮 Police Stations',shelter:'📍 Emergency Shelters',
 };
-const sosContacts=[
+let sosContacts=[
   {name:'Amma',rel:'Mother',num:'+91 98765 11111'},
   {name:'Appa',rel:'Father',num:'+91 98765 22222'},
   {name:'Dr. Lakshmi',rel:'Doctor',num:'+91 98765 33333'},
 ];
 let medID={name:'Karthik Subramaniam',blood:'O+',allergies:'Penicillin, Dust',diseases:'Type 2 Diabetes',meds:'Metformin 500mg',insurance:'LIC-HEALTH-884421',emContact:'Priya · +91 98765 11111'};
 let records=[];
+
+// ══ REGISTERED USER (bridges registration.html → index.html) ══
+// registration.html writes 'medihelp_users' (array of user records) and
+// 'medihelp_current_user' (id of the most recently registered/active user)
+// to localStorage. We read those same keys here so a real signup instantly
+// powers the Medical ID card, SOS contacts and nav greeting on this page.
+function loadRegisteredUser(){
+  try{
+    const users=JSON.parse(localStorage.getItem('medihelp_users')||'[]');
+    const currentId=localStorage.getItem('medihelp_current_user');
+    if(!currentId) return null;
+    return users.find(u=>u.id===currentId)||null;
+  }catch(e){
+    console.warn('MediHelp: could not read saved profile', e);
+    return null;
+  }
+}
+function applyRegisteredUser(){
+  const user=loadRegisteredUser();
+  const acctLink=document.getElementById('acctLink');
+  const acctLinkText=document.getElementById('acctLinkText');
+  if(!user){
+    if(acctLink) acctLink.href='registration.html';
+    if(acctLinkText) acctLinkText.textContent='Create Medical ID';
+    return;
+  }
+  medID={
+    name:(user.personal&&user.personal.name)||medID.name,
+    blood:(user.personal&&user.personal.blood)||medID.blood,
+    allergies:(user.medical&&user.medical.allergies)||'None recorded',
+    diseases:(user.medical&&user.medical.diseases)||'None recorded',
+    meds:(user.medical&&user.medical.medicines)||'None recorded',
+    insurance:(user.medical&&user.medical.insurance)||'Not provided',
+    emContact:(user.emergencyContact&&user.emergencyContact.name)
+      ?`${user.emergencyContact.name} (${user.emergencyContact.relationship||'Contact'}) · ${user.emergencyContact.phone||''}`
+      :medID.emContact,
+  };
+  if(user.emergencyContact&&user.emergencyContact.name){
+    sosContacts=[{name:user.emergencyContact.name,rel:user.emergencyContact.relationship||'Emergency Contact',num:user.emergencyContact.phone||'—'},...sosContacts];
+  }
+  if(acctLink){ acctLink.href='javascript:void(0)'; acctLink.onclick=function(){openM('medIdM');return false;}; }
+  if(acctLinkText) acctLinkText.textContent='👋 '+((user.personal&&user.personal.name)?user.personal.name.split(' ')[0]:'My Medical ID');
+  const navLocText=document.getElementById('navLocText');
+  if(user.personal&&user.personal.district&&navLocText&&navLocText.textContent==='Salem, Tamil Nadu'){
+    navLocText.textContent=`${user.personal.district}, ${user.personal.state||'Tamil Nadu'}`;
+  }
+}
 
 // ══ TOAST ══
 function toast(msg){
@@ -1418,7 +1476,7 @@ function renderLocShare(){
   const contacts=[...sosContacts,{name:'Hospital',rel:'Salem Govt Medical College',num:'+91 427 2334000'}];
   document.getElementById('locShareContacts').innerHTML=contacts.map((c,i)=>`
     <div class="loc-share-item">
-      <div style="display:flex;align-items:center;gap:9px;"><span style="font-size:19px;">${i<3?'👤':'🏥'}</span>
+      <div style="display:flex;align-items:center;gap:9px;"><span style="font-size:19px;">${i<contacts.length-1?'👤':'🏥'}</span>
         <div><div style="font-weight:700;font-size:13px;">${c.name}</div><div style="font-size:11px;color:var(--ink-4);">${c.rel}</div></div></div>
       <button class="toggle-btn" onclick="this.classList.toggle('on')"></button>
     </div>`).join('');
@@ -1445,6 +1503,7 @@ function initOfflineMID(){
 
 // ══ INIT ══
 window.addEventListener('load',()=>{
+  applyRegisteredUser();
   renderAmb();renderPolice();renderBlood();renderBeds();
   renderSymptomChips();renderHeatmap();renderQueue();
   renderRecords();renderNotifs();initOfflineMID();renderIDCard();renderDoctors();
