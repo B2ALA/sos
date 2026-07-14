@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Register — MediHelp Salem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy-950:#0B1220; --navy-900:#0F1B2E; --navy-800:#142A45; --navy-700:#1B3A5C;
+  --brand:#0E7C66; --brand-dark:#0A5C4C; --brand-light:#12A187; --brand-tint:#E8F7F2;
+  --red:#D92D20; --red-dark:#B42318; --red-tint:#FEF3F2;
+  --amber:#F79009; --amber-dark:#B54708; --amber-tint:#FFFAEB;
+  --blue:#1570EF; --blue-dark:#175CD3; --blue-tint:#EFF8FF;
+  --ink:#101828; --ink-2:#344054; --ink-3:#667085; --ink-4:#98A2B3;
+  --line:#E4E7EC; --line-2:#EAECF0; --surface:#FFFFFF; --bg:#F9FAFB;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:18px;
+  --shadow-sm:0 1px 3px rgba(16,24,40,.1),0 1px 2px rgba(16,24,40,.06);
+  --shadow-md:0 4px 8px -2px rgba(16,24,40,.1),0 2px 4px -2px rgba(16,24,40,.06);
+  --shadow-xl:0 20px 24px -4px rgba(16,24,40,.08),0 8px 8px -4px rgba(16,24,40,.03);
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+/* ═══ TOP BAR ═══ */
+.topbar{background:linear-gradient(180deg,var(--navy-950),var(--navy-900));padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.tb-logo{display:flex;align-items:center;gap:9px;}
+.tb-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--brand-light),var(--brand-dark));display:flex;align-items:center;justify-content:center;font-size:16px;}
+.tb-text{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:#fff;}
+.tb-text span{color:var(--brand-light);}
+.tb-back{font-size:12.5px;font-weight:600;color:#9AA7C2;display:flex;align-items:center;gap:6px;cursor:pointer;}
+.tb-back:hover{color:#fff;}
+/* ═══ SHELL ═══ */
+.shell{max-width:760px;margin:0 auto;padding:36px 20px 80px;}
+.head{text-align:center;margin-bottom:28px;}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--brand-dark);margin-bottom:8px;}
+h1{font-family:'Manrope',sans-serif;font-size:clamp(24px,4vw,32px);font-weight:800;letter-spacing:-.5px;margin-bottom:8px;}
+.sub{font-size:13.5px;color:var(--ink-3);max-width:440px;margin:0 auto;line-height:1.6;}
+/* ═══ PROGRESS ═══ */
+.progress-wrap{display:flex;gap:6px;margin:28px 0 8px;}
+.p-seg{flex:1;height:5px;border-radius:20px;background:var(--line-2);overflow:hidden;position:relative;}
+.p-seg::after{content:'';position:absolute;inset:0;background:var(--brand);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease);}
+.p-seg.done::after,.p-seg.active::after{transform:scaleX(1);}
+.p-seg.active::after{background:var(--brand-light);}
+.step-labels{display:flex;justify-content:space-between;font-size:10.5px;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:26px;}
+.step-labels span.on{color:var(--brand-dark);}
+/* ═══ CARD ═══ */
+.card{background:#fff;border:1.5px solid var(--line-2);border-radius:var(--radius-lg);padding:28px 26px;box-shadow:var(--shadow-sm);}
+.step{display:none;animation:fadeIn .3s var(--ease);}
+.step.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.step-title{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;margin-bottom:3px;display:flex;align-items:center;gap:8px;}
+.step-desc{font-size:12.5px;color:var(--ink-3);margin-bottom:20px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:560px){.grid2{grid-template-columns:1fr;}}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:6px;}
+.field label .opt{font-weight:500;color:var(--ink-4);text-transform:none;letter-spacing:0;}
+.field input,.field select,.field textarea{
+  width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;
+  font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:.15s var(--ease);background:var(--bg);}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);background:#fff;box-shadow:0 0 0 3px rgba(14,124,102,.1);}
+.field textarea{resize:vertical;min-height:70px;}
+.field .err{font-size:11px;color:var(--red-dark);margin-top:5px;display:none;font-weight:600;}
+.field.invalid input,.field.invalid select{border-color:var(--red);background:var(--red-tint);}
+.field.invalid .err{display:block;}
+.pw-wrap{position:relative;}
+.pw-toggle{position:absolute;right:11px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:15px;color:var(--ink-4);background:none;border:none;}
+.pw-meter{height:4px;border-radius:20px;background:var(--line-2);margin-top:7px;overflow:hidden;}
+.pw-meter span{display:block;height:100%;width:0;border-radius:20px;transition:.25s var(--ease);}
+.pw-hint{font-size:10.5px;color:var(--ink-4);margin-top:5px;}
+/* ═══ NAV BUTTONS ═══ */
+.step-nav{display:flex;gap:10px;margin-top:24px;}
+.btn{flex:1;padding:13px;border:none;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;transition:.15s var(--ease);display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn:hover{transform:translateY(-1px);}
+.btn-brand{background:linear-gradient(135deg,var(--brand-light),var(--brand-dark));color:#fff;box-shadow:0 4px 12px rgba(14,124,102,.3);}
+.btn-grey{background:var(--bg);color:var(--ink-2);border:1.5px solid var(--line);}
+.btn-grey:hover{background:var(--line-2);transform:none;}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;}
+/* ═══ SUCCESS ═══ */
+.success-wrap{text-align:center;padding:10px 0;}
+.success-ico{width:64px;height:64px;border-radius:50%;background:var(--brand-tint);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 18px;}
+.id-preview{background:linear-gradient(135deg,var(--navy-800),var(--navy-950));border-radius:16px;padding:22px;color:#fff;text-align:left;margin:20px 0;}
+.id-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.id-name{font-family:'Manrope',sans-serif;font-size:18px;font-weight:800;}
+.id-sub{font-size:11px;color:#9AA7C2;margin-top:2px;}
+.id-blood{font-family:'Manrope',sans-serif;font-size:26px;font-weight:800;color:#FDA19B;}
+.id-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.id-field label{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:#7A88A6;display:block;margin-bottom:2px;}
+.id-field span{font-size:12px;color:#fff;font-weight:500;}
+/* ═══ MISC ═══ */
+.note{background:var(--brand-tint);border:1px solid #CDEEE3;border-radius:10px;padding:11px 14px;font-size:11.5px;color:var(--brand-dark);line-height:1.6;margin-bottom:18px;display:flex;gap:9px;}
+.chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;}
+.chip{font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:20px;border:1.5px solid var(--line);cursor:pointer;transition:.15s;color:var(--ink-2);background:#fff;}
+.chip.on{background:var(--brand-tint);border-color:var(--brand-light);color:var(--brand-dark);}
+.dev-note{max-width:760px;margin:26px auto 0;padding:14px 18px;background:var(--navy-950);color:#9AA7C2;border-radius:12px;font-size:11.5px;line-height:1.7;}
+.dev-note strong{color:#fff;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="tb-logo"><div class="tb-mark">⚕️</div><div class="tb-text">Medi<span>Help</span></div></div>
+  <a class="tb-back" href="index.html">← Back to home</a>
+</header>
+
+<div class="shell">
+  <div class="head">
+    <div class="eyebrow">Create your account</div>
+    <h1>Set up your Medical ID</h1>
+    <p class="sub">Takes about 3 minutes. This information is shown to emergency responders and hospitals only when you trigger an SOS — keep it accurate.</p>
+  </div>
+
+  <div class="progress-wrap" id="progressWrap"></div>
+  <div class="step-labels" id="stepLabels"></div>
+
+  <form class="card" id="regForm" autocomplete="off">
+    <!-- STEP 1 — PERSONAL -->
+    <div class="step active" data-step="0">
+      <div class="step-title">🧍 Personal details</div>
+      <div class="step-desc">Who we're helping.</div>
+      <div class="field"><label>Full name</label><input type="text" id="f_name" placeholder="e.g. Karthik Subramaniam" required><div class="err">Please enter your full name.</div></div>
+      <div class="grid2">
+        <div class="field"><label>Date of birth</label><input type="date" id="f_dob" required><div class="err">Please enter your date of birth.</div></div>
+        <div class="field"><label>Age <span class="opt">(auto)</span></label><input type="number" id="f_age" placeholder="—" readonly></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Gender</label>
+          <select id="f_gender" required>
+            <option value="">Select…</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option>
+          </select><div class="err">Please select a gender.</div>
+        </div>
+        <div class="field"><label>Blood group</label>
+          <select id="f_blood" required>
+            <option value="">Select…</option><option>A+</option><option>A−</option><option>B+</option><option>B−</option><option>O+</option><option>O−</option><option>AB+</option><option>AB−</option><option>Unknown</option>
+          </select><div class="err">Please select a blood group.</div>
+        </div>
+      </div>
+      <div class="field"><label>Address</label><textarea id="f_address" placeholder="House / street / area"></textarea></div>
+      <div class="grid2">
+        <div class="field"><label>District</label><input type="text" id="f_district" placeholder="e.g. Salem" required><div class="err">Please enter your district.</div></div>
+        <div class="field"><label>State</label><input type="text" id="f_state" placeholder="e.g. Tamil Nadu" required><div class="err">Please enter your state.</div></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Pincode</label><input type="text" id="f_pincode" placeholder="6-digit PIN" maxlength="6" required><div class="err">Enter a valid 6-digit pincode.</div></div>
+        <div class="field"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Height <span class="opt">(cm)</span></label><input type="number" id="f_height" placeholder="e.g. 172"></div>
+        <div class="field"><label>Weight <span class="opt">(kg)</span></label><input type="number" id="f_weight" placeholder="e.g. 68"></div>
+      </div>
+    </div>
+
+    <!-- STEP 2 — CONTACT -->
+    <div class="step" data-step="1">
+      <div class="step-title">📞 Contact details</div>
+      <div class="step-desc">How we and responders can reach you.</div>
+      <div class="field"><label>Mobile number</label><input type="tel" id="f_mobile" placeholder="+91 XXXXX XXXXX" required><div class="err">Enter a valid mobile number.</div></div>
+      <div class="field"><label>Alternate number <span class="opt">(optional)</span></label><input type="tel" id="f_altmobile" placeholder="+91 XXXXX XXXXX"></div>
+      <div class="field"><label>Email address</label><input type="email" id="f_email" placeholder="you@example.com" required><div class="err">Enter a valid email address.</div></div>
+    </div>
+
+    <!-- STEP 3 — EMERGENCY CONTACT -->
+    <div class="step" data-step="2">
+      <div class="step-title">🆘 Emergency contact</div>
+      <div class="step-desc">The first person we notify when you trigger an SOS.</div>
+      <div class="field"><label>Name</label><input type="text" id="f_ecname" placeholder="e.g. Priya Subramaniam" required><div class="err">Please enter a name.</div></div>
+      <div class="field"><label>Relationship</label>
+        <select id="f_ecrel" required>
+          <option value="">Select…</option><option>Parent</option><option>Spouse</option><option>Sibling</option><option>Child</option><option>Friend</option><option>Other</option>
+        </select><div class="err">Please select a relationship.</div>
+      </div>
+      <div class="field"><label>Phone number</label><input type="tel" id="f_ecphone" placeholder="+91 XXXXX XXXXX" required><div class="err">Enter a valid phone number.</div></div>
+    </div>
+
+    <!-- STEP 4 — MEDICAL -->
+    <div class="step" data-step="3">
+      <div class="step-title">💊 Medical details</div>
+      <div class="step-desc">Shared with responders and hospitals in an emergency — leave blank if none apply.</div>
+      <div class="field"><label>Allergies</label><textarea id="f_allergies" placeholder="e.g. Penicillin, peanuts"></textarea></div>
+      <div class="field"><label>Existing diseases / conditions</label><textarea id="f_diseases" placeholder="e.g. Type 2 diabetes, asthma"></textarea></div>
+      <div class="field"><label>Current medicines</label><textarea id="f_meds" placeholder="e.g. Metformin 500mg — twice daily"></textarea></div>
+      <div class="field"><label>Insurance / policy number <span class="opt">(optional)</span></label><input type="text" id="f_insurance" placeholder="e.g. LIC-HEALTH-884421"></div>
+    </div>
+
+    <!-- STEP 5 — ACCOUNT -->
+    <div class="step" data-step="4">
+      <div class="step-title">🔐 Create your account</div>
+      <div class="step-desc">Used to sign in and manage your Medical ID.</div>
+      <div class="note">🔒 Passwords are hashed (SHA-256 + per-user salt) before being stored in this browser's local storage. A production deployment should send this over HTTPS to a server that hashes it again with bcrypt/argon2 — never trust client-side hashing alone.</div>
+      <div class="field"><label>Username</label><input type="text" id="f_username" placeholder="Choose a username" required><div class="err" id="usernameErr">Username already taken.</div></div>
+      <div class="field">
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="f_password" placeholder="At least 8 characters" required>
+          <button type="button" class="pw-toggle" onclick="togglePw('f_password',this)">👁️</button>
+        </div>
+        <div class="pw-meter"><span id="pwMeterBar"></span></div>
+        <div class="pw-hint" id="pwHint">Use 8+ characters with a mix of letters, numbers & symbols.</div>
+      </div>
+      <div class="field">
+        <label>Confirm password</label>
+        <div class="pw-wrap">
+          <input type="password" id="f_password2" placeholder="Re-enter password" required>
+          <button type="button" class="pw-toggle" onclick="togglePw('f_password2',this)">👁️</button>
+        </div>
+        <div class="err" id="pwMatchErr" style="display:none;">Passwords don't match.</div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="step" data-step="5">
+      <div class="success-wrap">
+        <div class="success-ico">✅</div>
+        <div class="step-title" style="justify-content:center;">Your Medical ID is ready</div>
+        <p class="step-desc" style="margin-bottom:0;">Saved to this device. Responders will see this card if you ever trigger SOS.</p>
+        <div class="id-preview" id="idPreview"></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button type="button" class="btn btn-grey" id="btnBack" onclick="prevStep()">← Back</button>
+      <button type="button" class="btn btn-brand" id="btnNext" onclick="nextStep()">Continue →</button>
+    </div>
+  </form>
+
+  <div class="dev-note">
+    <strong>Developer note:</strong> This form persists to <code>localStorage</code> under the key <code>medihelp_users</code> so the demo works with zero backend. Before real users touch this, replace <code>saveUser()</code> with a POST to your own <code>/api/register</code> endpoint, run over HTTPS, with server-side password hashing (bcrypt/argon2) and a real database (Postgres/MySQL) instead of the browser store.
+  </div>
+</div>
+
+<script>
+const stepNames=['Personal','Contact','Emergency','Medical','Account','Done'];
+let current=0;
+const totalSteps=5; // steps 0-4 are form, 5 is success
+
+function buildProgress(){
+  const pw=document.getElementById('progressWrap'), sl=document.getElementById('stepLabels');
+  pw.innerHTML=''; sl.innerHTML='';
+  for(let i=0;i<totalSteps;i++){
+    const seg=document.createElement('div'); seg.className='p-seg'; seg.id='seg'+i; pw.appendChild(seg);
+    const lbl=document.createElement('span'); lbl.textContent=stepNames[i]; lbl.id='lbl'+i; sl.appendChild(lbl);
+  }
+}
+buildProgress();
+
+function renderProgress(){
+  for(let i=0;i<totalSteps;i++){
+    const seg=document.getElementById('seg'+i), lbl=document.getElementById('lbl'+i);
+    seg.classList.remove('done','active'); lbl.classList.remove('on');
+    if(i<current) seg.classList.add('done');
+    else if(i===current){seg.classList.add('active'); lbl.classList.add('on');}
+  }
+}
+
+function showStep(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  document.getElementById('btnBack').style.visibility = n===0 ? 'hidden':'visible';
+  const nextBtn=document.getElementById('btnNext');
+  if(n===4){ nextBtn.textContent='Create account ✅'; }
+  else if(n===5){ nextBtn.style.display='none'; document.getElementById('btnBack').style.display='none'; }
+  else { nextBtn.textContent='Continue →'; nextBtn.style.display='flex'; document.getElementById('btnBack').style.display='flex'; }
+  if(n<=4) renderProgress();
+}
+
+function fieldsForStep(n){
+  return Array.from(document.querySelectorAll(`.step[data-step="${n}"] .field`));
+}
+
+function validateStep(n){
+  let ok=true;
+  fieldsForStep(n).forEach(f=>{
+    const input=f.querySelector('input,select,textarea');
+    if(!input) return;
+    if(!input.required) return;
+    let valid = input.value.trim().length>0;
+    if(input.id==='f_pincode') valid = /^\d{6}$/.test(input.value.trim());
+    if(input.type==='email') valid = valid && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+    if(input.type==='tel') valid = valid && input.value.replace(/\D/g,'').length>=10;
+    f.classList.toggle('invalid', !valid);
+    if(!valid) ok=false;
+  });
+  if(n===4){
+    const uname=document.getElementById('f_username').value.trim();
+    const pw=document.getElementById('f_password').value;
+    const pw2=document.getElementById('f_password2').value;
+    const users=getUsers();
+    const unameField=document.getElementById('f_username').closest('.field');
+    if(users.some(u=>u.username.toLowerCase()===uname.toLowerCase())){
+      unameField.classList.add('invalid'); document.getElementById('usernameErr').style.display='block'; ok=false;
+    }
+    if(pw.length<8) ok=false;
+    const matchErr=document.getElementById('pwMatchErr');
+    if(pw!==pw2){matchErr.style.display='block'; ok=false;} else matchErr.style.display='none';
+  }
+  return ok;
+}
+
+function nextStep(){
+  if(current<=4 && !validateStep(current)) return;
+  if(current===4){ finishRegistration(); return; }
+  current++; showStep(current);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function prevStep(){
+  if(current===0) return;
+  current--; showStep(current);
+}
+
+function togglePw(id,btn){
+  const el=document.getElementById(id);
+  el.type = el.type==='password' ? 'text':'password';
+  btn.textContent = el.type==='password' ? '👁️':'🙈';
+}
+
+// live age calc
+document.getElementById('f_dob').addEventListener('change',e=>{
+  const dob=new Date(e.target.value);
+  if(isNaN(dob)) return;
+  const diff=Date.now()-dob.getTime();
+  const age=Math.floor(diff/(365.25*24*3600*1000));
+  document.getElementById('f_age').value = age>=0 ? age : '';
+});
+
+// password strength meter
+document.getElementById('f_password').addEventListener('input',e=>{
+  const v=e.target.value; let score=0;
+  if(v.length>=8) score++;
+  if(/[A-Z]/.test(v) && /[a-z]/.test(v)) score++;
+  if(/\d/.test(v)) score++;
+  if(/[^A-Za-z0-9]/.test(v)) score++;
+  const bar=document.getElementById('pwMeterBar');
+  const colors=['#D92D20','#F79009','#12A187','#0A5C4C'];
+  const widths=[25,50,75,100];
+  const i=Math.max(0,score-1);
+  bar.style.width=(score===0?0:widths[i])+'%';
+  bar.style.background=colors[i]||'#D92D20';
+});
+
+// ══ STORAGE / "DATABASE" LAYER ══
+function getUsers(){
+  try{ return JSON.parse(localStorage.getItem('medihelp_users')||'[]'); }catch(e){ return []; }
+}
+function saveUsers(list){ localStorage.setItem('medihelp_users', JSON.stringify(list)); }
+
+async function hashPassword(password, salt){
+  const enc=new TextEncoder().encode(password+':'+salt);
+  const buf=await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function randomSalt(){
+  const arr=new Uint8Array(16); crypto.getRandomValues(arr);
+  return Array.from(arr).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function finishRegistration(){
+  const salt=randomSalt();
+  const passwordHash=await hashPassword(document.getElementById('f_password').value, salt);
+  const user={
+    id:'U'+Date.now().toString(36).toUpperCase(),
+    personal:{
+      name:document.getElementById('f_name').value.trim(),
+      dob:document.getElementById('f_dob').value,
+      age:document.getElementById('f_age').value,
+      gender:document.getElementById('f_gender').value,
+      address:document.getElementById('f_address').value.trim(),
+      district:document.getElementById('f_district').value.trim(),
+      state:document.getElementById('f_state').value.trim(),
+      pincode:document.getElementById('f_pincode').value.trim(),
+      blood:document.getElementById('f_blood').value,
+      height:document.getElementById('f_height').value,
+      weight:document.getElementById('f_weight').value,
+    },
+    contact:{
+      mobile:document.getElementById('f_mobile').value.trim(),
+      altMobile:document.getElementById('f_altmobile').value.trim(),
+      email:document.getElementById('f_email').value.trim(),
+    },
+    emergencyContact:{
+      name:document.getElementById('f_ecname').value.trim(),
+      relationship:document.getElementById('f_ecrel').value,
+      phone:document.getElementById('f_ecphone').value.trim(),
+    },
+    medical:{
+      allergies:document.getElementById('f_allergies').value.trim(),
+      diseases:document.getElementById('f_diseases').value.trim(),
+      medicines:document.getElementById('f_meds').value.trim(),
+      insurance:document.getElementById('f_insurance').value.trim(),
+    },
+    account:{
+      username:document.getElementById('f_username').value.trim(),
+      passwordHash, salt,
+    },
+    createdAt:new Date().toISOString(),
+  };
+  const users=getUsers(); users.push(user); saveUsers(users);
+  localStorage.setItem('medihelp_current_user', user.id); // simple "session"
+  renderIdPreview(user);
+  current=5; showStep(5);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderIdPreview(user){
+  document.getElementById('idPreview').innerHTML=`
+    <div class="id-top">
+      <div><div class="id-sub">MEDICAL ID · ${user.id}</div><div class="id-name">${user.personal.name||'—'}</div></div>
+      <div class="id-blood">${user.personal.blood||'—'}</div>
+    </div>
+    <div class="id-row">
+      <div class="id-field"><label>Allergies</label><span>${user.medical.allergies||'None recorded'}</span></div>
+      <div class="id-field"><label>Conditions</label><span>${user.medical.diseases||'None recorded'}</span></div>
+      <div class="id-field"><label>Medicines</label><span>${user.medical.medicines||'None recorded'}</span></div>
+      <div class="id-field"><label>Emergency contact</label><span>${user.emergencyContact.name||'—'} (${user.emergencyContact.relationship||'—'}) · ${user.emergencyContact.phone||'—'}</span></div>
+    </div>`;
+}
+
+showStep(0);
+</script>
+</body>
+</html>
