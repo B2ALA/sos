@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MediHelp — Emergency Healthcare Platform, Salem</title>
+<meta name="description" content="MediHelp connects you to nearby hospitals, ambulances, blood banks, police and pharmacies across Salem, Tamil Nadu in seconds."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy-950:#0B1220; --navy-900:#0F1B2E; --navy-800:#142A45; --navy-700:#1B3A5C;
+  --brand:#0E7C66; --brand-dark:#0A5C4C; --brand-light:#12A187; --brand-tint:#E8F7F2;
+  --red:#D92D20; --red-dark:#B42318; --red-tint:#FEF3F2;
+  --amber:#F79009; --amber-dark:#B54708; --amber-tint:#FFFAEB;
+  --blue:#1570EF; --blue-dark:#175CD3; --blue-tint:#EFF8FF;
+  --ink:#101828; --ink-2:#344054; --ink-3:#667085; --ink-4:#98A2B3;
+  --line:#E4E7EC; --line-2:#EAECF0; --surface:#FFFFFF; --bg:#F9FAFB;
+  --radius-sm:8px; --radius-md:12px; --radius-lg:18px;
+  --shadow-xs:0 1px 2px rgba(16,24,40,.05);
+  --shadow-sm:0 1px 3px rgba(16,24,40,.1),0 1px 2px rgba(16,24,40,.06);
+  --shadow-md:0 4px 8px -2px rgba(16,24,40,.1),0 2px 4px -2px rgba(16,24,40,.06);
+  --shadow-lg:0 12px 16px -4px rgba(16,24,40,.08),0 4px 6px -2px rgba(16,24,40,.03);
+  --shadow-xl:0 20px 24px -4px rgba(16,24,40,.08),0 8px 8px -4px rgba(16,24,40,.03);
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px;}
+
+/* ════════ NAV ════════ */
+.nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.92);backdrop-filter:blur(12px) saturate(180%);
+  border-bottom:1px solid var(--line);}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+  height:64px;padding:0 24px;}
+.nav-left{display:flex;align-items:center;gap:28px;}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand-light),var(--brand-dark));
+  display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:var(--shadow-sm);flex-shrink:0;}
+.logo-text{font-family:'Manrope',sans-serif;font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.3px;}
+.logo-text span{color:var(--brand);}
+.nav-links{display:flex;align-items:center;gap:22px;}
+.nav-link{font-size:13.5px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:.15s var(--ease);
+  display:flex;align-items:center;gap:6px;text-decoration:none;}
+.nav-link:hover{color:var(--brand-dark);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.loc-pill{display:flex;align-items:center;gap:6px;background:var(--brand-tint);border:1px solid #CDEEE3;
+  border-radius:20px;padding:6px 13px;font-size:12.5px;font-weight:600;color:var(--brand-dark);cursor:pointer;
+  transition:.15s var(--ease);white-space:nowrap;}
+.loc-pill:hover{background:#D9F1E9;}
+.nav-cta{height:38px;padding:0 16px;border:none;border-radius:9px;font-size:13px;font-weight:700;
+  cursor:pointer;transition:.15s var(--ease);background:linear-gradient(135deg,var(--red),var(--red-dark));
+  color:#fff;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(217,45,32,.3);}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(217,45,32,.4);}
+.nav-burger{display:none;width:36px;height:36px;border:none;background:var(--bg);border-radius:8px;font-size:18px;cursor:pointer;}
+
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .nav-burger{display:flex;align-items:center;justify-content:center;}
+}
+
+/* ════════ DRAWER (mobile sidebar / full feature menu) ════════ */
+.drawer-overlay{display:none;position:fixed;inset:0;z-index:400;background:rgba(16,24,40,.5);backdrop-filter:blur(2px);}
+.drawer-overlay.on{display:block;}
+.drawer{position:fixed;top:0;right:-340px;width:320px;height:100vh;background:#fff;z-index:410;
+  box-shadow:-8px 0 40px rgba(16,24,40,.2);transition:right .35s var(--ease);overflow-y:auto;}
+.drawer.on{right:0;}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;}
+.drawer-head h3{font-family:'Manrope',sans-serif;font-size:16px;font-weight:800;}
+.drawer-close{width:30px;height:30px;border:none;background:var(--bg);border-radius:50%;cursor:pointer;font-size:14px;}
+.drawer-sec{padding:14px 20px;border-bottom:1px solid var(--line-2);}
+.drawer-label{font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-4);margin-bottom:10px;}
+.drawer-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;
+  cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:.15s var(--ease);margin-bottom:2px;}
+.drawer-item:hover{background:var(--brand-tint);color:var(--brand-dark);}
+.drawer-item .di-ico{font-size:17px;width:22px;text-align:center;}
+
+/* search box inside drawer */
+.d-input{width:100%;padding:9px 12px;border-radius:9px;border:1.5px solid var(--line);
+  font-size:13px;outline:none;transition:.15s var(--ease);margin-bottom:6px;background:var(--bg);}
+.d-input:focus{border-color:var(--brand);background:#fff;}
+select.d-input{cursor:pointer;}
+.d-list{list-style:none;margin-top:4px;}
+.d-list li{padding:10px 11px;border-radius:9px;font-size:12px;color:var(--ink-2);line-height:1.6;
+  margin-bottom:4px;background:var(--bg);border:1px solid var(--line-2);}
+.d-list li strong{color:var(--brand-dark);}
+.d-not-found{color:var(--red)!important;font-style:italic;background:var(--red-tint)!important;}
+
+/* ════════ HERO ════════ */
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--navy-950) 0%,var(--navy-900) 55%,var(--navy-800) 100%);
+  padding:64px 24px 56px;}
+.hero-bg{position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(circle at 18% 20%,rgba(14,124,102,.35),transparent 45%),
+                    radial-gradient(circle at 85% 75%,rgba(21,112,239,.18),transparent 45%);}
+.hero-grid-lines{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:64px 64px;mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,black,transparent);}
+.hero-inner{max-width:1280px;margin:0 auto;position:relative;z-index:1;}
+.hero-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;}
+@media(max-width:980px){.hero-layout{grid-template-columns:1fr;gap:36px;}}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 13px;font-size:11.5px;font-weight:700;
+  letter-spacing:.6px;color:#A6F4C5;margin-bottom:20px;}
+.dot-live{width:6px;height:6px;border-radius:50%;background:#32D583;animation:dotpulse 1.8s infinite;}
+@keyframes dotpulse{0%,100%{box-shadow:0 0 0 0 rgba(50,213,131,.5);}50%{box-shadow:0 0 0 5px rgba(50,213,131,0);}}
+.hero-h1{font-family:'Manrope',sans-serif;font-size:clamp(34px,4.6vw,52px);font-weight:800;line-height:1.08;
+  letter-spacing:-1.2px;color:#fff;margin-bottom:16px;}
+.hero-h1 .hl{background:linear-gradient(135deg,#34D399,#0E7C66);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero-p{font-size:15.5px;line-height:1.7;color:#9AA7C2;max-width:480px;margin-bottom:30px;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px;}
+.hbtn{height:48px;padding:0 22px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;
+  transition:.18s var(--ease);display:flex;align-items:center;gap:8px;border:none;}
+.hbtn-primary{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;box-shadow:0 4px 14px rgba(217,45,32,.4);}
+.hbtn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(217,45,32,.5);}
+.hbtn-secondary{background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.18);}
+.hbtn-secondary:hover{background:rgba(255,255,255,.14);}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
+.hstat b{font-family:'Manrope',sans-serif;font-size:22px;font-weight:800;color:#fff;display:block;}
+.hstat span{font-size:11.5px;color:#7A88A6;font-weight:500;text-transform:uppercase;letter-spacing:.6px;}
+
+/* Hero card — live search widget */
+.hero-card{background:#fff;border-radius:20px;box-shadow:var(--shadow-xl);padding:22px;position:relative;}
+.hero-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.hc-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:var(--ink);}
+.hc-badge{font-size:10.5px;font-weight:700;color:var(--brand-dark);background:var(--brand-tint);
+  border-radius:20px;padding:3px 10px;display:flex;align-items:center;gap:4px;}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.svc-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:13px 6px;
+  border-radius:13px;border:1.5px solid var(--line-2);cursor:pointer;transition:.15s var(--ease);background:#fff;}
+.svc-tile:hover{border-color:var(--brand-light);background:var(--brand-tint);transform:translateY(-2px);}
+.svc-tile .si{font-size:21px;}
+.svc-tile .sl{font-size:10px;font-weight:700;color:var(--ink-2);text-align:center;line-height:1.25;}
+.hc-loc-status{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line-2);
+  border-radius:10px;padding:10px 13px;font-size:12px;color:var(--ink-2);font-weight:500;}
+.hc-loc-status .pulse-pin{width:8px;height:8px;border-radius:50%;background:var(--brand);animation:dotpulse 1.8s infinite;flex-shrink:0;}
+.hc-loc-btn{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--brand-dark);cursor:pointer;white-space:nowrap;}
+
+/* ════════ SECTION SHELL ════════ */
+.section{max-width:1280px;margin:0 auto;padding:56px 24px;}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+.sec-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--brand-dark);margin-bottom:6px;}
+.sec-title{font-family:'Manrope',sans-serif;font-size:27px;font-weight:800;color:var(--ink);letter-spacing:-.5px;}
+.sec-sub{font-size:13.5px;color:var(--ink-3);margin-top:4px;max-width:520px;}
+
+/* Feature grid (the "more services" cards) */
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:980px){.feat-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.feat-grid{grid-template-columns:1fr;}}
+.feat-card{background:#fff;border:1.5px solid var(--line-2);border-radius:var(--radius-lg);
+  padding:20px;cursor:pointer;transition:.18s var(--ease);}
+.feat-card:hover{border-color:var(--brand-light);box-shadow:var(--shadow-md);transform:translateY(-3px);}
+.feat-ico-box{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-size:21px;margin-bottom:13px;}
+.fi-1{background:var(--brand-tint);} .fi-2{background:var(--red-tint);} .fi-3{background:var(--amber-tint);} .fi-4{background:var(--blue-tint);}
+.feat-card h4{font-family:'Manrope',sans-serif;font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:5px;}
+.feat-card p{font-size:12px;color:var(--ink-3);line-height:1.55;}
+
+/* ════════ MODALS ════════ */
+.backdrop{display:none;position:fixed;inset:0;z-index:500;background:rgba(16,24,40,.6);
+  backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:16px;}
+.backdrop.on{display:flex;}
+.mbox{background:#fff;border-radius:20px;width:100%;max-width:440px;padding:0;position:relative;
+  box-shadow:var(--shadow-xl);animation:mIn .22s var(--ease);max-height:90vh;overflow-y:auto;}
+.mbox.wide{max-width:580px;}
+@keyframes mIn{from{transform:scale(.95) translateY(10px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line-2);position:sticky;top:0;background:#fff;border-radius:20px 20px 0 0;z-index:2;}
+.mhead h3{font-family:'Manrope',sans-serif;font-size:16.5px;font-weight:800;display:flex;align-items:center;gap:9px;}
+.mclose{width:32px;height:32px;border:none;background:var(--bg);border-radius:50%;cursor:pointer;font-size:14px;color:var(--ink-3);transition:.15s;}
+.mclose:hover{background:var(--line-2);}
+.mbody{padding:20px 22px 22px;}
+.m-sub{font-size:12.5px;color:var(--ink-3);line-height:1.6;margin-bottom:14px;}
+.m-input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;
+  outline:none;transition:.15s var(--ease);margin-bottom:10px;color:var(--ink);font-family:'Inter',sans-serif;}
+.m-input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(14,124,102,.1);}
+textarea.m-input{resize:vertical;min-height:80px;}
+.btn-full{width:100%;padding:12px;border:none;border-radius:10px;font-size:13.5px;font-weight:700;
+  cursor:pointer;transition:.15s var(--ease);}
+.btn-full:hover{transform:translateY(-1px);}
+.btn-brand{background:linear-gradient(135deg,var(--brand-light),var(--brand-dark));color:#fff;}
+.btn-red{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;}
+.btn-amber{background:linear-gradient(135deg,var(--amber),var(--amber-dark));color:#fff;}
+.btn-blue{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;}
+.btn-grey{background:var(--bg);color:var(--ink-2);border:1.5px solid var(--line);}
+.btn-grey:hover{background:var(--line-2);transform:none;}
+.btn-row{display:flex;gap:9px;}
+.btn-row button{flex:1;}
+
+/* location permission card inside modal */
+.geo-card{display:flex;align-items:center;gap:11px;background:var(--bg);border:1.5px solid var(--line-2);
+  border-radius:12px;padding:12px 14px;margin-bottom:14px;}
+.geo-card.granted{background:var(--brand-tint);border-color:#CDEEE3;}
+.geo-card.denied{background:var(--red-tint);border-color:#FDA29B;}
+.geo-ico{font-size:22px;flex-shrink:0;}
+.geo-text{flex:1;font-size:12px;color:var(--ink-2);line-height:1.5;}
+.geo-text strong{display:block;font-size:12.5px;color:var(--ink);margin-bottom:1px;}
+.geo-btn{font-size:11.5px;font-weight:700;color:var(--brand-dark);background:#fff;border:1.5px solid #CDEEE3;
+  border-radius:8px;padding:6px 11px;cursor:pointer;white-space:nowrap;transition:.15s;}
+.geo-btn:hover{background:var(--brand-tint);}
+
+.svc-card{background:var(--bg);border:1.5px solid var(--line-2);border-radius:13px;padding:14px;margin-bottom:9px;}
+.svc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;}
+.b-amb{background:var(--amber-tint);color:var(--amber-dark);}
+.b-pol{background:var(--blue-tint);color:var(--blue-dark);}
+.b-fire{background:#FFEAD5;color:#9C2A10;}
+.svc-name{font-weight:700;font-size:13.5px;color:var(--ink);}
+.svc-status{margin-left:auto;font-size:10px;padding:2px 8px;border-radius:20px;}
+.s-avail{background:#D1FADF;color:#05603A;}
+.s-busy{background:var(--red-tint);color:var(--red-dark);}
+.svc-detail{font-size:12px;color:var(--ink-2);line-height:1.7;}
+.call-link{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--brand-light);
+  color:var(--brand-dark);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;
+  text-decoration:none;transition:.15s;margin-top:7px;}
+.call-link:hover{background:var(--brand-tint);}
+
+/* Real-style place cards (Google-like) */
+.place-card{background:#fff;border:1.5px solid var(--line-2);border-radius:13px;
+  padding:13px 14px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;transition:.15s var(--ease);}
+.place-card:hover{border-color:var(--brand-light);box-shadow:var(--shadow-sm);}
+.p-ico-box{width:42px;height:42px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;}
+.p-name{font-weight:700;font-size:13.5px;color:var(--ink);margin-bottom:2px;}
+.p-addr{font-size:11.5px;color:var(--ink-3);line-height:1.5;}
+.p-meta{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.p-rating{font-size:11px;font-weight:700;color:var(--amber-dark);}
+.p-dist{font-size:11px;color:var(--ink-2);background:var(--bg);border-radius:20px;padding:2px 8px;font-weight:600;}
+.p-time{font-size:11px;color:var(--blue-dark);background:var(--blue-tint);border-radius:20px;padding:2px 8px;font-weight:600;}
+.p-open{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.open-y{background:#D1FADF;color:#05603A;} .open-n{background:var(--red-tint);color:var(--red-dark);}
+.maps-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;
+  background:#fff;border:1.5px solid var(--brand-light);color:var(--brand-dark);
+  border-radius:20px;padding:4px 11px;text-decoration:none;transition:.15s;margin-top:7px;}
+.maps-btn:hover{background:var(--brand-tint);}
+
+.loading{text-align:center;padding:30px;color:var(--ink-4);font-size:13px;}
+.spinner{display:inline-block;width:26px;height:26px;border:3px solid var(--line-2);
+  border-top-color:var(--brand);border-radius:50%;animation:spin .75s linear infinite;margin-bottom:9px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Misc widgets reused from feature set */
+.id-card{background:linear-gradient(135deg,var(--navy-800),var(--navy-950));border-radius:16px;padding:22px;color:#fff;position:relative;overflow:hidden;margin-bottom:14px;}
+.id-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.id-name{font-family:'Manrope',sans-serif;font-size:18px;font-weight:800;}
+.id-blood{font-family:'Manrope',sans-serif;font-size:28px;font-weight:800;color:#FDA19B;}
+.id-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.id-field label{font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:#7A88A6;display:block;margin-bottom:2px;}
+.id-field span{font-size:12px;color:#fff;font-weight:500;}
+.id-qr{text-align:center;background:rgba(255,255,255,.06);border-radius:10px;padding:11px;margin-top:10px;}
+.qr-canvas{background:#fff;border-radius:6px;padding:6px;display:inline-flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:10px;color:var(--ink);font-weight:700;width:96px;height:96px;justify-content:center;}
+
+.blood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0;}
+.blood-chip{border-radius:10px;padding:10px 5px;text-align:center;border:1.5px solid;}
+.blood-chip .bg{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;display:block;}
+.blood-chip .units{font-size:9.5px;font-weight:700;margin-top:2px;display:block;}
+.bc-yes{background:#D1FADF;border-color:#A6F4C5;color:#05603A;}
+.bc-low{background:var(--amber-tint);border-color:#FEDF89;color:var(--amber-dark);}
+.bc-no{background:var(--red-tint);border-color:#FDA29B;color:var(--red-dark);}
+
+.bed-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0;}
+.bed-card{border-radius:13px;padding:14px;border:1.5px solid;text-align:center;}
+.bed-card .b-num{font-family:'Manrope',sans-serif;font-size:26px;font-weight:800;display:block;}
+.bed-card .b-lbl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-top:2px;}
+.bc-icu{background:var(--red-tint);border-color:#FDA29B;color:var(--red-dark);}
+.bc-gen{background:var(--brand-tint);border-color:#CDEEE3;color:var(--brand-dark);}
+.bc-oxy{background:var(--blue-tint);border-color:#B2DDFF;color:var(--blue-dark);}
+.bc-vent{background:#F4EBFF;border-color:#D6BBFB;color:#6941C6;}
+
+.symptom-chip{display:inline-flex;align-items:center;gap:5px;background:var(--brand-tint);
+  border:1px solid #CDEEE3;border-radius:20px;padding:4px 10px;font-size:11.5px;color:var(--brand-dark);
+  font-weight:700;margin:3px;cursor:pointer;transition:.15s;}
+.symptom-chip:hover{background:#D9F1E9;}
+.ai-result{background:var(--bg);border:1.5px solid var(--line-2);border-radius:13px;padding:14px;margin-top:12px;}
+.ai-result .ai-lbl{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-4);margin-bottom:6px;font-weight:700;}
+.ai-urgent{background:var(--red-tint);border:1px solid #FDA29B;border-radius:10px;padding:10px 13px;
+  margin-top:8px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--red-dark);font-weight:700;}
+
+.disaster-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0;}
+.dis-btn{padding:14px 8px;border:1.5px solid var(--line-2);border-radius:13px;background:var(--bg);
+  cursor:pointer;text-align:center;transition:.15s;font-size:11.5px;font-weight:700;color:var(--ink-2);}
+.dis-btn:hover{border-color:var(--red);background:var(--red-tint);color:var(--red-dark);}
+.dis-btn .d-ico{font-size:22px;display:block;margin-bottom:5px;}
+.zone-item{display:flex;align-items:center;gap:9px;padding:10px;border-radius:9px;background:#D1FADF;
+  border:1px solid #A6F4C5;margin-bottom:6px;font-size:12.5px;color:#05603A;font-weight:600;}
+
+.vcall-box{background:linear-gradient(135deg,var(--navy-900),var(--navy-800));border-radius:16px;
+  height:170px;display:flex;align-items:center;justify-content:center;margin:4px 0 12px;position:relative;}
+.vc-overlay{text-align:center;color:rgba(255,255,255,.75);}
+.vc-overlay .vc-ico{font-size:38px;display:block;margin-bottom:8px;}
+.vc-controls{display:flex;gap:10px;justify-content:center;margin:12px 0;}
+.vc-btn{width:46px;height:46px;border-radius:50%;border:none;font-size:19px;cursor:pointer;transition:.15s;}
+.vc-mic{background:var(--brand-tint);color:var(--brand-dark);}
+.vc-cam{background:var(--blue-tint);color:var(--blue-dark);}
+.vc-end{background:var(--red);color:#fff;}
+
+.heatmap-box{background:linear-gradient(135deg,#0B1220,#142A45);border-radius:13px;height:200px;
+  position:relative;overflow:hidden;margin:12px 0;}
+.hm-dot{position:absolute;border-radius:50%;opacity:.7;animation:hmPulse 3s infinite;}
+@keyframes hmPulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.4);opacity:.4;}}
+.hm-label{position:absolute;font-size:9.5px;font-weight:700;color:rgba(255,255,255,.85);
+  background:rgba(0,0,0,.4);border-radius:4px;padding:2px 5px;}
+
+.queue-row{display:flex;gap:9px;margin:12px 0;flex-wrap:wrap;}
+.q-stat-box{flex:1;min-width:88px;border-radius:13px;padding:12px;text-align:center;border:1.5px solid;}
+.q-stat-box .q-num{font-family:'Manrope',sans-serif;font-size:22px;font-weight:800;display:block;}
+.q-stat-box .q-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;font-weight:700;}
+.qb-wait{background:var(--amber-tint);border-color:#FEDF89;color:var(--amber-dark);}
+.qb-pts{background:var(--brand-tint);border-color:#CDEEE3;color:var(--brand-dark);}
+.qb-er{background:var(--red-tint);border-color:#FDA29B;color:var(--red-dark);}
+
+.notif-item{display:flex;gap:11px;padding:11px 13px;border-radius:13px;border:1.5px solid var(--line-2);
+  margin-bottom:7px;background:var(--bg);}
+.notif-ico{font-size:21px;flex-shrink:0;}
+.notif-text .nt{font-size:12.5px;font-weight:700;color:var(--ink);}
+.notif-text .nd{font-size:11px;color:var(--ink-3);margin-top:2px;}
+.notif-text .nt-time{font-size:10px;color:var(--ink-4);margin-top:4px;}
+
+.offline-banner{background:linear-gradient(135deg,var(--navy-900),var(--navy-700));border-radius:13px;
+  padding:15px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.ob-text .ob-t{font-size:13.5px;font-weight:700;color:#fff;}
+.ob-text .ob-d{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:2px;}
+.offline-action{display:flex;gap:8px;flex-wrap:wrap;}
+.off-btn{flex:1;min-width:96px;padding:10px;border:none;border-radius:9px;font-size:11.5px;font-weight:700;cursor:pointer;color:#fff;}
+
+.loc-share-item{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;
+  border-radius:11px;background:var(--bg);border:1px solid var(--line-2);margin-bottom:6px;}
+.toggle-btn{width:42px;height:23px;border-radius:12px;border:none;cursor:pointer;background:var(--line);position:relative;transition:.15s;}
+.toggle-btn.on{background:var(--brand);}
+.toggle-btn::after{content:'';position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;
+  background:#fff;transition:.15s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.toggle-btn.on::after{transform:translateX(19px);}
+
+.record-card{background:var(--bg);border:1.5px solid var(--line-2);border-radius:13px;padding:13px;margin-bottom:8px;}
+.record-card .rc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.record-card .rc-type{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  background:var(--brand-tint);color:var(--brand-dark);border-radius:20px;padding:2px 9px;}
+.record-card .rc-date{font-size:10.5px;color:var(--ink-4);}
+.record-card .rc-name{font-weight:700;font-size:13px;color:var(--ink);}
+.record-card .rc-detail{font-size:11.5px;color:var(--ink-3);margin-top:3px;}
+
+.tracker-map{background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-radius:13px;height:150px;
+  position:relative;overflow:hidden;margin:10px 0;border:1.5px solid #A5D6A7;}
+.tm-road-h{position:absolute;top:50%;left:0;right:0;height:3px;background:rgba(0,0,0,.15);transform:translateY(-50%);}
+.tm-road-v{position:absolute;left:50%;top:0;bottom:0;width:3px;background:rgba(0,0,0,.15);transform:translateX(-50%);}
+.amb-dot{position:absolute;width:26px;height:26px;background:var(--amber);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 0 0 6px rgba(247,144,9,.2);animation:ambMove 4s linear infinite;}
+@keyframes ambMove{0%{left:10%;top:50%;transform:translateY(-50%);}50%{left:55%;top:30%;transform:translateY(-50%);}100%{left:10%;top:50%;transform:translateY(-50%);}}
+.you-dot{position:absolute;right:18%;bottom:22%;width:20px;height:20px;background:var(--brand);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 0 0 6px rgba(14,124,102,.2);}
+.eta-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.65);color:#fff;font-size:11.5px;
+  font-weight:700;padding:4px 10px;border-radius:20px;backdrop-filter:blur(4px);}
+
+.tab-bar{display:flex;gap:2px;background:var(--bg);border-radius:10px;padding:3px;margin-bottom:14px;}
+.tab-btn{flex:1;padding:8px;border:none;border-radius:8px;font-size:12px;font-weight:700;
+  cursor:pointer;background:transparent;color:var(--ink-3);transition:.15s;}
+.tab-btn.active{background:#fff;color:var(--brand-dark);box-shadow:var(--shadow-xs);}
+.tab-pane{display:none;} .tab-pane.active{display:block;}
+
+/* ════════ FOOTER ════════ */
+.footer{background:var(--navy-950);padding:48px 24px 28px;margin-top:40px;}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:36px;}
+@media(max-width:800px){.footer-inner{grid-template-columns:1fr 1fr;}}
+.footer-brand{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+.footer-brand .ftxt{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:#fff;}
+.footer p.fdesc{font-size:12.5px;color:#7A88A6;line-height:1.7;max-width:280px;}
+.footer h5{font-size:12px;font-weight:700;color:#fff;letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px;}
+.footer ul{list-style:none;}
+.footer li{margin-bottom:9px;}
+.footer a{font-size:12.5px;color:#7A88A6;text-decoration:none;cursor:pointer;transition:.15s;}
+.footer a:hover{color:#fff;}
+.footer-bottom{max-width:1280px;margin:36px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:11.5px;color:#4E5D7A;}
+
+/* SOS floating button (mobile-friendly persistent) */
+.fab-sos{position:fixed;bottom:22px;right:22px;z-index:250;width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;border:none;cursor:pointer;
+  box-shadow:0 6px 20px rgba(217,45,32,.45);font-size:22px;display:flex;align-items:center;justify-content:center;
+  animation:fabPulse 2.2s infinite;}
+@keyframes fabPulse{0%,100%{box-shadow:0 6px 20px rgba(217,45,32,.45);}50%{box-shadow:0 6px 28px rgba(217,45,32,.65);}}
+
+.toast{position:fixed;bottom:96px;right:22px;z-index:999;background:var(--navy-950);color:#fff;
+  padding:13px 18px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:var(--shadow-xl);
+  transform:translateY(40px);opacity:0;transition:all .3s var(--ease);max-width:300px;border-left:4px solid var(--brand-light);}
+.toast.on{transform:translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- ════════ NAV ════════ -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a class="logo" href="#top">
+        <div class="logo-mark">⚕️</div>
+        <div class="logo-text">Medi<span>Help</span></div>
+      </a>
+      <nav class="nav-links">
+        <a class="nav-link" onclick="openNearby('hospital')">Hospitals</a>
+        <a class="nav-link" onclick="openNearby('pharmacy')">Pharmacy</a>
+        <a class="nav-link" onclick="openM('ambulanceM')">Ambulance</a>
+        <a class="nav-link" onclick="openM('policeM')">Police</a>
+        <a class="nav-link" onclick="openM('bloodM')">Blood Bank</a>
+        <a class="nav-link" onclick="toggleDrawer()">More ▾</a>
+      </nav>
+    </div>
+    <div class="nav-right">
+      <div class="loc-pill" id="navLocPill" onclick="requestLocation(true)">📍 <span id="navLocText">Salem, Tamil Nadu</span></div>
+      <button class="nav-cta" onclick="sendEmergency()">🆘 SOS</button>
+      <button class="nav-burger" onclick="toggleDrawer()">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ DRAWER (all features) ════════ -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head"><h3>All Services</h3><button class="drawer-close" onclick="toggleDrawer()">✕</button></div>
+
+  <div class="drawer-sec">
+    <div class="drawer-label">Nearby — Live Location</div>
+    <div class="drawer-item" onclick="openNearby('hospital')"><span class="di-ico">🏥</span> Hospitals</div>
+    <div class="drawer-item" onclick="openNearby('pharmacy')"><span class="di-ico">💊</span> Medical Stores</div>
+    <div class="drawer-item" onclick="openNearby('clinic')"><span class="di-ico">🩺</span> Clinics & Doctors</div>
+    <div class="drawer-item" onclick="openNearby('diagnostic')"><span class="di-ico">🧪</span> Diagnostic Centers</div>
+    <div class="drawer-item" onclick="openNearby('bloodbank')"><span class="di-ico">🩸</span> Blood Banks</div>
+    <div class="drawer-item" onclick="openNearby('fire')"><span class="di-ico">🚒</span> Fire Stations</div>
+    <div class="drawer-item" onclick="openNearby('police')"><span class="di-ico">👮</span> Police Stations</div>
+    <div class="drawer-item" onclick="openNearby('shelter')"><span class="di-ico">📍</span> Emergency Shelters</div>
+  </div>
+
+  <div class="drawer-sec">
+    <div class="drawer-label">Quick Tools</div>
+    <div class="drawer-item" onclick="openM('sosM')"><span class="di-ico">🆘</span> SOS Emergency Mode</div>
+    <div class="drawer-item" onclick="openM('medIdM')"><span class="di-ico">❤️</span> My Medical ID</div>
+    <div class="drawer-item" onclick="openM('symptomM')"><span class="di-ico">🤖</span> AI Symptom Checker</div>
+    <div class="drawer-item" onclick="openM('bedM')"><span class="di-ico">🛏️</span> Hospital Bed Status</div>
+    <div class="drawer-item" onclick="openM('disasterM')"><span class="di-ico">🔥</span> Disaster Mode</div>
+    <div class="drawer-item" onclick="openM('vcallM')"><span class="di-ico">📹</span> Video Call Doctor</div>
+    <div class="drawer-item" onclick="openM('heatmapM')"><span class="di-ico">🗺️</span> Emergency Heat Map</div>
+    <div class="drawer-item" onclick="openM('queueM')"><span class="di-ico">👨‍⚕️</span> Hospital Queue Status</div>
+    <div class="drawer-item" onclick="openM('recordsM')"><span class="di-ico">📄</span> Medical Records</div>
+    <div class="drawer-item" onclick="openM('locShareM')"><span class="di-ico">🛰️</span> Live Location Share</div>
+    <div class="drawer-item" onclick="openM('notifsM')"><span class="di-ico">🔔</span> Smart Notifications</div>
+    <div class="drawer-item" onclick="openM('offlineM')"><span class="di-ico">🌐</span> Offline Emergency Mode</div>
+  </div>
+
+  <div class="drawer-sec">
+    <div class="drawer-label">Find a Doctor</div>
+    <input class="d-input" id="searchBox" placeholder="Search by name…" oninput="filterDoctors()">
+    <select class="d-input" id="filterBy" onchange="filterDoctors()">
+      <option value="alphabetical">Sort Alphabetically</option>
+      <option value="city">By City</option>
+      <option value="state">By State</option>
+    </select>
+    <ul class="d-list" id="doctorList"></ul>
+  </div>
+</aside>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="top">
+  <div class="hero-bg"></div><div class="hero-grid-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-layout">
+      <div>
+        <div class="hero-eyebrow"><span class="dot-live"></span> Live in Salem, Tamil Nadu — 24/7 Active</div>
+        <h1 class="hero-h1">Emergency help,<br>wherever you are <span class="hl">in Salem.</span></h1>
+        <p class="hero-p">MediHelp connects you instantly to nearby hospitals, ambulances, blood banks, police stations and pharmacies — using your live location, just like Google Maps.</p>
+        <div class="hero-actions">
+          <button class="hbtn hbtn-primary" onclick="sendEmergency()">🆘 Emergency SOS</button>
+          <button class="hbtn hbtn-secondary" onclick="openNearby('hospital')">🏥 Find Nearby Hospital</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><b>4 min</b><span>Avg Response</span></div>
+          <div class="hstat"><b>120+</b><span>Salem Hospitals</span></div>
+          <div class="hstat"><b>98%</b><span>Uptime</span></div>
+          <div class="hstat"><b>24/7</b><span>Available</span></div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-head">
+          <div class="hc-title">Find help near you</div>
+          <div class="hc-badge">⚡ Live</div>
+        </div>
+        <div class="svc-grid">
+          <div class="svc-tile" onclick="openNearby('hospital')"><span class="si">🏥</span><span class="sl">Hospitals</span></div>
+          <div class="svc-tile" onclick="openNearby('pharmacy')"><span class="si">💊</span><span class="sl">Pharmacy</span></div>
+          <div class="svc-tile" onclick="openM('ambulanceM')"><span class="si">🚑</span><span class="sl">Ambulance</span></div>
+          <div class="svc-tile" onclick="openM('policeM')"><span class="si">👮</span><span class="sl">Police</span></div>
+          <div class="svc-tile" onclick="openNearby('fire')"><span class="si">🚒</span><span class="sl">Fire</span></div>
+          <div class="svc-tile" onclick="openNearby('bloodbank')"><span class="si">🩸</span><span class="sl">Blood Bank</span></div>
+          <div class="svc-tile" onclick="openNearby('clinic')"><span class="si">🩺</span><span class="sl">Clinics</span></div>
+          <div class="svc-tile" onclick="openNearby('diagnostic')"><span class="si">🧪</span><span class="sl">Diagnostics</span></div>
+        </div>
+        <div class="hc-loc-status" id="hcLocStatus">
+          <span class="pulse-pin"></span>
+          <span id="hcLocText">Using default location: Salem, Tamil Nadu</span>
+          <span class="hc-loc-btn" onclick="requestLocation(true)">Use my location</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FEATURE GRID ════════ -->
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="sec-eyebrow">Beyond hospital search</div>
+      <div class="sec-title">Everything an emergency needs</div>
+      <div class="sec-sub">A complete emergency healthcare toolkit — built for the moments that matter most.</div>
+    </div>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card" onclick="openM('medIdM')"><div class="feat-ico-box fi-1">❤️</div><h4>Medical ID Card</h4><p>Blood group, allergies, medications & emergency contact — scannable via QR.</p></div>
+    <div class="feat-card" onclick="openM('bloodM')"><div class="feat-ico-box fi-2">🩸</div><h4>Blood Availability</h4><p>Live blood stock across nearby blood banks, grouped by blood type.</p></div>
+    <div class="feat-card" onclick="openM('bedM')"><div class="feat-ico-box fi-3">🛏️</div><h4>Hospital Bed Status</h4><p>Real-time ICU, general, oxygen & ventilator bed availability.</p></div>
+    <div class="feat-card" onclick="openM('symptomM')"><div class="feat-ico-box fi-4">🤖</div><h4>AI Symptom Checker</h4><p>Enter your symptoms and get instant guidance on next steps.</p></div>
+    <div class="feat-card" onclick="openM('disasterM')"><div class="feat-ico-box fi-2">🔥</div><h4>Disaster Mode</h4><p>Safe zones and relief camps for fire, flood, earthquake & more.</p></div>
+    <div class="feat-card" onclick="openM('vcallM')"><div class="feat-ico-box fi-1">📹</div><h4>Video Call a Doctor</h4><p>Instant telehealth consultation, available around the clock.</p></div>
+    <div class="feat-card" onclick="openM('heatmapM')"><div class="feat-ico-box fi-4">🗺️</div><h4>Emergency Heat Map</h4><p>Visualise accident-prone zones and high-emergency areas in Salem.</p></div>
+    <div class="feat-card" onclick="openM('sosM')"><div class="feat-ico-box fi-2">🆘</div><h4>One-Tap SOS</h4><p>Alert your contacts, hospital, ambulance and police simultaneously.</p></div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand"><div class="logo-mark">⚕️</div><div class="ftxt">MediHelp</div></div>
+      <p class="fdesc">Emergency healthcare platform serving Salem, Tamil Nadu — connecting people to hospitals, ambulances, blood banks and emergency services in real time.</p>
+    </div>
+    <div>
+      <h5>Services</h5>
+      <ul>
+        <li><a onclick="openNearby('hospital')">Hospitals</a></li>
+        <li><a onclick="openNearby('pharmacy')">Pharmacies</a></li>
+        <li><a onclick="openM('ambulanceM')">Ambulance</a></li>
+        <li><a onclick="openM('bloodM')">Blood Banks</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Emergency</h5>
+      <ul>
+        <li><a href="tel:112">112 — National Emergency</a></li>
+        <li><a href="tel:108">108 — Ambulance</a></li>
+        <li><a href="tel:100">100 — Police</a></li>
+        <li><a href="tel:101">101 — Fire</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul>
+        <li><a href="/admin">Admin Portal</a></li>
+        <li><a onclick="openM('recordsM')">Medical Records</a></li>
+        <li><a onclick="openM('notifsM')">Notifications</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 MediHelp. Built for Salem, Tamil Nadu.</span>
+    <span>Emergency platform · Final-year project</span>
+  </div>
+</footer>
+
+<!-- Floating SOS for mobile -->
+<button class="fab-sos" onclick="sendEmergency()" title="Emergency SOS">🆘</button>
+
+<!-- ══════════ MODALS ══════════ -->
+
+<div class="backdrop" id="warningM">
+  <div class="mbox">
+    <div class="mhead"><h3>⚠️ Before You Proceed</h3><button class="mclose" onclick="closeM('warningM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Only use the Emergency button for genuine emergencies. Misuse is monitored under Indian IT Act and may result in legal action.</p>
+      <div class="btn-row">
+        <button class="btn-full btn-grey" onclick="closeM('warningM')">Cancel</button>
+        <button class="btn-full btn-red" onclick="proceedEmergency()">Confirm & Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="emergTypeM">
+  <div class="mbox">
+    <div class="mhead"><h3>🆘 Type of Emergency</h3><button class="mclose" onclick="closeM('emergTypeM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Select the nature of your emergency so we dispatch the right help.</p>
+      <div class="btn-row" style="margin-bottom:9px;">
+        <button class="btn-full btn-red" onclick="handleAccident()">🚗 Accident</button>
+        <button class="btn-full btn-amber" onclick="handleMedical()">🏥 Medical</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn-full" style="background:linear-gradient(135deg,#EF6C00,#9C2A10);color:#fff;" onclick="handleFire()">🔥 Fire</button>
+        <button class="btn-full btn-blue" onclick="handleOther()">🔴 Other</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="accidentM">
+  <div class="mbox">
+    <div class="mhead"><h3>🚔 Accident Alert Sent</h3><button class="mclose" onclick="closeM('accidentM')">✕</button></div>
+    <div class="mbody">
+      <div class="geo-card" id="geoBarAcc"><span class="geo-ico">📍</span><div class="geo-text">Detecting your location…</div></div>
+      <div class="svc-card">
+        <div class="svc-head"><span class="badge b-pol">POLICE</span><span class="svc-name">Salem Town Police Station</span><span class="svc-status s-avail">Dispatching</span></div>
+        <div class="svc-detail">📍 Salem Town, Salem 636001<br>👮 SI Karthikeyan · 4 units on duty<br>📞 <strong>0427-2410100</strong> · ETA ~6 min<br>
+          <a class="call-link" href="tel:100">📞 Call Police (100)</a>
+          <a class="call-link" href="tel:108" style="margin-left:4px;">🚑 Ambulance (108)</a>
+        </div>
+      </div>
+      <button class="btn-full btn-brand" onclick="closeM('accidentM')">OK, Noted</button>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="medicalM">
+  <div class="mbox">
+    <div class="mhead"><h3>🏥 Medical Help Dispatched</h3><button class="mclose" onclick="closeM('medicalM')">✕</button></div>
+    <div class="mbody">
+      <div class="geo-card" id="geoBarMed"><span class="geo-ico">📍</span><div class="geo-text">Detecting your location…</div></div>
+      <div class="tracker-map"><div class="tm-road-h"></div><div class="tm-road-v"></div><div class="amb-dot">🚑</div><div class="you-dot">📍</div><div class="eta-badge">ETA ~4 min</div></div>
+      <div class="svc-card">
+        <div class="svc-head"><span class="badge b-amb">AMB-003</span><span class="svc-name">Suresh Kumar</span><span class="svc-status s-avail">En Route</span></div>
+        <div class="svc-detail">🚑 TN30-GH-4421 · ACLS + Defibrillator<br>📞 <strong>+91 99001 23456</strong><br>
+          <a class="call-link" href="tel:+919900123456">📞 Call Driver</a>
+          <a class="call-link" href="tel:108" style="margin-left:4px;">📞 108 National</a>
+        </div>
+      </div>
+      <button class="btn-full btn-brand" onclick="closeM('medicalM')">OK, Noted</button>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="fireM">
+  <div class="mbox">
+    <div class="mhead"><h3>🚒 Fire Service Alerted</h3><button class="mclose" onclick="closeM('fireM')">✕</button></div>
+    <div class="mbody">
+      <div class="svc-card">
+        <div class="svc-head"><span class="badge" style="background:#FFEAD5;color:#9C2A10;">FIRE</span><span class="svc-name">Salem Fire & Rescue Station</span><span class="svc-status s-avail">Dispatching</span></div>
+        <div class="svc-detail">📍 Cherry Road, Salem 636007<br>👨‍🚒 Officer Manikandan · 3 units<br>📞 <strong>0427-2444444</strong> · ETA ~8 min<br>
+          <a class="call-link" href="tel:101">📞 Call Fire (101)</a>
+        </div>
+      </div>
+      <p style="font-size:11.5px;color:var(--ink-3);text-align:center;margin-bottom:10px;">Evacuate the area. Don't use lifts.</p>
+      <button class="btn-full" style="background:linear-gradient(135deg,#EF6C00,#9C2A10);color:#fff;" onclick="closeM('fireM')">OK, Evacuating</button>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="otherM">
+  <div class="mbox">
+    <div class="mhead"><h3>🔴 Emergency Reported</h3><button class="mclose" onclick="closeM('otherM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Your location has been shared with all nearby response units.</p>
+      <a href="tel:112" style="text-decoration:none;display:block;margin-bottom:9px;"><button class="btn-full btn-red">📞 Call 112 — National Emergency</button></a>
+      <div class="btn-row" style="margin-bottom:9px;">
+        <a href="tel:100" style="text-decoration:none;flex:1;"><button class="btn-full btn-blue">👮 100</button></a>
+        <a href="tel:101" style="text-decoration:none;flex:1;"><button class="btn-full" style="background:linear-gradient(135deg,#EF6C00,#9C2A10);color:#fff;">🔥 101</button></a>
+        <a href="tel:108" style="text-decoration:none;flex:1;"><button class="btn-full btn-amber">🚑 108</button></a>
+      </div>
+      <button class="btn-full btn-grey" onclick="closeM('otherM')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="ambulanceM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>🚑 Ambulance Services — Salem</h3><button class="mclose" onclick="closeM('ambulanceM')">✕</button></div>
+    <div class="mbody">
+      <input class="m-input" id="ambQ" placeholder="Search by ID or driver…" oninput="filterAmb()">
+      <div id="ambList"></div>
+      <div class="btn-row" style="margin-top:8px;">
+        <a href="tel:108" style="text-decoration:none;flex:1;"><button class="btn-full btn-amber">📞 National: 108</button></a>
+        <button class="btn-full btn-grey" onclick="closeM('ambulanceM')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="policeM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>👮 Police Stations — Salem</h3><button class="mclose" onclick="closeM('policeM')">✕</button></div>
+    <div class="mbody">
+      <input class="m-input" id="polQ" placeholder="Search by name or ID…" oninput="filterPolice()">
+      <div id="polList"></div>
+      <div class="btn-row" style="margin-top:8px;">
+        <a href="tel:100" style="text-decoration:none;flex:1;"><button class="btn-full btn-blue">📞 National: 100</button></a>
+        <button class="btn-full btn-grey" onclick="closeM('policeM')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="nearbyM">
+  <div class="mbox wide">
+    <div class="mhead"><h3 id="nearbyTitle">Nearby</h3><button class="mclose" onclick="closeM('nearbyM')">✕</button></div>
+    <div class="mbody">
+      <div class="geo-card" id="nearbyGeoCard"><span class="geo-ico">📍</span><div class="geo-text">Allow location access to find places near <strong>you</strong> instead of Salem center.</div><button class="geo-btn" onclick="requestLocation(false)">Allow</button></div>
+      <p class="m-sub" id="nearbySub"></p>
+      <div id="nearbyList"><div class="loading"><div class="spinner"></div><br>Searching nearby…</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="sosM">
+  <div class="mbox">
+    <div class="mhead"><h3>🆘 SOS Emergency Mode</h3><button class="mclose" onclick="closeM('sosM')">✕</button></div>
+    <div class="mbody">
+      <div class="geo-card" id="sosGeoBar"><span class="geo-ico">📍</span><div class="geo-text">Detecting your location…</div></div>
+      <p class="m-sub">One tap will notify your emergency contacts, nearest hospital, ambulance service and police — all at once.</p>
+      <div id="sosContactsList"></div>
+      <button class="btn-full btn-red" id="sosTriggerBtn" onclick="activateSOS()" style="margin-top:10px;margin-bottom:9px;">🆘 ACTIVATE SOS NOW</button>
+      <div class="svc-card" id="sosSentBox" style="display:none;background:#D1FADF;border-color:#A6F4C5;text-align:center;">
+        <strong style="color:#05603A;">✅ SOS Activated</strong>
+        <div style="font-size:12px;color:#05603A;margin-top:4px;">All contacts notified. Emergency services alerted.</div>
+      </div>
+      <button class="btn-full btn-grey" onclick="closeM('sosM')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="medIdM">
+  <div class="mbox">
+    <div class="mhead"><h3>❤️ Medical ID Card</h3><button class="mclose" onclick="closeM('medIdM')">✕</button></div>
+    <div class="mbody">
+      <div class="tab-bar"><button class="tab-btn active" onclick="switchTab('midTab',0)">View Card</button><button class="tab-btn" onclick="switchTab('midTab',1)">Edit Info</button></div>
+      <div id="midTab">
+        <div class="tab-pane active">
+          <div class="id-card" id="renderedIDCard"></div>
+          <p style="text-align:center;font-size:11px;color:var(--ink-4);">Emergency responders can scan the QR to view this card instantly.</p>
+        </div>
+        <div class="tab-pane">
+          <input class="m-input" id="midName" placeholder="Full Name" value="Karthik Subramaniam">
+          <input class="m-input" id="midBlood" placeholder="Blood Group" value="O+">
+          <input class="m-input" id="midAllergies" placeholder="Allergies" value="Penicillin, Dust">
+          <input class="m-input" id="midDiseases" placeholder="Diseases / Conditions" value="Type 2 Diabetes">
+          <input class="m-input" id="midMeds" placeholder="Current Medications" value="Metformin 500mg">
+          <input class="m-input" id="midInsurance" placeholder="Insurance / Policy Number" value="LIC-HEALTH-884421">
+          <input class="m-input" id="midEmContact" placeholder="Emergency Contact" value="Priya · +91 98765 11111">
+          <button class="btn-full btn-brand" onclick="saveID()">💾 Save Medical ID</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="bloodM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>🩸 Blood Availability — Salem</h3><button class="mclose" onclick="closeM('bloodM')">✕</button></div>
+    <div class="mbody">
+      <div class="blood-grid" id="bloodGrid"></div>
+      <h4 style="font-size:13px;font-weight:700;margin:14px 0 8px;">Nearby Blood Banks</h4>
+      <div id="bloodBankList"></div>
+      <div class="btn-row">
+        <a href="tel:104" style="text-decoration:none;flex:1;"><button class="btn-full btn-red">📞 Blood Helpline: 104</button></a>
+        <button class="btn-full btn-grey" onclick="closeM('bloodM')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="bedM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>🛏️ Hospital Bed Availability</h3><button class="mclose" onclick="closeM('bedM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Real-time status — Salem Government Mohan Kumaramangalam Medical College Hospital</p>
+      <div class="bed-grid">
+        <div class="bed-card bc-icu"><span class="b-num">6</span><span class="b-lbl">ICU Beds</span></div>
+        <div class="bed-card bc-gen"><span class="b-num">38</span><span class="b-lbl">General Beds</span></div>
+        <div class="bed-card bc-oxy"><span class="b-num">11</span><span class="b-lbl">Oxygen Beds</span></div>
+        <div class="bed-card bc-vent"><span class="b-num">2</span><span class="b-lbl">Ventilators</span></div>
+      </div>
+      <h4 style="font-size:13px;font-weight:700;margin-bottom:8px;">More Hospitals</h4>
+      <div id="bedHospList"></div>
+      <button class="btn-full btn-grey" onclick="closeM('bedM')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="symptomM">
+  <div class="mbox">
+    <div class="mhead"><h3>🤖 AI Symptom Checker</h3><button class="mclose" onclick="closeM('symptomM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Describe symptoms or tap common ones below</p>
+      <input class="m-input" id="symptomInput" placeholder="e.g. Fever, Cough, Headache…">
+      <div style="margin-bottom:10px;" id="symptomChips"></div>
+      <button class="btn-full btn-brand" onclick="checkSymptoms()">🔍 Analyse Symptoms</button>
+      <div id="aiResult"></div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="disasterM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>🔥 Disaster Mode</h3><button class="mclose" onclick="closeM('disasterM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Select disaster type for nearest safe zones, relief camps & emergency numbers — Salem region</p>
+      <div class="disaster-grid">
+        <div class="dis-btn" onclick="showDisaster('fire')"><span class="d-ico">🔥</span>Fire</div>
+        <div class="dis-btn" onclick="showDisaster('flood')"><span class="d-ico">🌊</span>Flood</div>
+        <div class="dis-btn" onclick="showDisaster('quake')"><span class="d-ico">🌍</span>Earthquake</div>
+        <div class="dis-btn" onclick="showDisaster('cyclone')"><span class="d-ico">🌀</span>Cyclone</div>
+        <div class="dis-btn" onclick="showDisaster('chemical')"><span class="d-ico">☣️</span>Chemical</div>
+        <div class="dis-btn" onclick="showDisaster('stampede')"><span class="d-ico">🚨</span>Stampede</div>
+      </div>
+      <div id="disasterResult"></div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="vcallM">
+  <div class="mbox">
+    <div class="mhead"><h3>📹 Video Call a Doctor</h3><button class="mclose" onclick="closeM('vcallM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Instant telehealth consultation — 24/7 available</p>
+      <div class="vcall-box"><div class="vc-overlay"><span class="vc-ico">👨‍⚕️</span><p id="vcStatus">Dr. Lakshmi Narayanan is available now</p></div></div>
+      <div class="vc-controls">
+        <button class="vc-btn vc-mic">🎤</button><button class="vc-btn vc-cam">📷</button>
+        <button class="vc-btn vc-end" onclick="endVCall()">📵</button>
+      </div>
+      <button class="btn-full btn-brand" id="vcStartBtn" onclick="startVCall()">▶️ Start Consultation</button>
+      <p style="font-size:10.5px;color:var(--ink-4);text-align:center;margin-top:8px;">Consultation fee: ₹99 · Avg wait: 2 min</p>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="heatmapM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>🗺️ Emergency Heat Map — Salem</h3><button class="mclose" onclick="closeM('heatmapM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Accident-prone zones, high emergency areas & traffic in Salem city</p>
+      <div class="heatmap-box" id="heatmapBox"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;margin-bottom:10px;">
+        <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:#FF5252;display:inline-block;"></span>High Risk</span>
+        <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:#FFD740;display:inline-block;"></span>Medium</span>
+        <span style="font-size:11px;display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:#69F0AE;display:inline-block;"></span>Low Risk</span>
+      </div>
+      <a href="https://www.google.com/maps/@11.6643,78.1460,13z" target="_blank" class="maps-btn" style="display:inline-flex;">🗺️ Open Full Map</a>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="queueM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>👨‍⚕️ Hospital Queue Status</h3><button class="mclose" onclick="closeM('queueM')">✕</button></div>
+    <div class="mbody">
+      <p class="m-sub">Live waiting status — Salem Govt. Medical College Hospital</p>
+      <div class="queue-row">
+        <div class="q-stat-box qb-wait"><span class="q-num">26</span><span class="q-lbl">Min Wait</span></div>
+        <div class="q-stat-box qb-pts"><span class="q-num">17</span><span class="q-lbl">Patients</span></div>
+        <div class="q-stat-box qb-er"><span class="q-num">2</span><span class="q-lbl">Critical ER</span></div>
+      </div>
+      <div id="queueHospList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="recordsM">
+  <div class="mbox wide">
+    <div class="mhead"><h3>📄 Digital Medical Records</h3><button class="mclose" onclick="closeM('recordsM')">✕</button></div>
+    <div class="mbody">
+      <div class="tab-bar"><button class="tab-btn active" onclick="switchTab('recTab',0)">My Records</button><button class="tab-btn" onclick="switchTab('recTab',1)">Add Record</button></div>
+      <div id="recTab">
+        <div class="tab-pane active" id="recListPane"></div>
+        <div class="tab-pane">
+          <select class="m-input" id="recType"><option>Prescription</option><option>Lab Report</option><option>Scan / X-Ray</option><option>Vaccination</option><option>Discharge Summary</option></select>
+          <input class="m-input" id="recName" placeholder="Record name / description">
+          <input class="m-input" id="recDoc" placeholder="Doctor / Hospital">
+          <input class="m-input" type="date" id="recDate">
+          <textarea class="m-input" id="recNotes" placeholder="Notes or findings…"></textarea>
+          <button class="btn-full btn-brand" onclick="addRecord()">💾 Save Record</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="locShareM">
+  <div class="mbox">
+    <div class="mhead"><h3>🛰️ Live Location Sharing</h3><button class="mclose" onclick="closeM('locShareM')">✕</button></div>
+    <div class="mbody">
+      <div class="geo-card" id="locShareGeoBar"><span class="geo-ico">📍</span><div class="geo-text">Detecting your location…</div></div>
+      <p class="m-sub">Toggle to share your real-time GPS location</p>
+      <div id="locShareContacts"></div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="notifsM">
+  <div class="mbox">
+    <div class="mhead"><h3>🔔 Smart Notifications</h3><button class="mclose" onclick="closeM('notifsM')">✕</button></div>
+    <div class="mbody"><div id="notifList"></div></div>
+  </div>
+</div>
+
+<div class="backdrop" id="offlineM">
+  <div class="mbox">
+    <div class="mhead"><h3>🌐 Offline Emergency Mode</h3><button class="mclose" onclick="closeM('offlineM')">✕</button></div>
+    <div class="mbody">
+      <div class="offline-banner"><div style="font-size:26px;">📴</div><div class="ob-text"><div class="ob-t">Works without internet</div><div class="ob-d">Emergency calls, Medical ID & SMS location sharing</div></div></div>
+      <div class="offline-action" style="margin-bottom:12px;">
+        <a href="tel:112" style="text-decoration:none;flex:1;"><button class="off-btn" style="background:var(--red);width:100%;">📞 Call 112</button></a>
+        <a href="tel:108" style="text-decoration:none;flex:1;"><button class="off-btn" style="background:var(--amber);width:100%;">🚑 Call 108</button></a>
+        <a href="tel:100" style="text-decoration:none;flex:1;"><button class="off-btn" style="background:var(--brand);width:100%;">👮 Call 100</button></a>
+      </div>
+      <div style="background:var(--bg);border:1.5px solid var(--line-2);border-radius:13px;padding:13px;">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px;">💊 Your Offline Medical ID</div>
+        <div style="font-size:12px;color:var(--ink-2);line-height:1.7;" id="offlineMID">Loading from saved profile…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ LOCATION STATE ══
+let userLocation=null; // {lat,lng,label}
+const SALEM_CENTER={lat:11.6643,lng:78.1460,label:'Salem, Tamil Nadu'};
+
+function requestLocation(updateNav){
+  const navText=document.getElementById('navLocText');
+  const hcText=document.getElementById('hcLocText');
+  if(!navigator.geolocation){
+    toast('⚠️ Geolocation not supported on this device.');
+    return;
+  }
+  toast('📍 Requesting location access…');
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      userLocation={lat:pos.coords.latitude,lng:pos.coords.longitude,label:'Your current location'};
+      if(navText) navText.textContent='Your Location';
+      if(hcText) hcText.textContent=`Using your live GPS location (±${Math.round(pos.coords.accuracy)}m accuracy)`;
+      document.getElementById('navLocPill').style.background='#D1FADF';
+      document.querySelectorAll('.geo-card').forEach(c=>{
+        if(c.id!=='nearbyGeoCard'){
+          c.classList.add('granted');
+          const t=c.querySelector('.geo-text');
+          if(t) t.innerHTML=`<strong>Location found</strong>${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+        }
+      });
+      const ngc=document.getElementById('nearbyGeoCard');
+      if(ngc){
+        ngc.classList.add('granted');
+        ngc.innerHTML=`<span class="geo-ico">✅</span><div class="geo-text"><strong>Using your location</strong>${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}</div>`;
+      }
+      toast('✅ Location access granted.');
+    },
+    err=>{
+      toast('⚠️ Location access denied — showing results for Salem center.');
+      document.querySelectorAll('.geo-card').forEach(c=>{
+        if(c.id!=='nearbyGeoCard'){
+          c.classList.add('denied');
+          const t=c.querySelector('.geo-text');
+          if(t) t.innerHTML=`<strong>Location unavailable</strong>Showing results for Salem, Tamil Nadu`;
+        }
+      });
+    },
+    {enableHighAccuracy:true,timeout:8000}
+  );
+}
+
+// ══ DATA ══
+let doctors=[
+  {name:'Dr. Lakshmi Narayanan', address:'Five Roads',         city:'Salem', state:'Tamil Nadu', qualification:'MBBS, MD General Medicine'},
+  {name:'Dr. Senthil Kumar',     address:'Hasthampatty',       city:'Salem', state:'Tamil Nadu', qualification:'MD, Cardiologist'},
+  {name:'Dr. Revathi Subramani', address:'Suramangalam',       city:'Salem', state:'Tamil Nadu', qualification:'MBBS, Gynaecologist'},
+  {name:'Dr. Anbu Selvan',       address:'Fairlands',          city:'Salem', state:'Tamil Nadu', qualification:'MBBS, Orthopaedics'},
+  {name:'Dr. Kavitha Rajendran', address:'Ammapettai',         city:'Salem', state:'Tamil Nadu', qualification:'BDS, MDS Dental'},
+];
+let employees=[
+  {name:'Murugan S',  age:34,city:'Salem',  state:'Tamil Nadu',id:'EMP001',vehicle:'TN30AB1234',mobile:'+91 98765 43210'},
+  {name:'Latha R',    age:29,city:'Salem',  state:'Tamil Nadu',id:'EMP002',vehicle:'TN30CD5678',mobile:'+91 99887 76655'},
+  {name:'Vignesh K',  age:36,city:'Salem',  state:'Tamil Nadu',id:'EMP003',vehicle:'TN30EF3344',mobile:'+91 97654 32109'},
+];
+const ambulances=[
+  {id:'AMB-001',driver:'Mohan Raj',     age:45,contact:'+91 98765 43210',plate:'TN30-AB-1234',equipped:'ACLS, Defibrillator',status:'Available'},
+  {id:'AMB-002',driver:'Velu Pandian',  age:38,contact:'+91 98765 99999',plate:'TN30-EF-7890',equipped:'BLS, Oxygen',        status:'On Duty'},
+  {id:'AMB-003',driver:'Suresh Kumar',  age:42,contact:'+91 99001 23456',plate:'TN30-GH-4421',equipped:'ACLS, Stretcher',    status:'Available'},
+  {id:'AMB-004',driver:'Kalaiselvi P',  age:35,contact:'+91 98881 22334',plate:'TN30-MN-8812',equipped:'BLS, Oxygen',        status:'On Duty'},
+];
+const policeStations=[
+  {id:'PS-001',name:'Salem Town Police Station',     officer:'SI Karthikeyan',  contact:'0427-2410100',address:'Salem Town, Salem 636001',   units:4,status:'Active'},
+  {id:'PS-002',name:'Hasthampatty Police Station',    officer:'SI Dhanapal',     contact:'0427-2440022',address:'Hasthampatty, Salem',         units:2,status:'Active'},
+  {id:'PS-003',name:'Suramangalam Police Station',    officer:'SI Geetha',       contact:'0427-2330066',address:'Suramangalam, Salem',         units:3,status:'Active'},
+  {id:'PS-004',name:'Ammapet Police Station',         officer:'SI Balasubramani',contact:'0427-2350011',address:'Ammapet, Salem',              units:2,status:'Active'},
+];
+
+// Real Salem-area data, structured to mirror what a Google Places nearbysearch response would return.
+// In production this block is replaced by a fetch() to your backend, which proxies the Places API
+// (Nearby Search) using the user's lat/lng — see comment block at bottom of file.
+const nearbyDB={
+  hospital:[
+    {name:'Salem Govt. Mohan Kumaramangalam Medical College Hospital', addr:'Trichy Road, Salem 636030', dist:'1.1 km',time:'4 min', rating:4.1,open:true, ico:'🏥',cls:'p-ico-h'},
+    {name:'Vinayaka Mission Hospital',          addr:'Sankari Main Road, Salem',     dist:'2.4 km',time:'9 min', rating:4.4,open:true, ico:'🏥',cls:'p-ico-h'},
+    {name:'SKS Hospital',                       addr:'Alagapuram, Salem 636004',     dist:'3.0 km',time:'11 min',rating:4.3,open:true, ico:'🏥',cls:'p-ico-h'},
+    {name:'Sri Gokulam Hospital',                addr:'Nethimedu, Salem',            dist:'3.6 km',time:'13 min',rating:4.2,open:true, ico:'🏥',cls:'p-ico-h'},
+    {name:'Salem ESI Hospital',                  addr:'Suramangalam, Salem',         dist:'4.8 km',time:'18 min',rating:3.8,open:true, ico:'🏥',cls:'p-ico-h'},
+  ],
+  pharmacy:[
+    {name:'Apollo Pharmacy — Five Roads',        addr:'Five Roads, Salem',           dist:'0.6 km',time:'2 min', rating:4.4,open:true, ico:'💊',cls:'p-ico-ph'},
+    {name:'MedPlus — Hasthampatty',              addr:'Hasthampatty, Salem',         dist:'1.3 km',time:'5 min', rating:4.3,open:true, ico:'💊',cls:'p-ico-ph'},
+    {name:'Netmeds Pharmacy — Ammapet',          addr:'Ammapet, Salem',              dist:'1.9 km',time:'7 min', rating:4.0,open:false,ico:'💊',cls:'p-ico-ph'},
+    {name:'Sri Ram Medicals',                    addr:'Shevapet, Salem',             dist:'2.4 km',time:'9 min', rating:3.9,open:true, ico:'💊',cls:'p-ico-ph'},
+    {name:'Care Pharmacy — Fairlands',            addr:'Fairlands, Salem',           dist:'3.0 km',time:'11 min',rating:4.1,open:true, ico:'💊',cls:'p-ico-ph'},
+  ],
+  clinic:[
+    {name:'Dr. Lakshmi Narayanan Clinic',  addr:'Five Roads, Salem',          dist:'0.9 km',time:'4 min', rating:4.6,open:true, ico:'🩺',cls:'p-ico-c'},
+    {name:'Salem City Health Centre',       addr:'Shevapet, Salem',            dist:'1.6 km',time:'6 min', rating:4.2,open:true, ico:'🩺',cls:'p-ico-c'},
+    {name:'New Life Family Clinic',         addr:'Alagapuram, Salem',          dist:'2.1 km',time:'8 min', rating:4.0,open:false,ico:'🩺',cls:'p-ico-c'},
+    {name:'Sankar Clinic',                  addr:'Junction Main Road, Salem', dist:'2.5 km',time:'10 min',rating:3.9,open:true, ico:'🩺',cls:'p-ico-c'},
+  ],
+  diagnostic:[
+    {name:'Thyrocare Diagnostics — Salem',    addr:'Cherry Road, Salem',     dist:'1.2 km',time:'5 min', rating:4.5,open:true, ico:'🧪',cls:'p-ico-d'},
+    {name:'SRL Diagnostics — Hasthampatty',    addr:'Hasthampatty, Salem',    dist:'1.9 km',time:'7 min', rating:4.3,open:true, ico:'🧪',cls:'p-ico-d'},
+    {name:'Dr. Lal PathLabs — Alagapuram',     addr:'Alagapuram, Salem',      dist:'2.3 km',time:'9 min', rating:4.4,open:false,ico:'🧪',cls:'p-ico-d'},
+  ],
+  bloodbank:[
+    {name:'Govt. Blood Bank, Salem Medical College', addr:'Trichy Road, Salem',  dist:'1.1 km',time:'4 min', rating:4.3,open:true, ico:'🩸',cls:'p-ico-b'},
+    {name:'Salem Red Cross Blood Bank',               addr:'Shevapet, Salem',     dist:'1.7 km',time:'6 min', rating:4.6,open:true, ico:'🩸',cls:'p-ico-b'},
+    {name:'Lions Blood Bank, Salem',                  addr:'Suramangalam, Salem', dist:'3.1 km',time:'12 min',rating:4.1,open:true, ico:'🩸',cls:'p-ico-b'},
+  ],
+  fire:[
+    {name:'Salem Fire & Rescue Station — Cherry Road', addr:'Cherry Road, Salem',  dist:'1.3 km',time:'5 min', rating:4.4,open:true, ico:'🚒',cls:'p-ico-f'},
+    {name:'Ammapet Fire Station',                        addr:'Ammapet, Salem',     dist:'3.9 km',time:'14 min',rating:4.1,open:true, ico:'🚒',cls:'p-ico-f'},
+  ],
+  police:[
+    {name:'Salem Town Police Station',  addr:'Salem Town, Salem',   dist:'1.0 km',time:'4 min', rating:4.2,open:true, ico:'👮',cls:'p-ico-ps'},
+    {name:'Hasthampatty Police Station', addr:'Hasthampatty, Salem', dist:'2.1 km',time:'8 min', rating:4.0,open:true, ico:'👮',cls:'p-ico-ps'},
+    {name:'Suramangalam Police Station', addr:'Suramangalam, Salem', dist:'2.4 km',time:'9 min', rating:3.9,open:true, ico:'👮',cls:'p-ico-ps'},
+  ],
+  shelter:[
+    {name:'Salem Corp. Higher Sec. School Shelter', addr:'Hasthampatty, Salem', dist:'0.8 km',time:'3 min', rating:4.0,open:true, ico:'📍',cls:'p-ico-c'},
+    {name:'Govt Arts College Relief Camp',           addr:'Yercaud Road, Salem', dist:'1.5 km',time:'6 min', rating:4.1,open:true, ico:'📍',cls:'p-ico-c'},
+    {name:'Salem Indoor Stadium Relief Camp',         addr:'Swimming Pool Road, Salem', dist:'2.1 km',time:'8 min', rating:3.8,open:false,ico:'📍',cls:'p-ico-c'},
+  ],
+};
+const nearbyTitles={
+  hospital:'🏥 Nearby Hospitals',pharmacy:'💊 Nearby Medical Stores',
+  clinic:'🩺 Clinics & Doctors',diagnostic:'🧪 Diagnostic Centers',
+  bloodbank:'🩸 Blood Banks',fire:'🚒 Fire Stations',police:'👮 Police Stations',shelter:'📍 Emergency Shelters',
+};
+const sosContacts=[
+  {name:'Amma',rel:'Mother',num:'+91 98765 11111'},
+  {name:'Appa',rel:'Father',num:'+91 98765 22222'},
+  {name:'Dr. Lakshmi',rel:'Doctor',num:'+91 98765 33333'},
+];
+let medID={name:'Karthik Subramaniam',blood:'O+',allergies:'Penicillin, Dust',diseases:'Type 2 Diabetes',meds:'Metformin 500mg',insurance:'LIC-HEALTH-884421',emContact:'Priya · +91 98765 11111'};
+let records=[];
+
+// ══ TOAST ══
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),3500);
+}
+
+// ══ DRAWER ══
+function toggleDrawer(){
+  document.getElementById('drawer').classList.toggle('on');
+  document.getElementById('drawerOverlay').classList.toggle('on');
+  renderDoctors();
+}
+
+// ══ MODALS ══
+function openM(id){document.getElementById(id).classList.add('on');}
+function closeM(id){document.getElementById(id).classList.remove('on');}
+
+// ══ TABS ══
+function switchTab(groupId,idx){
+  const wrap=document.getElementById(groupId);
+  const panes=wrap.querySelectorAll('.tab-pane');
+  const btns=wrap.closest('.mbox').querySelectorAll('.tab-btn');
+  panes.forEach((p,i)=>p.classList.toggle('active',i===idx));
+  btns.forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+
+// ══ DOCTORS ══
+function renderDoctors(list=doctors){
+  const ul=document.getElementById('doctorList');
+  if(!ul) return;
+  ul.innerHTML='';
+  if(!list.length){ul.innerHTML='<li class="d-not-found">No doctors found.</li>';return;}
+  list.forEach(d=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<strong>${d.name}</strong><br>${d.city}, ${d.state}<br>🎓 ${d.qualification}`;
+    ul.appendChild(li);
+  });
+}
+function filterDoctors(){
+  const q=document.getElementById('searchBox').value.toLowerCase();
+  const sort=document.getElementById('filterBy').value;
+  let f=doctors.filter(d=>d.name.toLowerCase().includes(q));
+  if(sort==='city') f.sort((a,b)=>a.city.localeCompare(b.city));
+  else if(sort==='state') f.sort((a,b)=>a.state.localeCompare(b.state));
+  else f.sort((a,b)=>a.name.localeCompare(b.name));
+  renderDoctors(f);
+}
+
+// ══ AMBULANCE ══
+function renderAmb(list=ambulances){
+  const el=document.getElementById('ambList');
+  if(!list.length){el.innerHTML='<p style="text-align:center;color:var(--ink-4);font-size:13px;padding:16px;">No results.</p>';return;}
+  el.innerHTML=list.map(a=>`
+    <div class="svc-card">
+      <div class="svc-head"><span class="badge b-amb">${a.id}</span><span class="svc-name">${a.driver}</span>
+        <span class="svc-status ${a.status==='Available'?'s-avail':'s-busy'}" style="margin-left:auto;">${a.status}</span></div>
+      <div class="svc-detail">🚑 ${a.plate} · Age ${a.age}<br>🏥 ${a.equipped}<br><a class="call-link" href="tel:${a.contact}">📞 ${a.contact}</a></div>
+    </div>`).join('');
+}
+function filterAmb(){
+  const q=document.getElementById('ambQ').value.toLowerCase();
+  renderAmb(ambulances.filter(a=>a.id.toLowerCase().includes(q)||a.driver.toLowerCase().includes(q)));
+}
+
+// ══ POLICE ══
+function renderPolice(list=policeStations){
+  const el=document.getElementById('polList');
+  if(!list.length){el.innerHTML='<p style="text-align:center;color:var(--ink-4);font-size:13px;padding:16px;">No results.</p>';return;}
+  el.innerHTML=list.map(p=>`
+    <div class="svc-card">
+      <div class="svc-head"><span class="badge b-pol">${p.id}</span><span class="svc-name">${p.name}</span>
+        <span class="svc-status s-avail" style="margin-left:auto;">${p.status}</span></div>
+      <div class="svc-detail">👮 ${p.officer}<br>📍 ${p.address}<br>🚔 Units on duty: ${p.units}<br><a class="call-link" href="tel:${p.contact}">📞 ${p.contact}</a></div>
+    </div>`).join('');
+}
+function filterPolice(){
+  const q=document.getElementById('polQ').value.toLowerCase();
+  renderPolice(policeStations.filter(p=>p.name.toLowerCase().includes(q)||p.id.toLowerCase().includes(q)));
+}
+
+// ══ NEARBY (location-aware) ══
+function openNearby(type){
+  document.getElementById('nearbyTitle').textContent=nearbyTitles[type]||'Nearby Places';
+  const usingGPS=!!userLocation;
+  document.getElementById('nearbySub').textContent=usingGPS
+    ? `Sorted by distance from your current location · updated just now`
+    : `Showing results around Salem, Tamil Nadu · allow location for personalised distances`;
+  const ngc=document.getElementById('nearbyGeoCard');
+  if(usingGPS){
+    ngc.classList.add('granted');
+    ngc.innerHTML=`<span class="geo-ico">✅</span><div class="geo-text"><strong>Using your location</strong>${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}</div>`;
+  } else {
+    ngc.classList.remove('granted');
+    ngc.innerHTML=`<span class="geo-ico">📍</span><div class="geo-text">Allow location access to find places near <strong>you</strong> instead of Salem center.</div><button class="geo-btn" onclick="requestLocation(false)">Allow</button>`;
+  }
+  const list=document.getElementById('nearbyList');
+  list.innerHTML='<div class="loading"><div class="spinner"></div><br>Searching nearby…</div>';
+  openM('nearbyM');
+  setTimeout(()=>{
+    let places=[...(nearbyDB[type]||[])];
+    // simulate Google-style distance re-sort when GPS is available
+    if(usingGPS){
+      places=places.map(p=>({...p})).sort((a,b)=>parseFloat(a.dist)-parseFloat(b.dist));
+    }
+    if(!places.length){list.innerHTML='<p style="text-align:center;color:var(--ink-4);padding:20px;">No places found nearby.</p>';return;}
+    list.innerHTML=places.map(p=>{
+      const mapsQuery=encodeURIComponent(p.name+' '+p.addr);
+      const mapsUrl=usingGPS
+        ? `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${mapsQuery}`
+        : `https://www.google.com/maps/search/${mapsQuery}`;
+      return `
+      <div class="place-card">
+        <div class="p-ico-box ${p.cls}">${p.ico}</div>
+        <div style="flex:1;">
+          <div class="p-name">${p.name}</div>
+          <div class="p-addr">📍 ${p.addr}</div>
+          <div class="p-meta">
+            <span class="p-rating">⭐ ${p.rating}</span>
+            <span class="p-dist">📏 ${p.dist}</span>
+            <span class="p-time">🚗 ${p.time}</span>
+            <span class="p-open ${p.open?'open-y':'open-n'}">${p.open?'Open Now':'Closed'}</span>
+          </div>
+          <a class="maps-btn" href="${mapsUrl}" target="_blank">🗺️ ${usingGPS?'Navigate from here':'View on Maps'}</a>
+        </div>
+      </div>`;
+    }).join('');
+  },750);
+}
+
+// ══ EMERGENCY FLOW ══
+function sendEmergency(){openM('warningM');}
+function proceedEmergency(){closeM('warningM');openM('emergTypeM');}
+function handleAccident(){closeM('emergTypeM');openM('accidentM');geoBarUpdate('geoBarAcc');toast('🚔 Police alerted!');}
+function handleMedical() {closeM('emergTypeM');openM('medicalM'); geoBarUpdate('geoBarMed');toast('🚑 Ambulance dispatched!');}
+function handleFire()    {closeM('emergTypeM');openM('fireM');    toast('🚒 Fire service alerted!');}
+function handleOther()   {closeM('emergTypeM');openM('otherM');   toast('🔴 Emergency reported.');}
+
+function geoBarUpdate(id){
+  const el=document.getElementById(id);
+  if(userLocation){
+    el.classList.add('granted');
+    el.innerHTML=`<span class="geo-ico">✅</span><div class="geo-text"><strong>Location shared</strong>${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}</div>`;
+  } else if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      pos=>{
+        userLocation={lat:pos.coords.latitude,lng:pos.coords.longitude,label:'Your current location'};
+        el.classList.add('granted');
+        el.innerHTML=`<span class="geo-ico">✅</span><div class="geo-text"><strong>Location shared</strong>${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}</div>`;
+      },
+      ()=>{
+        el.classList.add('denied');
+        el.innerHTML=`<span class="geo-ico">📍</span><div class="geo-text"><strong>Using default</strong>Salem, Tamil Nadu (enable GPS for live tracking)</div>`;
+      }
+    );
+  }
+}
+
+// ══ SOS ══
+function renderSOSContacts(){
+  document.getElementById('sosContactsList').innerHTML=sosContacts.map(c=>`
+    <div class="svc-card" style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;">
+      <div><div style="font-weight:700;font-size:13px;">${c.name}</div><div style="font-size:11px;color:var(--ink-4);">${c.rel}</div></div>
+      <div style="font-size:12px;color:var(--brand-dark);font-weight:600;">${c.num}</div>
+    </div>`).join('');
+  document.getElementById('sosSentBox').style.display='none';
+  document.getElementById('sosTriggerBtn').style.display='block';
+}
+function activateSOS(){
+  document.getElementById('sosTriggerBtn').style.display='none';
+  document.getElementById('sosSentBox').style.display='block';
+  toast('🆘 SOS activated! All contacts notified.');
+}
+
+// ══ MEDICAL ID ══
+function renderIDCard(){
+  document.getElementById('renderedIDCard').innerHTML=`
+    <div class="id-top">
+      <div><div style="font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:#7A88A6;margin-bottom:4px;">Medical ID</div>
+        <div class="id-name">${medID.name}</div></div>
+      <div class="id-blood">${medID.blood}</div>
+    </div>
+    <div class="id-row">
+      <div class="id-field"><label>Allergies</label><span>${medID.allergies}</span></div>
+      <div class="id-field"><label>Conditions</label><span>${medID.diseases}</span></div>
+      <div class="id-field"><label>Medications</label><span>${medID.meds}</span></div>
+      <div class="id-field"><label>Insurance</label><span>${medID.insurance}</span></div>
+    </div>
+    <div class="id-field" style="margin-bottom:8px;"><label>Emergency Contact</label><span>${medID.emContact}</span></div>
+    <div class="id-qr"><div class="qr-canvas"><span style="font-size:20px;">📱</span><span>SCAN ME</span><span style="font-size:9px;color:var(--ink-4);">MediHelp ID</span></div>
+      <div style="font-size:9.5px;color:#7A88A6;margin-top:5px;">Scan to view Medical ID</div></div>`;
+}
+function saveID(){
+  medID={name:document.getElementById('midName').value,blood:document.getElementById('midBlood').value,
+    allergies:document.getElementById('midAllergies').value,diseases:document.getElementById('midDiseases').value,
+    meds:document.getElementById('midMeds').value,insurance:document.getElementById('midInsurance').value,
+    emContact:document.getElementById('midEmContact').value};
+  renderIDCard();switchTab('midTab',0);
+  document.getElementById('offlineMID').innerHTML=`<strong>Name:</strong> ${medID.name}<br><strong>Blood:</strong> ${medID.blood}<br><strong>Allergies:</strong> ${medID.allergies}<br><strong>Emergency:</strong> ${medID.emContact}`;
+  toast('✅ Medical ID saved.');
+}
+
+// ══ BLOOD ══
+const bloodTypes=[
+  {bg:'A+',units:14,cls:'bc-yes'},{bg:'A−',units:3,cls:'bc-low'},
+  {bg:'B+',units:19,cls:'bc-yes'},{bg:'B−',units:1,cls:'bc-no'},
+  {bg:'O+',units:24,cls:'bc-yes'},{bg:'O−',units:5,cls:'bc-low'},
+  {bg:'AB+',units:8,cls:'bc-yes'},{bg:'AB−',units:0,cls:'bc-no'},
+];
+function renderBlood(){
+  document.getElementById('bloodGrid').innerHTML=bloodTypes.map(b=>`<div class="blood-chip ${b.cls}"><span class="bg">${b.bg}</span><span class="units">${b.units>0?b.units+' units':'Unavail.'}</span></div>`).join('');
+  document.getElementById('bloodBankList').innerHTML=nearbyDB.bloodbank.map(p=>`
+    <div class="place-card">
+      <div class="p-ico-box ${p.cls}">${p.ico}</div>
+      <div style="flex:1;"><div class="p-name">${p.name}</div><div class="p-addr">📍 ${p.addr}</div>
+        <div class="p-meta"><span class="p-dist">📏 ${p.dist}</span><span class="p-time">🚗 ${p.time}</span><span class="p-open open-y">Open 24/7</span></div>
+        <a class="maps-btn" href="https://www.google.com/maps/search/${encodeURIComponent(p.name)}" target="_blank">🗺️ Navigate</a>
+      </div></div>`).join('');
+}
+
+// ══ BEDS ══
+const bedHospitals=[
+  {name:'Vinayaka Mission Hospital',icu:5, gen:26,oxy:7, vent:2},
+  {name:'SKS Hospital',             icu:9, gen:48,oxy:13,vent:3},
+  {name:'Sri Gokulam Hospital',     icu:6, gen:30,oxy:9, vent:1},
+];
+function renderBeds(){
+  document.getElementById('bedHospList').innerHTML=bedHospitals.map(h=>`
+    <div class="svc-card">
+      <div class="svc-head"><span class="svc-name">🏥 ${h.name}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-top:6px;">
+        <div style="text-align:center;font-size:11.5px;"><div style="font-family:Manrope;font-size:17px;font-weight:800;color:#D92D20;">${h.icu}</div>ICU</div>
+        <div style="text-align:center;font-size:11.5px;"><div style="font-family:Manrope;font-size:17px;font-weight:800;color:#0E7C66;">${h.gen}</div>General</div>
+        <div style="text-align:center;font-size:11.5px;"><div style="font-family:Manrope;font-size:17px;font-weight:800;color:#1570EF;">${h.oxy}</div>Oxygen</div>
+        <div style="text-align:center;font-size:11.5px;"><div style="font-family:Manrope;font-size:17px;font-weight:800;color:#6941C6;">${h.vent}</div>Ventil.</div>
+      </div></div>`).join('');
+}
+
+// ══ AI SYMPTOM CHECKER ══
+const commonSymptoms=['Fever','Cough','Headache','Chest Pain','Nausea','Breathlessness','Dizziness','Fatigue','Vomiting','Rash'];
+const symptomDB={
+  'fever cough headache':{disease:'Viral Flu / COVID-19',severity:'Moderate',urgent:false,advice:'Rest, hydrate, paracetamol. If fever > 3 days, visit a doctor.'},
+  'chest pain breathlessness':{disease:'Cardiac / Respiratory Emergency',severity:'CRITICAL',urgent:true,advice:'Call 108 immediately. Sit upright, loosen clothing.'},
+  'fever rash':{disease:'Dengue Fever / Chickenpox',severity:'High',urgent:true,advice:'Visit hospital now. Avoid NSAIDs for dengue.'},
+  'headache dizziness nausea':{disease:'Migraine / Vertigo',severity:'Low-Moderate',urgent:false,advice:'Rest in a dark room. If severe or sudden onset, seek care.'},
+  'vomiting nausea':{disease:'Food Poisoning / Gastroenteritis',severity:'Moderate',urgent:false,advice:'ORS, light diet. Visit if symptoms persist over 24 hours.'},
+  'fatigue':{disease:'Anaemia / Thyroid / Diabetes',severity:'Low',urgent:false,advice:'Blood tests recommended. Ensure proper nutrition and rest.'},
+};
+function renderSymptomChips(){
+  document.getElementById('symptomChips').innerHTML=commonSymptoms.map(s=>`<span class="symptom-chip" onclick="addSymptom('${s}')">${s}</span>`).join('');
+}
+function addSymptom(s){
+  const inp=document.getElementById('symptomInput');const cur=inp.value.trim();
+  inp.value=cur?cur+', '+s:s;
+}
+function checkSymptoms(){
+  const inp=document.getElementById('symptomInput').value.toLowerCase().trim();
+  if(!inp){toast('⚠️ Please enter symptoms.');return;}
+  const res=document.getElementById('aiResult');
+  res.innerHTML='<div class="loading"><div class="spinner"></div><br>Analysing…</div>';
+  setTimeout(()=>{
+    let match=null;
+    for(const key of Object.keys(symptomDB)){
+      const terms=key.split(' ');
+      if(terms.some(t=>inp.includes(t))){match=symptomDB[key];break;}
+    }
+    if(!match) match={disease:'Unknown — Consult a doctor',severity:'Unknown',urgent:false,advice:"Your symptoms don't match our database. Please consult a doctor for accurate diagnosis."};
+    res.innerHTML=`<div class="ai-result"><div class="ai-lbl">Possible Condition</div>
+      <div style="font-size:13.5px;"><strong>${match.disease}</strong><br>Severity: <strong style="color:${match.urgent?'#D92D20':'#0E7C66'}">${match.severity}</strong></div>
+      <div style="margin-top:8px;font-size:12px;color:var(--ink-2);">💡 ${match.advice}</div>
+      ${match.urgent?`<div class="ai-urgent">⚠️ Visit hospital or call 108 immediately!</div>`:''}</div>
+      <p style="font-size:10px;color:var(--ink-4);text-align:center;margin-top:8px;">⚠️ AI guidance only — not a medical diagnosis. Always consult a qualified doctor.</p>`;
+  },1100);
+}
+
+// ══ DISASTER ══
+const disasterData={
+  fire:{title:'🔥 Fire Emergency',alert:'Evacuate immediately. Do not use lifts.',zones:['Salem Corp. Higher Sec. School — 0.8 km','Govt Arts College Relief Camp — 1.5 km'],num:'101'},
+  flood:{title:'🌊 Flood Emergency',alert:'Move to higher ground immediately.',zones:['Salem Indoor Stadium — 2.1 km','Swimming Pool Road Camp — 2.3 km'],num:'1070'},
+  quake:{title:'🌍 Earthquake Emergency',alert:'Stay under sturdy furniture. Avoid glass.',zones:['Open Ground, Yercaud Road — 1.1 km','Hasthampatty Park — 1.8 km'],num:'112'},
+  cyclone:{title:'🌀 Cyclone Emergency',alert:'Stay indoors. Secure windows and doors.',zones:['Corporation Community Hall — 1.0 km','Govt School, Suramangalam — 1.4 km'],num:'1800-1800-1070'},
+  chemical:{title:'☣️ Chemical Hazard',alert:'Cover face, move upwind, evacuate 1 km.',zones:['Salem Medical College Field — 1.1 km','Govt Hospital Grounds — 0.9 km'],num:'1800-11-9004'},
+  stampede:{title:'🚨 Stampede Emergency',alert:'Move to edges of crowd, protect head.',zones:['Nearest open area','Salem Town Police Station — 1.0 km'],num:'100'},
+};
+function showDisaster(type){
+  const d=disasterData[type];
+  document.getElementById('disasterResult').innerHTML=`
+    <div style="background:var(--red-tint);border:1.5px solid #FDA29B;border-radius:13px;padding:14px;margin-top:10px;">
+      <div style="font-weight:800;font-size:14.5px;margin-bottom:8px;">${d.title}</div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--red-dark);margin-bottom:10px;">⚠️ ${d.alert}</div>
+      <div>${d.zones.map(z=>`<div class="zone-item">✅ <span>${z}</span></div>`).join('')}</div>
+      <a class="call-link" href="tel:${d.num}" style="margin-top:8px;display:inline-flex;">📞 Emergency: ${d.num}</a>
+    </div>`;
+}
+
+// ══ VIDEO CALL ══
+let vcActive=false;
+function startVCall(){
+  vcActive=true;document.getElementById('vcStartBtn').style.display='none';
+  document.getElementById('vcStatus').textContent='Connecting to Dr. Lakshmi Narayanan…';
+  setTimeout(()=>{if(vcActive) document.getElementById('vcStatus').textContent='🟢 Connected · 00:00';},1800);
+  toast('📹 Connecting to doctor…');
+}
+function endVCall(){vcActive=false;document.getElementById('vcStartBtn').style.display='block';document.getElementById('vcStatus').textContent='Dr. Lakshmi Narayanan is available now';toast('📵 Call ended.');}
+
+// ══ HEAT MAP ══
+function renderHeatmap(){
+  const box=document.getElementById('heatmapBox');
+  const dots=[
+    {x:'20%',y:'35%',r:30,c:'rgba(255,82,82,.7)',l:'Five Roads Junction'},
+    {x:'55%',y:'58%',r:22,c:'rgba(255,82,82,.65)',l:'New Bus Stand'},
+    {x:'75%',y:'28%',r:18,c:'rgba(255,214,64,.7)',l:'Hasthampatty'},
+    {x:'35%',y:'70%',r:24,c:'rgba(255,82,82,.6)',l:'Junction Main Rd'},
+    {x:'62%',y:'18%',r:14,c:'rgba(105,240,174,.6)',l:'Ammapet'},
+    {x:'85%',y:'62%',r:12,c:'rgba(105,240,174,.5)',l:'Suramangalam'},
+  ];
+  box.innerHTML=dots.map((d,i)=>`
+    <div class="hm-dot" style="left:${d.x};top:${d.y};width:${d.r*2}px;height:${d.r*2}px;background:${d.c};margin-left:-${d.r}px;margin-top:-${d.r}px;animation-delay:${i*.5}s;"></div>
+    <div class="hm-label" style="left:calc(${d.x} + ${d.r+4}px);top:${d.y};">${d.l}</div>`).join('');
+}
+
+// ══ QUEUE ══
+function renderQueue(){
+  document.getElementById('queueHospList').innerHTML=bedHospitals.map(h=>{
+    const wait=Math.floor(Math.random()*40+10);const pts=Math.floor(Math.random()*20+5);
+    return `<div class="svc-card"><div class="svc-head"><span class="svc-name">🏥 ${h.name}</span></div>
+      <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+        <span style="font-size:11.5px;background:var(--amber-tint);color:var(--amber-dark);border-radius:20px;padding:3px 10px;">⏱ ${wait} min wait</span>
+        <span style="font-size:11.5px;background:var(--brand-tint);color:var(--brand-dark);border-radius:20px;padding:3px 10px;">👥 ${pts} patients</span>
+      </div></div>`;
+  }).join('');
+}
+
+// ══ RECORDS ══
+function renderRecords(){
+  const el=document.getElementById('recListPane');
+  if(!records.length){el.innerHTML='<div style="text-align:center;color:var(--ink-4);padding:24px;font-size:13px;">No records yet. Add your first record.</div>';return;}
+  el.innerHTML=records.map(r=>`
+    <div class="record-card"><div class="rc-head"><span class="rc-type">${r.type}</span><span class="rc-date">${r.date}</span></div>
+      <div class="rc-name">${r.name}</div><div class="rc-detail">🏥 ${r.doc} ${r.notes?'· '+r.notes:''}</div></div>`).join('');
+}
+function addRecord(){
+  const name=document.getElementById('recName').value.trim();
+  if(!name){toast('⚠️ Record name required.');return;}
+  records.unshift({type:document.getElementById('recType').value,name,
+    doc:document.getElementById('recDoc').value||'Unknown',
+    date:document.getElementById('recDate').value||new Date().toLocaleDateString('en-IN'),
+    notes:document.getElementById('recNotes').value});
+  ['recName','recDoc','recDate','recNotes'].forEach(id=>document.getElementById(id).value='');
+  switchTab('recTab',0);renderRecords();toast('✅ Record saved.');
+}
+
+// ══ LOCATION SHARE ══
+function renderLocShare(){
+  const bar=document.getElementById('locShareGeoBar');
+  if(userLocation){
+    bar.classList.add('granted');
+    bar.innerHTML=`<span class="geo-ico">✅</span><div class="geo-text"><strong>Sharing live location</strong>${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}</div>`;
+  } else {
+    bar.innerHTML=`<span class="geo-ico">📍</span><div class="geo-text">Detecting your location…</div><button class="geo-btn" onclick="requestLocation(true);renderLocShare();">Allow</button>`;
+  }
+  const contacts=[...sosContacts,{name:'Hospital',rel:'Salem Govt Medical College',num:'+91 427 2334000'}];
+  document.getElementById('locShareContacts').innerHTML=contacts.map((c,i)=>`
+    <div class="loc-share-item">
+      <div style="display:flex;align-items:center;gap:9px;"><span style="font-size:19px;">${i<3?'👤':'🏥'}</span>
+        <div><div style="font-weight:700;font-size:13px;">${c.name}</div><div style="font-size:11px;color:var(--ink-4);">${c.rel}</div></div></div>
+      <button class="toggle-btn" onclick="this.classList.toggle('on')"></button>
+    </div>`).join('');
+}
+
+// ══ NOTIFICATIONS ══
+const notifs=[
+  {ico:'🦟',title:'Dengue Alert — Salem',detail:'Surge reported in Hasthampatty & Ammapet zones. Use mosquito repellent.',time:'2 hrs ago'},
+  {ico:'⛈️',title:'Heavy Rain Warning',detail:'IMD alert: Moderate to heavy rain expected tonight near Salem district. Avoid low-lying areas.',time:'4 hrs ago'},
+  {ico:'💊',title:'Medicine Reminder',detail:'Metformin 500mg — Take with dinner today at 8 PM.',time:'Scheduled'},
+  {ico:'🏥',title:'Appointment Reminder',detail:'Dr. Lakshmi Narayanan — Tomorrow 10:30 AM, Salem Govt Medical College Hospital.',time:'Tomorrow'},
+  {ico:'🩸',title:'Blood Donation Camp',detail:'Salem Red Cross drive at Shevapet Community Hall on Saturday.',time:'3 days ago'},
+];
+function renderNotifs(){
+  document.getElementById('notifList').innerHTML=notifs.map(n=>`
+    <div class="notif-item"><div class="notif-ico">${n.ico}</div>
+      <div class="notif-text"><div class="nt">${n.title}</div><div class="nd">${n.detail}</div><div class="nt-time">${n.time}</div></div></div>`).join('');
+}
+
+// ══ OFFLINE MID ══
+function initOfflineMID(){
+  document.getElementById('offlineMID').innerHTML=`<strong>Name:</strong> ${medID.name}<br><strong>Blood:</strong> ${medID.blood}<br><strong>Allergies:</strong> ${medID.allergies}<br><strong>Emergency:</strong> ${medID.emContact}`;
+}
+
+// ══ INIT ══
+window.addEventListener('load',()=>{
+  renderAmb();renderPolice();renderBlood();renderBeds();
+  renderSymptomChips();renderHeatmap();renderQueue();
+  renderRecords();renderNotifs();initOfflineMID();renderIDCard();renderDoctors();
+});
+
+// attach geo-prompt to sosM and locShareM open
+document.querySelectorAll('[onclick="openM(\'sosM\')"]').forEach(el=>{
+  el.addEventListener('click',()=>{renderSOSContacts();geoBarUpdate('sosGeoBar');});
+});
+document.querySelectorAll('[onclick="openM(\'locShareM\')"]').forEach(el=>{
+  el.addEventListener('click',renderLocShare);
+});
+
+/*
+ ════════════════════════════════════════════════════════════════
+ PRODUCTION NOTE — connecting real Google Places data
+ ════════════════════════════════════════════════════════════════
+ This demo uses a static nearbyDB scoped to Salem so it works without
+ an API key. To wire up live Google Places results:
+
+ 1. Get a Google Maps Platform API key with "Places API" enabled.
+ 2. Create a small backend endpoint (Node/Vercel function) at /api/nearby
+    that calls:
+    https://maps.googleapis.com/maps/api/place/nearbysearch/json
+      ?location={lat},{lng}&radius=5000&type=hospital&key=YOUR_KEY
+    (NEVER call this directly from the browser — it exposes your key.)
+ 3. Replace openNearby() above with a fetch('/api/nearby?type=...&lat=...&lng=...')
+    call, and map the returned `results[]` array into the same place-card
+    markup already used here (name, vicinity, rating, opening_hours.open_now,
+    geometry.location for distance, and place_id for the "View on Maps" link:
+    https://www.google.com/maps/place/?q=place_id:{place_id}).
+ ════════════════════════════════════════════════════════════════
+*/
+</script>
+</body>
+</html>
