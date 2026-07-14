@@ -30,6 +30,7 @@ a{color:inherit;text-decoration:none;}
 .tb-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--brand-light),var(--brand-dark));display:flex;align-items:center;justify-content:center;font-size:16px;}
 .tb-text{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:#fff;}
 .tb-text span{color:var(--brand-light);}
+.tb-nav-links{display:flex;align-items:center;gap:18px;}
 .tb-back{font-size:12.5px;font-weight:600;color:#9AA7C2;display:flex;align-items:center;gap:6px;cursor:pointer;}
 .tb-back:hover{color:#fff;}
 /* ═══ SHELL ═══ */
@@ -97,20 +98,24 @@ h1{font-family:'Manrope',sans-serif;font-size:clamp(24px,4vw,32px);font-weight:8
 .chip.on{background:var(--brand-tint);border-color:var(--brand-light);color:var(--brand-dark);}
 .dev-note{max-width:760px;margin:26px auto 0;padding:14px 18px;background:var(--navy-950);color:#9AA7C2;border-radius:12px;font-size:11.5px;line-height:1.7;}
 .dev-note strong{color:#fff;}
+.dev-note a{color:#A6F4C5;text-decoration:underline;}
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <div class="tb-logo"><div class="tb-mark">⚕️</div><div class="tb-text">Medi<span>Help</span></div></div>
-  <a class="tb-back" href="index.html">← Back to home</a>
+  <div class="tb-nav-links">
+    <a class="tb-back" href="developer.html">About the developer</a>
+    <a class="tb-back" href="index.html">← Back to home</a>
+  </div>
 </header>
 
 <div class="shell">
   <div class="head">
     <div class="eyebrow">Create your account</div>
     <h1>Set up your Medical ID</h1>
-    <p class="sub">Takes about 3 minutes. This information is shown to emergency responders and hospitals only when you trigger an SOS — keep it accurate.</p>
+    <p class="sub">Takes about 3 minutes. This information is shown to emergency responders and hospitals only when you trigger an SOS — keep it accurate. It also powers the Medical ID card and SOS contacts on the MediHelp homepage.</p>
   </div>
 
   <div class="progress-wrap" id="progressWrap"></div>
@@ -217,6 +222,10 @@ h1{font-family:'Manrope',sans-serif;font-size:clamp(24px,4vw,32px);font-weight:8
         <div class="step-title" style="justify-content:center;">Your Medical ID is ready</div>
         <p class="step-desc" style="margin-bottom:0;">Saved to this device. Responders will see this card if you ever trigger SOS.</p>
         <div class="id-preview" id="idPreview"></div>
+        <a href="index.html" style="text-decoration:none;display:block;">
+          <button type="button" class="btn btn-brand" style="width:100%;">Go to MediHelp Home →</button>
+        </a>
+        <p style="font-size:11px;color:var(--ink-4);margin-top:12px;">Your Medical ID, blood group and emergency contact will now appear automatically in MediHelp's Medical ID card and SOS tools.</p>
       </div>
     </div>
 
@@ -227,7 +236,7 @@ h1{font-family:'Manrope',sans-serif;font-size:clamp(24px,4vw,32px);font-weight:8
   </form>
 
   <div class="dev-note">
-    <strong>Developer note:</strong> This form persists to <code>localStorage</code> under the key <code>medihelp_users</code> so the demo works with zero backend. Before real users touch this, replace <code>saveUser()</code> with a POST to your own <code>/api/register</code> endpoint, run over HTTPS, with server-side password hashing (bcrypt/argon2) and a real database (Postgres/MySQL) instead of the browser store.
+    <strong>Developer note:</strong> This form persists to <code>localStorage</code> under the key <code>medihelp_users</code> so the demo works with zero backend, and sets <code>medihelp_current_user</code> as a simple session pointer. <a href="index.html">index.html</a> reads these same keys on load to populate the Medical ID card and SOS emergency contact. Before real users touch this, replace <code>saveUser()</code> with a POST to your own <code>/api/register</code> endpoint, run over HTTPS, with server-side password hashing (bcrypt/argon2) and a real database (Postgres/MySQL) instead of the browser store. See <a href="developer.html">developer.html</a> for the project write-up.
   </div>
 </div>
 
