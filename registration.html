@@ -235,10 +235,7 @@ h1{font-family:'Manrope',sans-serif;font-size:clamp(24px,4vw,32px);font-weight:8
     </div>
   </form>
 
-  <div class="dev-note">
-    <strong>Developer note:</strong> This form persists to <code>localStorage</code> under the key <code>medihelp_users</code> so the demo works with zero backend, and sets <code>medihelp_current_user</code> as a simple session pointer. <a href="index.html">index.html</a> reads these same keys on load to populate the Medical ID card and SOS emergency contact. Before real users touch this, replace <code>saveUser()</code> with a POST to your own <code>/api/register</code> endpoint, run over HTTPS, with server-side password hashing (bcrypt/argon2) and a real database (Postgres/MySQL) instead of the browser store. See <a href="developer.html">developer.html</a> for the project write-up.
-  </div>
-</div>
+ 
 
 <script>
 const stepNames=['Personal','Contact','Emergency','Medical','Account','Done'];
