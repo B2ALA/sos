@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Nearby Emergency Services — MediHelp Salem</title>
+<meta name="description" content="Free, live map of nearby hospitals, pharmacies, clinics, police, fire stations and ambulance services."/>
+
+<!-- Fonts (same system as the rest of MediHelp) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+
+<!-- Leaflet (free, open-source map library) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+<!-- Page styles -->
+<link rel="stylesheet" href="css/map-styles.css"/>
+</head>
+<body>
+
+<!-- ════════ TOP BAR (consistent with rest of MediHelp) ════════ -->
+<header class="topbar">
+  <div class="tb-logo"><div class="tb-mark">⚕️</div><div class="tb-text">Medi<span>Help</span></div></div>
+  <div class="tb-nav-links">
+    <a class="tb-back" href="index.html">← Back to home</a>
+  </div>
+</header>
+
+<!-- ════════ PAGE HEAD ════════ -->
+<section class="page-head">
+  <div class="ph-eyebrow">100% free · no API key · OpenStreetMap</div>
+  <h1>Nearby Emergency Services</h1>
+  <p class="ph-sub">Live hospitals, pharmacies, clinics, blood banks, ambulance, police &amp; fire stations around your current location — powered by the Overpass API.</p>
+</section>
+
+<!-- ════════ MAIN APP SHELL ════════ -->
+<main class="app-shell">
+
+  <!-- ─── LEFT: MAP ─── -->
+  <section class="map-pane">
+    <div class="map-toolbar">
+      <div class="loc-status" id="locStatus">
+        <span class="loc-dot" id="locDot"></span>
+        <span id="locStatusText">Waiting for location permission…</span>
+      </div>
+      <div class="radius-control">
+        <label for="radiusSelect">Radius</label>
+        <select id="radiusSelect">
+          <option value="2000">2 km</option>
+          <option value="5000" selected>5 km</option>
+          <option value="10000">10 km</option>
+          <option value="15000">15 km</option>
+        </select>
+      </div>
+      <button class="btn-refresh" id="refreshBtn" title="Search again">🔄 Refresh</button>
+    </div>
+
+    <div id="leafletMap"></div>
+
+    <div class="map-overlay" id="mapOverlay">
+      <div class="overlay-card">
+        <div class="spinner"></div>
+        <div class="overlay-title" id="overlayTitle">Requesting your location…</div>
+        <div class="overlay-sub" id="overlaySub">Allow location access for the most accurate results.</div>
+        <button class="btn-overlay" id="overlayRetryBtn" style="display:none;">Try again</button>
+        <button class="btn-overlay btn-overlay-ghost" id="overlaySalemBtn" style="display:none;">Use Salem city center instead</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RIGHT: FILTERS + LIST ─── -->
+  <aside class="list-pane">
+    <div class="search-row">
+      <input type="text" id="nameSearch" class="search-input" placeholder="🔍 Search by name…">
+    </div>
+
+    <div class="filter-row" id="filterRow">
+      <!-- category checkboxes injected by JS (categories.js data) -->
+    </div>
+
+    <div class="results-meta" id="resultsMeta">Results will appear once your location is found.</div>
+
+    <div class="results-list" id="resultsList"></div>
+  </aside>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<!-- Leaflet JS (free, open-source) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<!-- App scripts -->
+<script src="js/categories.js"></script>
+<script src="js/overpass.js"></script>
+<script src="js/map-app.js"></script>
+</body>
+</html>
