@@ -1,0 +1,248 @@
+/* ==========================================================================
+   MediHelp — Design Tokens
+   Signature motif: the "pulse" — a heartbeat line used sparingly as a
+   loading indicator, section divider, and logo mark. It is the one visual
+   flourish the whole system is built around; everything else stays quiet.
+   ========================================================================== */
+
+:root {
+  /* Brand palette — Primary Blue / Secondary White / Accent Red / Success Green */
+  --color-primary-900: #062A57;
+  --color-primary-700: #0B4FA0;
+  --color-primary-600: #0B63CE;
+  --color-primary-500: #2E7FE0;
+  --color-primary-100: #E8F1FC;
+  --color-primary-50:  #F3F8FE;
+
+  --color-accent-600: #D62839;   /* emergency red */
+  --color-accent-100: #FCE7E9;
+
+  --color-success-600: #1B9A55;
+  --color-success-100: #E3F7EC;
+
+  --color-warning-600: #B8790C;
+  --color-warning-100: #FDF1DC;
+
+  --color-ink-900: #10192B;
+  --color-ink-700: #33415A;
+  --color-ink-500: #5B6B82;
+  --color-ink-300: #A7B2C3;
+
+  --color-surface: #FFFFFF;
+  --color-bg: #F4F7FB;
+  --color-border: #E2E8F1;
+
+  /* Typography */
+  --font-display: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Scale */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 1px 2px rgba(16, 25, 43, 0.06);
+  --shadow-md: 0 8px 24px -8px rgba(16, 25, 43, 0.16);
+  --shadow-lg: 0 20px 48px -16px rgba(16, 25, 43, 0.22);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --sidebar-w: 264px;
+  --topbar-h: 68px;
+  --banner-h: 44px;
+}
+
+[data-theme="dark"] {
+  --color-primary-100: #0F2440;
+  --color-primary-50:  #0B1B30;
+  --color-accent-100: #3A171B;
+  --color-success-100: #10301F;
+  --color-warning-100: #332609;
+
+  --color-ink-900: #EDF1F8;
+  --color-ink-700: #C7D0DE;
+  --color-ink-500: #93A0B6;
+  --color-ink-300: #5B6B82;
+
+  --color-surface: #101826;
+  --color-bg: #0A1120;
+  --color-border: #202B3E;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 20px 48px -16px rgba(0, 0, 0, 0.6);
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-ink-900);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+h1, h2, h3, h4, .stat-number, .logo-mark {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--color-primary-600); }
+
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- Pulse signature (loading / divider / logo) ---------- */
+.pulse-line {
+  width: 100%;
+  height: 28px;
+  overflow: visible;
+}
+.pulse-line path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pulse-draw path {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: pulse-draw 1.8s ease-in-out infinite;
+}
+@keyframes pulse-draw {
+  0%   { stroke-dashoffset: 240; }
+  55%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -240; }
+}
+
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--color-ink-900);
+  text-decoration: none;
+}
+.logo-mark svg { color: var(--color-accent-600); }
+.logo-mark b { color: var(--color-primary-600); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  padding: 10px 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--color-primary-600); color: #fff; }
+.btn-primary:hover { background: var(--color-primary-700); box-shadow: var(--shadow-sm); }
+.btn-accent { background: var(--color-accent-600); color: #fff; }
+.btn-accent:hover { box-shadow: var(--shadow-sm); filter: brightness(0.95); }
+.btn-success { background: var(--color-success-600); color: #fff; }
+.btn-ghost { background: transparent; color: var(--color-ink-700); border-color: var(--color-border); }
+.btn-ghost:hover { background: var(--color-primary-50); }
+.btn-outline { background: transparent; color: var(--color-primary-600); border-color: var(--color-primary-600); }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn-icon { padding: 8px; }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ---------- Form elements ---------- */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--space-4); }
+.field label { font-size: 0.82rem; font-weight: 600; color: var(--color-ink-700); }
+.field input, .field select, .field textarea {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-ink-900);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--color-primary-500);
+}
+.field-hint { font-size: 0.76rem; color: var(--color-ink-500); }
+.field-error { font-size: 0.78rem; color: var(--color-accent-600); min-height: 1em; }
+
+/* ---------- Card / badge / table shells shared everywhere ---------- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.badge-success { background: var(--color-success-100); color: var(--color-success-600); }
+.badge-danger  { background: var(--color-accent-100); color: var(--color-accent-600); }
+.badge-warning { background: var(--color-warning-100); color: var(--color-warning-600); }
+.badge-neutral { background: var(--color-primary-100); color: var(--color-primary-700); }
+
+.toast-stack {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 900;
+}
+.toast {
+  background: var(--color-ink-900);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-size: 0.85rem;
+  max-width: 320px;
+  animation: toast-in 0.2s ease;
+}
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px);} to { opacity:1; transform:none; } }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-border) 25%, var(--color-bg) 50%, var(--color-border) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-sheen 1.4s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skeleton-sheen { 0% { background-position: 200% 0;} 100% { background-position: -200% 0; } }
