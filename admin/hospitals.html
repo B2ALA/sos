@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospitals · MediHelp Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="hospitals.css">
+</head>
+<body>
+
+<div class="mh-shell">
+  <div id="mh-sidebar"></div>
+  <div class="mh-main">
+    <div id="mh-navbar"></div>
+    <div class="mh-content">
+
+      <div class="mh-toolbar">
+        <h2>Hospitals</h2>
+        <button class="mh-btn mh-btn-primary" id="mh-add-btn">+ Add hospital</button>
+      </div>
+
+      <div class="mh-table-wrap">
+        <table class="mh-table">
+          <thead>
+            <tr>
+              <th>Name</th><th>Phone</th><th>ICU beds</th><th>General beds</th><th>Verified</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="mh-table-body">
+            <tr><td colspan="6" class="mh-empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div id="mh-footer"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="common.js"></script>
+<script src="sidebar.js"></script>
+<script src="navbar.js"></script>
+<script src="footer.js"></script>
+<script src="hospitals.js"></script>
+</body>
+</html>
