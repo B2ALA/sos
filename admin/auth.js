@@ -12,12 +12,15 @@
  * Call this at the top of every protected page.
  */
 async function requireAdmin() {
-  const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-  if (sessionError || !session) {
-    window.location.href = "login.html";
-    return null;
-  }
+if (error) {
+  console.error("Supabase Auth Error:", error);
+  return {
+    ok: false,
+    message: error.message
+  };
+}
 
   const { data: adminRow, error: adminError } = await supabaseClient
     .from("admin_users")
