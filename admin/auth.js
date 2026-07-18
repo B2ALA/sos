@@ -12,15 +12,15 @@
  * Call this at the top of every protected page.
  */
 async function requireAdmin() {
-const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  const {
+    data: { session },
+    error: sessionError
+  } = await supabaseClient.auth.getSession();
 
-if (error) {
-  console.error("Supabase Auth Error:", error);
-  return {
-    ok: false,
-    message: error.message
-  };
-}
+  if (sessionError || !session) {
+    window.location.href = "login.html";
+    return null;
+  }
 
   const { data: adminRow, error: adminError } = await supabaseClient
     .from("admin_users")
@@ -35,56 +35,8 @@ if (error) {
     return null;
   }
 
-  return { session, admin: adminRow };
-}
-
-/**
- * If a valid admin session already exists, redirect away from login.
- * Call this at the top of login.html only.
- */
-async function redirectIfLoggedIn() {
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (!session) return;
-
-  const { data: adminRow } = await supabaseClient
-    .from("admin_users")
-    .select("id")
-    .eq("id", session.user.id)
-    .maybeSingle();
-
-  if (adminRow) {
-    window.location.href = "dashboard.html";
-  } else {
-    await supabaseClient.auth.signOut();
-  }
-}
-
-async function loginWithPassword(email, password) {
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-if (error) {
-  console.error("Supabase Auth Error:", error);
-
   return {
-    ok: false,
-    message: `${error.message} (${error.status ?? "no-status"})`
+    session,
+    admin: adminRow
   };
-}
-
-  const { data: adminRow } = await supabaseClient
-    .from("admin_users")
-    .select("id")
-    .eq("id", data.user.id)
-    .maybeSingle();
-
-  if (!adminRow) {
-    await supabaseClient.auth.signOut();
-    return { ok: false, message: "You are not authorized to access the Admin Panel." };
-  }
-
-  return { ok: true };
-}
-
-async function logoutAdmin() {
-  await supabaseClient.auth.signOut();
-  window.location.href = "login.html";
 }
