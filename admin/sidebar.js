@@ -29,8 +29,8 @@ function renderSidebar(activeKey) {
 
   host.innerHTML = `
     <div class="mh-sidebar-brand">
-      <div class="mh-sidebar-logo">MH</div>
-      <span class="mh-sidebar-title">MediHelp<em>Admin</em></span>
+      <div class="mh-sidebar-logo">TS</div>
+      <span class="mh-sidebar-title">MediHelp By TS GROUPS<em>Admin</em></span>
     </div>
     <nav class="mh-sidebar-nav">${items}</nav>
     <button class="mh-sidebar-logout" id="mh-logout-btn">
