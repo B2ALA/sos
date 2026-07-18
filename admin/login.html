@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login · MediHelp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="mh-login-wrap">
+  <div class="mh-login-card">
+    <div class="mh-login-brand">
+      <div class="mh-login-logo">MH</div>
+      <span>MediHelp <em>Admin</em></span>
+    </div>
+    <h1>Sign in</h1>
+    <p class="mh-login-sub">Emergency healthcare platform — admin panel</p>
+
+    <form id="mh-login-form">
+      <label class="mh-field">
+        <span>Email</span>
+        <input type="email" name="email" required autocomplete="username" placeholder="you@example.com"/>
+      </label>
+      <label class="mh-field">
+        <span>Password</span>
+        <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••"/>
+      </label>
+      <div id="mh-login-error" class="mh-login-error" hidden></div>
+      <button type="submit" class="mh-btn mh-btn-primary mh-login-submit">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="login.js"></script>
+</body>
+</html>
