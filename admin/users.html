@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Users · MediHelp Admin BY TS GROUPS </title>
+<link rel="stylesheet" href="dashboard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="users.css">
+</head>
+<body>
+
+<div class="mh-shell">
+  <div id="mh-sidebar"></div>
+  <div class="mh-main">
+    <div id="mh-navbar"></div>
+    <div class="mh-content">
+
+      <p class="mh-note">
+        This table manages users created directly through the admin panel. It's separate from
+        visitors who register through the public site's sign-up form, which is stored locally
+        in their own browser and isn't synced here.
+      </p>
+
+      <div class="mh-toolbar">
+        <h2>Users</h2>
+        <button class="mh-btn mh-btn-primary" id="mh-add-btn">+ Add user</button>
+      </div>
+
+      <div class="mh-table-wrap">
+        <table class="mh-table">
+          <thead>
+            <tr><th>Full name</th><th>Phone</th><th>Email</th><th>Blood group</th><th>Added</th><th></th></tr>
+          </thead>
+          <tbody id="mh-table-body">
+            <tr><td colspan="6" class="mh-empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div id="mh-footer"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="common.js"></script>
+<script src="sidebar.js"></script>
+<script src="navbar.js"></script>
+<script src="footer.js"></script>
+<script src="users.js"></script>
+</body>
+</html>
