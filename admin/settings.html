@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings · MediHelp Admin BY TS GROUPS </title>
+<link rel="stylesheet" href="dashboard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="settings.css">
+</head>
+<body>
+
+<div class="mh-shell">
+  <div id="mh-sidebar"></div>
+  <div class="mh-main">
+    <div id="mh-navbar"></div>
+    <div class="mh-content">
+
+      <div class="mh-card mh-settings-card">
+        <h2 class="mh-card-title">Account</h2>
+        <div class="mh-settings-row">
+          <span class="mh-settings-label">Signed in as</span>
+          <span id="mh-settings-email" class="mh-settings-value">—</span>
+        </div>
+        <div class="mh-settings-row">
+          <span class="mh-settings-label">Authorization</span>
+          <span class="mh-settings-value">Sole administrator (verified via <code>admin_users</code>)</span>
+        </div>
+        <div class="mh-settings-actions">
+          <button class="mh-btn mh-btn-ghost" id="mh-reset-btn">Send password reset email</button>
+          <button class="mh-btn mh-btn-danger" id="mh-logout-btn2">Log out</button>
+        </div>
+        <p id="mh-reset-status" class="mh-reset-status" hidden></p>
+      </div>
+
+      <div class="mh-card mh-settings-card">
+        <h2 class="mh-card-title">About this panel</h2>
+        <p class="mh-about-text">
+          MediHelp Admin is a self-contained panel under <code>/admin</code>. It reads and writes
+          to the same Supabase project as the public site but shares no files with it. Row Level
+          Security restricts every table to the single verified admin account.
+        </p>
+      </div>
+
+    </div>
+    <div id="mh-footer"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="common.js"></script>
+<script src="sidebar.js"></script>
+<script src="navbar.js"></script>
+<script src="footer.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>
