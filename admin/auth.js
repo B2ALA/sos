@@ -1,15 +1,12 @@
 /* =====================================================================
    auth.js
    Shared authentication + authorization helpers.
-   Depends on: supabase-config.js (must be loaded first)
+   Depends on: supabaseConfig.js (must be loaded first)
 ===================================================================== */
 
 /**
- * Confirms there is a valid Supabase session AND that the signed-in
- * user exists in admin_users (the only source of truth for who is
- * allowed into the panel — no email or UID is hardcoded here).
- * On any failure: signs out, redirects to login.html with a message.
- * Call this at the top of every protected page.
+ * Checks whether there is a valid session and whether
+ * the logged-in user is an authorized admin.
  */
 async function requireAdmin() {
   const {
@@ -39,4 +36,75 @@ async function requireAdmin() {
     session,
     admin: adminRow
   };
+}
+
+/**
+ * If already logged in as an admin,
+ * redirect directly to dashboard.
+ */
+async function redirectIfLoggedIn() {
+  const {
+    data: { session }
+  } = await supabaseClient.auth.getSession();
+
+  if (!session) return;
+
+  const { data: adminRow } = await supabaseClient
+    .from("admin_users")
+    .select("id")
+    .eq("id", session.user.id)
+    .maybeSingle();
+
+  if (adminRow) {
+    window.location.href = "dashboard.html";
+  } else {
+    await supabaseClient.auth.signOut();
+  }
+}
+
+/**
+ * Login using Supabase Authentication.
+ */
+async function loginWithPassword(email, password) {
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if (error) {
+    console.error("Supabase Auth Error:", error);
+
+    return {
+      ok: false,
+      message: error.message
+    };
+  }
+
+  const { data: adminRow, error: adminError } = await supabaseClient
+    .from("admin_users")
+    .select("id")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
+  if (adminError || !adminRow) {
+    await supabaseClient.auth.signOut();
+
+    return {
+      ok: false,
+      message: "You are not authorized to access the Admin Panel."
+    };
+  }
+
+  return {
+    ok: true
+  };
+}
+
+/**
+ * Logout current admin.
+ */
+async function logoutAdmin() {
+  await supabaseClient.auth.signOut();
+  window.location.href = "login.html";
 }
