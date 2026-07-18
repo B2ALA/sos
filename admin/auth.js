@@ -61,9 +61,14 @@ async function redirectIfLoggedIn() {
 
 async function loginWithPassword(email, password) {
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error) {
-    return { ok: false, message: "Invalid Email or Password" };
-  }
+if (error) {
+  console.error("Supabase Auth Error:", error);
+
+  return {
+    ok: false,
+    message: `${error.message} (${error.status ?? "no-status"})`
+  };
+}
 
   const { data: adminRow } = await supabaseClient
     .from("admin_users")
