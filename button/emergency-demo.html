@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MediHelp Admin — Emergency Dashboard (Standalone Demo)</title>
+<link rel="stylesheet" href="https://unpkg.com/[email protected]/dist/leaflet.css"/>
+<link rel="stylesheet" href="emergency-map.css"/>
+<style>
+  body{font-family:Inter,-apple-system,sans-serif;background:#F2F4F7;margin:0;padding:24px;}
+  .page-head{max-width:1200px;margin:0 auto 18px;}
+  .page-head h1{font-size:20px;margin:0 0 4px;}
+  .page-head p{font-size:13px;color:#667085;margin:0;}
+  .page-wrap{max-width:1200px;margin:0 auto;}
+</style>
+</head>
+<body>
+  <div class="page-head">
+    <h1>🚨 Emergency Monitoring — Standalone Demo</h1>
+    <p>This is a test harness only. In the real admin panel, drop <code>&lt;div id="mhEmergencyRoot"&gt;&lt;/div&gt;</code>
+       into the existing Emergency page and call <code>MediHelpEmergency.init('mhEmergencyRoot')</code> — see
+       docs/INTEGRATION_GUIDE.md.</p>
+  </div>
+  <div class="page-wrap">
+    <div id="mhEmergencyRoot"></div>
+  </div>
+
+  <script src="https://unpkg.com/[email protected]/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../shared/supabase-client.js"></script>
+  <script src="emergency-map.js"></script>
+  <script>
+    MediHelpEmergency.init('mhEmergencyRoot');
+  </script>
+</body>
+</html>
