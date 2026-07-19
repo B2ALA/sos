@@ -1,0 +1,108 @@
+/* ============================================================================
+ * MediHelp — SOS Module Styles
+ * Namespaced under .mh-sos so nothing here can collide with the existing
+ * site CSS. Colors fall back to MediHelp's own tokens when present on the
+ * page, otherwise use these local defaults — so this file is safe to drop
+ * into any page, including ones that don't already define them.
+ * ==========================================================================*/
+.mh-sos{
+  --mh-brand:      var(--brand, #0E7C66);
+  --mh-brand-dark: var(--brand-dark, #0A5C4C);
+  --mh-brand-tint: var(--brand-tint, #E8F7F2);
+  --mh-red:        var(--red, #D92D20);
+  --mh-red-dark:   var(--red-dark, #B42318);
+  --mh-red-tint:   var(--red-tint, #FEF3F2);
+  --mh-ink:        var(--ink, #101828);
+  --mh-ink-2:      var(--ink-2, #344054);
+  --mh-ink-3:      var(--ink-3, #667085);
+  --mh-ink-4:      var(--ink-4, #98A2B3);
+  --mh-line:       var(--line, #E4E7EC);
+  --mh-line-2:     var(--line-2, #EAECF0);
+  --mh-bg:         var(--bg, #F9FAFB);
+  font-family:'Inter',-apple-system,sans-serif;
+}
+
+/* Backdrop + card reuse the same modal pattern as the rest of the site */
+.mh-sos .mh-backdrop{
+  display:none;position:fixed;inset:0;z-index:900;background:rgba(16,24,40,.6);
+  backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:16px;
+}
+.mh-sos .mh-backdrop.on{display:flex;}
+.mh-sos .mh-box{
+  background:#fff;border-radius:20px;width:100%;max-width:440px;
+  box-shadow:0 20px 24px -4px rgba(16,24,40,.12),0 8px 8px -4px rgba(16,24,40,.05);
+  max-height:90vh;overflow-y:auto;animation:mhIn .2s cubic-bezier(.4,0,.2,1);
+}
+@keyframes mhIn{from{transform:scale(.96) translateY(8px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.mh-sos .mh-head{
+  display:flex;align-items:center;justify-content:space-between;padding:18px 20px;
+  border-bottom:1px solid var(--mh-line-2);position:sticky;top:0;background:#fff;
+  border-radius:20px 20px 0 0;
+}
+.mh-sos .mh-head h3{font-size:16px;font-weight:800;color:var(--mh-ink);display:flex;gap:8px;align-items:center;}
+.mh-sos .mh-close{
+  width:30px;height:30px;border:none;background:var(--mh-bg);border-radius:50%;
+  cursor:pointer;font-size:13px;color:var(--mh-ink-3);
+}
+.mh-sos .mh-body{padding:18px 20px 20px;}
+.mh-sos .mh-sub{font-size:12.5px;color:var(--mh-ink-3);line-height:1.6;margin-bottom:12px;}
+
+/* GPS status strip */
+.mh-sos .mh-geo{
+  display:flex;align-items:center;gap:10px;background:var(--mh-bg);border:1.5px solid var(--mh-line-2);
+  border-radius:12px;padding:11px 13px;margin-bottom:14px;font-size:12px;color:var(--mh-ink-2);
+}
+.mh-sos .mh-geo.ok{background:var(--mh-brand-tint);border-color:#CDEEE3;}
+.mh-sos .mh-geo.err{background:var(--mh-red-tint);border-color:#FDA29B;}
+.mh-sos .mh-geo .ico{font-size:19px;flex-shrink:0;}
+.mh-sos .mh-geo .txt strong{display:block;font-size:12.5px;color:var(--mh-ink);}
+.mh-sos .mh-geo .retry{
+  margin-left:auto;font-size:11px;font-weight:700;color:var(--mh-brand-dark);
+  background:#fff;border:1.5px solid #CDEEE3;border-radius:8px;padding:5px 10px;cursor:pointer;white-space:nowrap;
+}
+
+/* Emergency type grid */
+.mh-sos .mh-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.mh-sos .mh-type-tile{
+  display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;
+  border-radius:13px;border:1.5px solid var(--mh-line-2);cursor:pointer;background:#fff;
+  transition:.15s;font-size:10.5px;font-weight:700;color:var(--mh-ink-2);text-align:center;
+}
+.mh-sos .mh-type-tile .ti{font-size:19px;}
+.mh-sos .mh-type-tile:hover{transform:translateY(-2px);}
+.mh-sos .mh-type-tile.sel{border-color:currentColor;box-shadow:0 0 0 2px currentColor inset;}
+
+/* Form */
+.mh-sos .mh-input{
+  width:100%;padding:11px 13px;border:1.5px solid var(--mh-line);border-radius:10px;
+  font-size:13.5px;outline:none;margin-bottom:10px;color:var(--mh-ink);font-family:inherit;
+}
+.mh-sos .mh-input:focus{border-color:var(--mh-brand);}
+.mh-sos textarea.mh-input{resize:vertical;min-height:64px;}
+
+.mh-sos .mh-btn{
+  width:100%;padding:12px;border:none;border-radius:10px;font-size:13.5px;font-weight:700;
+  cursor:pointer;transition:.15s;color:#fff;background:linear-gradient(135deg,var(--mh-red),var(--mh-red-dark));
+}
+.mh-sos .mh-btn:disabled{opacity:.55;cursor:not-allowed;}
+.mh-sos .mh-btn.grey{background:var(--mh-bg);color:var(--mh-ink-2);border:1.5px solid var(--mh-line);margin-top:8px;}
+
+.mh-sos .mh-success{
+  text-align:center;padding:10px 4px 4px;
+}
+.mh-sos .mh-success .chk{
+  width:52px;height:52px;border-radius:50%;background:var(--mh-brand-tint);color:var(--mh-brand-dark);
+  display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px;
+}
+.mh-sos .mh-success h4{font-size:15px;font-weight:800;color:var(--mh-ink);margin-bottom:6px;}
+.mh-sos .mh-success p{font-size:12.5px;color:var(--mh-ink-3);line-height:1.6;}
+
+/* Toast (only used if the host page doesn't already have one) */
+.mh-sos-toast{
+  position:fixed;bottom:96px;right:22px;z-index:950;background:#0F1B2E;color:#fff;
+  padding:13px 18px;border-radius:12px;font-size:13px;font-weight:600;
+  box-shadow:0 20px 24px -4px rgba(16,24,40,.15);
+  transform:translateY(40px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);
+  max-width:300px;border-left:4px solid var(--mh-brand, #12A187);
+}
+.mh-sos-toast.on{transform:translateY(0);opacity:1;}
