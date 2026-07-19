@@ -1,0 +1,103 @@
+/* ============================================================================
+ * MediHelp Admin — Emergency Page (live map + table) styles
+ * Namespaced under .mh-em so it can be dropped into the existing Emergency
+ * page without clashing with other admin panel styles.
+ * ==========================================================================*/
+.mh-em{
+  --e-brand:#0E7C66; --e-brand-dark:#0A5C4C; --e-brand-tint:#E8F7F2;
+  --e-red:#D92D20; --e-red-dark:#B42318; --e-red-tint:#FEF3F2;
+  --e-amber:#F79009; --e-amber-dark:#B54708; --e-amber-tint:#FFFAEB;
+  --e-blue:#1570EF; --e-blue-dark:#175CD3; --e-blue-tint:#EFF8FF;
+  --e-ink:#101828; --e-ink-2:#344054; --e-ink-3:#667085; --e-ink-4:#98A2B3;
+  --e-line:#E4E7EC; --e-line-2:#EAECF0; --e-bg:#F9FAFB;
+  font-family:'Inter',-apple-system,sans-serif;color:var(--e-ink);
+}
+.mh-em *{box-sizing:border-box;}
+
+/* Stats cards */
+.mh-em .stat-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:18px;}
+@media(max-width:1100px){.mh-em .stat-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:640px){.mh-em .stat-grid{grid-template-columns:repeat(2,1fr);}}
+.mh-em .stat-card{background:#fff;border:1.5px solid var(--e-line-2);border-radius:14px;padding:14px;}
+.mh-em .stat-card .s-num{font-size:22px;font-weight:800;display:block;line-height:1.1;}
+.mh-em .stat-card .s-lbl{font-size:10.5px;color:var(--e-ink-3);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:4px;display:block;}
+
+/* Toolbar: search + filters */
+.mh-em .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center;}
+.mh-em .toolbar input[type=text], .mh-em .toolbar select{
+  padding:9px 12px;border:1.5px solid var(--e-line);border-radius:9px;font-size:12.5px;outline:none;background:#fff;
+}
+.mh-em .toolbar input[type=text]{flex:1;min-width:180px;}
+.mh-em .chip-filter{
+  display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:20px;border:1.5px solid var(--e-line);
+  background:#fff;font-size:11.5px;font-weight:600;color:var(--e-ink-2);cursor:pointer;user-select:none;
+}
+.mh-em .chip-filter.active{background:var(--e-brand-tint);border-color:#CDEEE3;color:var(--e-brand-dark);}
+.mh-em .toolbar-btn{padding:9px 14px;border:none;border-radius:9px;font-size:12.5px;font-weight:700;cursor:pointer;background:var(--e-ink);color:#fff;}
+.mh-em .toolbar-btn.grey{background:var(--e-bg);color:var(--e-ink-2);border:1.5px solid var(--e-line);}
+
+/* Map */
+.mh-em .map-wrap{border-radius:16px;overflow:hidden;border:1.5px solid var(--e-line-2);margin-bottom:16px;position:relative;}
+.mh-em #mhEmMap{height:440px;width:100%;background:#eef1f4;}
+.mh-em .map-live-badge{
+  position:absolute;top:12px;right:12px;z-index:500;background:rgba(16,24,40,.75);color:#fff;
+  font-size:11px;font-weight:700;padding:5px 11px;border-radius:20px;display:flex;align-items:center;gap:6px;
+}
+.mh-em .live-dot{width:6px;height:6px;border-radius:50%;background:#32D583;animation:mhLive 1.8s infinite;}
+@keyframes mhLive{0%,100%{box-shadow:0 0 0 0 rgba(50,213,131,.6);}50%{box-shadow:0 0 0 5px rgba(50,213,131,0);}}
+
+/* Leaflet marker (divIcon) */
+.mh-em-marker{
+  width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.35);
+  border:2px solid #fff;
+}
+.mh-em-marker span{transform:rotate(45deg);font-size:15px;}
+
+/* Popup */
+.mh-em-popup{font-family:'Inter',sans-serif;font-size:12.5px;min-width:220px;}
+.mh-em-popup h4{font-size:13.5px;margin:0 0 8px;}
+.mh-em-popup .row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px dashed var(--e-line-2);}
+.mh-em-popup .row span:first-child{color:var(--e-ink-3);font-weight:600;}
+.mh-em-popup .badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.mh-em-popup .actions{display:flex;gap:6px;margin-top:10px;}
+.mh-em-popup .actions a, .mh-em-popup .actions button{
+  flex:1;text-align:center;padding:6px;border-radius:8px;font-size:11px;font-weight:700;
+  text-decoration:none;border:none;cursor:pointer;
+}
+
+/* Status badges (shared by popup + table) */
+.mh-em .badge-ACTIVE{background:var(--e-red-tint);color:var(--e-red-dark);}
+.mh-em .badge-IN_PROGRESS{background:var(--e-amber-tint);color:var(--e-amber-dark);}
+.mh-em .badge-RESOLVED{background:#D1FADF;color:#05603A;}
+.mh-em .badge-ARCHIVED{background:var(--e-bg);color:var(--e-ink-4);}
+
+/* Table */
+.mh-em .table-wrap{background:#fff;border:1.5px solid var(--e-line-2);border-radius:16px;overflow:hidden;}
+.mh-em table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.mh-em thead th{
+  background:var(--e-bg);text-align:left;padding:11px 14px;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--e-ink-3);font-weight:700;border-bottom:1.5px solid var(--e-line-2);
+}
+.mh-em tbody td{padding:11px 14px;border-bottom:1px solid var(--e-line-2);vertical-align:middle;}
+.mh-em tbody tr{cursor:pointer;transition:.1s;}
+.mh-em tbody tr:hover{background:var(--e-bg);}
+.mh-em tbody tr:last-child td{border-bottom:none;}
+.mh-em .badge{padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700;}
+.mh-em .act-btn{
+  border:1.5px solid var(--e-line);background:#fff;border-radius:7px;padding:4px 9px;font-size:11px;
+  font-weight:700;cursor:pointer;color:var(--e-ink-2);margin-right:4px;
+}
+.mh-em .act-btn.resolve{border-color:#A6F4C5;color:var(--e-brand-dark);}
+.mh-em .act-btn.delete{border-color:#FDA29B;color:var(--e-red-dark);}
+.mh-em .empty-row td{text-align:center;color:var(--e-ink-4);padding:28px;}
+.mh-em .load-more-wrap{text-align:center;padding:14px;}
+
+/* Toast + sound indicator */
+.mh-em-toast{
+  position:fixed;bottom:24px;right:24px;z-index:1200;background:#0F1B2E;color:#fff;
+  padding:13px 18px;border-radius:12px;font-size:13px;font-weight:600;max-width:320px;
+  box-shadow:0 20px 24px -4px rgba(16,24,40,.2);border-left:4px solid var(--e-red);
+  transform:translateY(40px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);
+}
+.mh-em-toast.on{transform:translateY(0);opacity:1;}
