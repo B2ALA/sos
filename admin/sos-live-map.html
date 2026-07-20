@@ -150,21 +150,12 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
    supabase.js, loaded above) — including its logged-in session. sos_alerts
    is RLS-gated to is_admin(), so this page only works if you're already
    signed in to the admin panel in this browser.
-   ============================================================================ */
 
-// ── Guard: make sure we're actually signed in as an admin before doing anything ──
-async function requireAdminSession(){
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if(!session){
-    document.getElementById('alertList').innerHTML =
-      '<div class="empty-state">🔒 Please log in to the admin dashboard first, then reopen this page.</div>';
-    document.getElementById('liveCount').textContent = '–';
-    console.warn('[MediHelp Admin] No active Supabase Auth session — sos_alerts reads/writes will be rejected by RLS.');
-    return false;
-  }
-  console.log('[MediHelp Admin] Signed in as', session.user.email);
-  return true;
-}
+   Table: sos_alerts   Columns: lat, lng, created_at, resolved_at, ...
+   (NOT sos_requests / latitude / longitude / raised_at — that was an old
+   assumption from before the real schema was shared, and every place it
+   leaked through is why the map used to sit at "0 active" forever.)
+   ============================================================================ */
 
 // ── colors + labels per emergency type ──
 const TYPE_STYLE = {
@@ -203,18 +194,23 @@ function timeAgo(iso){
   return Math.floor(diff/3600) + 'h ago';
 }
 
+function locationLabel(row){
+  // Reverse-geocoded address if we have one, otherwise raw coordinates.
+  return row.address || (row.lat.toFixed(5) + ', ' + row.lng.toFixed(5));
+}
+
 function upsertMarker(row){
   const s = styleFor(row.emergency_type);
   if(markers[row.id]){
-    markers[row.id].setLatLng([row.latitude, row.longitude]);
+    markers[row.id].setLatLng([row.lat, row.lng]);
   } else {
-    const m = L.marker([row.latitude, row.longitude], { icon: markerIcon(row.emergency_type) }).addTo(map);
+    const m = L.marker([row.lat, row.lng], { icon: markerIcon(row.emergency_type) }).addTo(map);
     m.on('click', () => selectAlert(row.id));
     markers[row.id] = m;
   }
   markers[row.id].bindPopup(`
     <div class="popup-title" style="color:${s.color};">${s.label} Emergency</div>
-    <div class="popup-addr">${row.address || (row.latitude.toFixed(5)+', '+row.longitude.toFixed(5))}</div>
+    <div class="popup-addr">${locationLabel(row)}</div>
     <button class="popup-btn" onclick="resolveAlert('${row.id}')">Mark Resolved</button>
   `);
 }
@@ -229,21 +225,24 @@ function selectAlert(id){
   if(card){ card.classList.add('selected'); card.scrollIntoView({behavior:'smooth', block:'nearest'}); }
   const row = alerts[id];
   if(row && markers[id]){
-    map.setView([row.latitude, row.longitude], 15, { animate:true });
+    map.setView([row.lat, row.lng], 15, { animate:true });
     markers[id].openPopup();
   }
 }
 
 async function resolveAlert(id){
-  const { error } = await supabaseClient.from('sos_requests').update({ status: 'resolved' }).eq('id', id);
-  if(error){ console.error('Failed to resolve SOS request', error); alert('Could not update status — check console.'); }
+  const { error } = await supabaseClient
+    .from('sos_alerts')
+    .update({ status: 'resolved', resolved_at: new Date().toISOString() })
+    .eq('id', id);
+  if(error){ console.error('[MediHelp Admin] Failed to resolve alert —', error.message, error); alert('Could not update status — check console.'); }
   // UI updates itself via the realtime subscription below
 }
 window.resolveAlert = resolveAlert; // needed for the inline popup button
 
 function renderList(){
   const list = document.getElementById('alertList');
-  const rows = Object.values(alerts).sort((a,b) => new Date(b.raised_at) - new Date(a.raised_at));
+  const rows = Object.values(alerts).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
   document.getElementById('liveCount').textContent = rows.length;
 
   if(!rows.length){
@@ -257,9 +256,9 @@ function renderList(){
       <div class="alert-card" id="card-${row.id}" onclick="selectAlert('${row.id}')">
         <div class="ac-top">
           <span class="ac-type" style="background:${s.color};">${s.label}</span>
-          <span class="ac-time">${timeAgo(row.raised_at)}</span>
+          <span class="ac-time">${timeAgo(row.created_at)}</span>
         </div>
-        <div class="ac-addr">📍 ${row.address || (row.latitude.toFixed(5)+', '+row.longitude.toFixed(5))}</div>
+        <div class="ac-addr">📍 ${locationLabel(row)}</div>
         <div class="ac-meta">
           ${row.user_name ? `<span class="ac-badge">👤 ${row.user_name}</span>` : ''}
           ${row.user_contact ? `<span class="ac-badge">📞 ${row.user_contact}</span>` : ''}
@@ -277,15 +276,15 @@ setInterval(renderList, 30000);
 
 // ── initial load: only currently-active alerts ──
 async function loadActive(){
-  console.log('[MediHelp Admin] Loading active SOS requests…');
+  console.log('[MediHelp Admin] Loading active SOS alerts…');
   const { data, error } = await supabaseClient
-    .from('sos_requests')
+    .from('sos_alerts')
     .select('*')
     .eq('status', 'active')
-    .order('raised_at', { ascending: false });
+    .order('created_at', { ascending: false });
 
   if(error){
-    console.error('[MediHelp Admin] Failed to load SOS requests —', error.message, error);
+    console.error('[MediHelp Admin] Failed to load sos_alerts —', error.message, error);
     document.getElementById('alertList').innerHTML = `<div class="empty-state">⚠️ Could not load alerts.<br><small>${error.message}</small></div>`;
     return;
   }
@@ -300,41 +299,59 @@ async function loadActive(){
   }
 }
 
-// ── realtime: admin receives new/changed SOS rows immediately ──
-supabaseClient
-  .channel('sos_requests_admin')
-  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sos_requests' }, payload => {
-    console.log('[MediHelp Admin] Realtime INSERT received', payload.new);
-    const row = payload.new;
-    if(row.status === 'active'){
-      alerts[row.id] = row;
-      upsertMarker(row);
+function subscribeRealtime(){
+  supabaseClient
+    .channel('sos_alerts_admin')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'sos_alerts' }, payload => {
+      console.log('[MediHelp Admin] Realtime INSERT received', payload.new);
+      const row = payload.new;
+      if(row.status === 'active'){
+        alerts[row.id] = row;
+        upsertMarker(row);
+        renderList();
+        map.panTo([row.lat, row.lng], { animate: true }); // gently pan so a new alert is never missed
+      }
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'sos_alerts' }, payload => {
+      console.log('[MediHelp Admin] Realtime UPDATE received', payload.new);
+      const row = payload.new;
+      if(row.status === 'active'){
+        alerts[row.id] = row;
+        upsertMarker(row);
+      } else {
+        delete alerts[row.id]; // resolved / cancelled → drop from the live view
+        removeMarker(row.id);
+      }
       renderList();
-      // gently pan to the new alert so it's never missed
-      map.panTo([row.latitude, row.longitude], { animate: true });
-    }
-  })
-  .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'sos_requests' }, payload => {
-    console.log('[MediHelp Admin] Realtime UPDATE received', payload.new);
-    const row = payload.new;
-    if(row.status === 'active'){
-      alerts[row.id] = row;
-      upsertMarker(row);
-    } else {
-      // resolved / cancelled / en_route → drop from the live view
-      delete alerts[row.id];
-      removeMarker(row.id);
-    }
-    renderList();
-  })
-  .subscribe((status) => {
-    console.log('[MediHelp Admin] Realtime channel status:', status);
-    if(status === 'CHANNEL_ERROR' || status === 'TIMED_OUT'){
-      console.error('[MediHelp Admin] Realtime subscription failed — check that "Realtime" is enabled for sos_requests in Supabase (Database → Replication), and that sos_requests.sql ran the "alter publication supabase_realtime add table" line successfully.');
-    }
-  });
+    })
+    .subscribe((status) => {
+      console.log('[MediHelp Admin] Realtime channel status:', status);
+      if(status === 'CHANNEL_ERROR' || status === 'TIMED_OUT'){
+        console.error('[MediHelp Admin] Realtime subscription failed — check that Realtime is enabled for sos_alerts (Database → Replication) and that sos_alerts_migration.sql ran successfully.');
+      }
+    });
+}
 
-loadActive();
+// ── Boot sequence ────────────────────────────────────────────────────────────
+// Critical fix: supabase-js restores a saved login session from storage
+// ASYNCHRONOUSLY. Querying immediately on page load — before that finishes —
+// sends the request with no auth token attached, so RLS (is_admin()) silently
+// filters everything out, and it looked exactly like "no data" even though
+// writes were succeeding. Waiting for getSession() first fixes both the
+// initial load AND the realtime subscription.
+(async function init(){
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if(!session){
+    document.getElementById('alertList').innerHTML =
+      '<div class="empty-state">🔒 Please log in to the admin dashboard first, then reopen this page.</div>';
+    document.getElementById('liveCount').textContent = '–';
+    console.warn('[MediHelp Admin] No active Supabase Auth session — sos_alerts reads/writes will be rejected by RLS.');
+    return;
+  }
+  console.log('[MediHelp Admin] Signed in as', session.user.email);
+  await loadActive();
+  subscribeRealtime();
+})();
 </script>
 </body>
 </html>
