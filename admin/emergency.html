@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,5 +53,86 @@
 <script src="navbar.js"></script>
 <script src="footer.js"></script>
 <script src="emergency.js"></script>
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOS / Emergency · MediHelp Admin BY TS GROUPS</title>
+<link rel="stylesheet" href="dashboard.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="emergency.css">
+</head>
+<body>
+<div class="mh-shell">
+  <div id="mh-sidebar"></div>
+  <div class="mh-main">
+    <div id="mh-navbar"></div>
+    <div class="mh-content">
+
+      <!-- Live map section -->
+      <div class="mh-card em-map-card">
+        <div class="em-map-card-head">
+          <h2 class="mh-card-title">Live SOS Map</h2>
+          <div class="em-live-pill"><span class="em-dot-live"></span> <span id="em-live-count">0</span> active</div>
+        </div>
+        <div class="em-map-layout">
+          <div class="em-map-wrap">
+            <div id="em-map"></div>
+            <div class="em-legend">
+              <div class="em-legend-row"><span class="em-legend-dot" style="background:#D92D20;"></span> Medical</div>
+              <div class="em-legend-row"><span class="em-legend-dot" style="background:#F79009;"></span> Accident</div>
+              <div class="em-legend-row"><span class="em-legend-dot" style="background:#EF6C00;"></span> Fire</div>
+              <div class="em-legend-row"><span class="em-legend-dot" style="background:#1570EF;"></span> Other</div>
+              <div class="em-legend-row"><span class="em-legend-dot" style="background:#6941C6;"></span> SOS Mode</div>
+            </div>
+          </div>
+          <div class="em-panel">
+            <div class="em-panel-head">
+              <h3>Active SOS Alerts</h3>
+              <p>Updates instantly — no refresh needed</p>
+            </div>
+            <div class="em-alert-list" id="em-alert-list">
+              <div class="em-empty-state">Loading…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Existing manual CRUD table (all records, including resolved) -->
+      <div class="mh-toolbar">
+        <h2>All SOS / Emergency Records</h2>
+        <button class="mh-btn mh-btn-primary" id="mh-add-btn">+ Add alert</button>
+      </div>
+      <div class="mh-table-wrap">
+        <table class="mh-table">
+          <thead>
+            <tr><th>Type</th><th>Location</th><th>Status</th><th>Responder</th><th>Raised</th><th></th></tr>
+          </thead>
+          <tbody id="mh-table-body">
+            <tr><td colspan="6" class="mh-empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div id="mh-footer"></div>
+  </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="common.js"></script>
+<script src="sidebar.js"></script>
+<script src="navbar.js"></script>
+<script src="footer.js"></script>
+<script src="emergency.js"></script>
+<script src="emergency-map.js"></script>
 </body>
 </html>
