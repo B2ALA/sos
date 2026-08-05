@@ -205,6 +205,10 @@ async function loadRecentSos() {
 
   }
 
+  // Render immediately with a placeholder location cell (raw coordinates,
+  // same as before) so the table never sits blank or blocked waiting on
+  // a network call. Each cell is tagged with a data-loc-id so it can be
+  // filled in below once the address is available.
   tbody.innerHTML=data.map(row=>`
 
     <tr>
@@ -213,12 +217,11 @@ async function loadRecentSos() {
         ${escapeHtml(row.emergency_type || "-")}
       </td>
 
-      <td>
+      <td class="mh-loc-cell" data-loc-id="${row.id}">
 
         ${
-          row.lat && row.lng
-          ? `${row.lat.toFixed(5)},
-             ${row.lng.toFixed(5)}`
+          row.lat != null && row.lng != null
+          ? `${Number(row.lat).toFixed(5)}, ${Number(row.lng).toFixed(5)}`
           : "-"
         }
 
@@ -243,6 +246,16 @@ async function loadRecentSos() {
     </tr>
 
   `).join("");
+
+  // Lat/lng in the database are untouched — this only swaps the on-screen
+  // text of each location cell for a human-readable address (instantly if
+  // sos-monitor.js already stored one on the row, otherwise via reverse
+  // geocoding). Failures fall back to "Location unavailable" without
+  // affecting the rest of the table.
+  data.forEach((row) => {
+    const cell = tbody.querySelector(`[data-loc-id="${row.id}"]`);
+    renderLocationAsync(cell, row);
+  });
 
 }
 
