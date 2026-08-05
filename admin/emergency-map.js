@@ -3,22 +3,15 @@
    ----------------------------------------------------------------------------
    Live Leaflet map + Supabase Realtime for the SOS / Emergency admin page.
 
-   This is the fixed, integrated version of the old standalone
-   sos-live-map.html script. Differences from that file:
-     - Uses the supabaseClient already created by supabase-config.js (loaded
-       by emergency.html before this file) — no more broken
-       <script src="supabase.js"> reference, no duplicate SDK loading.
-     - Calls the shared requireAdmin() from auth.js instead of a bare
-       getSession() check, so it behaves like every other admin page
-       (redirects to login.html if not authenticated).
-     - Adds responder assignment (responder_id -> ambulances.id), which the
-       CRUD table in emergency.js already supports but the old map did not.
-     - Does NOT touch the existing CrudManager-based table lower on the page
-       (that stays exactly as emergency.js already defines it).
-
    Table: sos_alerts   Columns: lat, lng, created_at, resolved_at,
    emergency_type, status, responder_id, address, accuracy,
    user_name, user_contact.
+
+   Location display: uses row.address if sos-monitor.js already stored one
+   at insert time; otherwise falls back to the shared reverseGeocodeDisplay()
+   helper from common.js (display-only — lat/lng in the database are never
+   modified). The result is cached locally on the row object so re-renders
+   (e.g. after a realtime UPDATE) don't refetch it.
    ============================================================================ */
 
 (function () {
@@ -57,13 +50,47 @@
     return Math.floor(diff / 3600) + 'h ago';
   }
 
+  function rawCoords(row) {
+    return (row.lat != null && row.lng != null) ? `${Number(row.lat).toFixed(5)}, ${Number(row.lng).toFixed(5)}` : '—';
+  }
+
+  // Current best label for a row: stored address, or a resolved-and-cached
+  // one from a previous reverseGeocodeDisplay() call, or raw coordinates
+  // as an immediate placeholder while resolution is still in flight.
   function locationLabel(row) {
-    return row.address || ((row.lat != null && row.lng != null) ? `${row.lat.toFixed(5)}, ${row.lng.toFixed(5)}` : '—');
+    return row.address || rawCoords(row);
+  }
+
+  function popupHtml(row, addressText) {
+    const s = styleFor(row.emergency_type);
+    return `
+      <div class="em-popup-title" style="color:${s.color};">${s.label} Emergency</div>
+      <div class="em-popup-addr">${escapeHtml(addressText)}</div>
+      <button class="em-popup-btn" onclick="window.__emResolve('${row.id}')">Mark Resolved</button>
+    `;
+  }
+
+  // Kicks off reverse geocoding for a row that has no stored address yet,
+  // then updates its marker's popup and the alert panel once resolved.
+  // Never touches the database — purely a display-side fill-in.
+  function resolveAddressForRow(row) {
+    if (row.address || row.lat == null || row.lng == null) return;
+    reverseGeocodeDisplay(row.lat, row.lng).then((label) => {
+      const text = label || 'Location unavailable';
+      // Cache on the row so subsequent renders (realtime updates, list
+      // re-renders) reuse it instead of calling Nominatim again.
+      if (label) row.address = label;
+      const marker = markers[row.id];
+      if (marker) {
+        const popup = marker.getPopup();
+        if (popup) popup.setContent(popupHtml(row, text));
+      }
+      renderList();
+    });
   }
 
   function upsertMarker(row) {
     if (row.lat == null || row.lng == null) return; // manual rows added without coordinates can't be mapped
-    const s = styleFor(row.emergency_type);
     if (markers[row.id]) {
       markers[row.id].setLatLng([row.lat, row.lng]);
     } else {
@@ -71,11 +98,8 @@
       m.on('click', () => selectAlert(row.id));
       markers[row.id] = m;
     }
-    markers[row.id].bindPopup(`
-      <div class="em-popup-title" style="color:${s.color};">${s.label} Emergency</div>
-      <div class="em-popup-addr">${escapeHtml(locationLabel(row))}</div>
-      <button class="em-popup-btn" onclick="window.__emResolve('${row.id}')">Mark Resolved</button>
-    `);
+    markers[row.id].bindPopup(popupHtml(row, locationLabel(row)));
+    resolveAddressForRow(row);
   }
 
   function removeMarker(id) {
@@ -209,6 +233,13 @@
       })
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'sos_alerts' }, payload => {
         const row = payload.new;
+        // Preserve a locally-cached address across realtime updates —
+        // the incoming row from Supabase won't have it unless the DB
+        // column itself was populated, but we don't want to re-geocode
+        // something we already resolved client-side a moment ago.
+        if (!row.address && alerts[row.id] && alerts[row.id].address) {
+          row.address = alerts[row.id].address;
+        }
         alerts[row.id] = row;
         if (row.status === 'active') {
           upsertMarker(row);
