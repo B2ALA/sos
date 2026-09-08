@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · Hospital Portal · MediHelp</title>
+<!-- See note in login.html: link the real dashboard.css here first once available -->
+<link rel="stylesheet" href="hospital-portal.css" />
+</head>
+<body class="mh-portal-body">
+  <div class="mh-portal-shell">
+    <nav class="mh-sidebar">
+      <div class="mh-sidebar-brand">MediHelp · Hospital</div>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="#" id="navBeds">Bed Availability</a>
+      <a href="#" id="navSos">SOS Requests</a>
+      <a href="#" id="navNotifications">Notifications</a>
+      <a href="#" id="navProfile">Hospital Profile</a>
+      <div class="mh-sidebar-spacer"></div>
+      <a href="#" id="logoutLink" class="mh-logout">Logout</a>
+    </nav>
+
+    <main class="mh-portal-main">
+      <div id="loadingState" class="mh-state">Loading your hospital's data…</div>
+      <div id="errorState" class="mh-state mh-error" style="display:none;"></div>
+
+      <div id="dashboardContent" style="display:none;">
+        <header class="mh-hospital-header">
+          <div>
+            <h1 id="hospitalName">—</h1>
+            <div class="mh-hosp-meta">
+              <div id="hospitalAddress">—</div>
+              <div id="hospitalPhone">—</div>
+            </div>
+          </div>
+          <div class="mh-last-updated" id="lastUpdated">Not yet reported</div>
+        </header>
+
+        <div class="mh-bed-grid" id="bedGrid"><!-- bed cards injected by dashboard.js --></div>
+
+        <div class="mh-save-bar">
+          <span class="mh-save-bar-note" id="saveBarNote">No unsaved changes.</span>
+          <button class="mh-btn mh-btn-primary" id="saveBedsBtn" disabled>Save bed availability</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="common.js"></script>
+  <script src="hospital-auth.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
