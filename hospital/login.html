@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hospital Login · MediHelp</title>
+<link rel="stylesheet" href="hospital-portal.css" />
+<!--
+  NOTE: If /admin/login.html links a shared base stylesheet (e.g.
+  auth.css or a section of dashboard.css) that defines --brand, --ink,
+  --red and the base font, link that file here too, ahead of
+  hospital-portal.css, so this page matches the admin login pixel-for-
+  pixel. hospital-portal.css below defines fallback values for those
+  variables so this page still works standalone if that file isn't
+  wired up yet.
+-->
+</head>
+<body class="mh-auth-body">
+  <main class="mh-auth-card">
+    <h1 class="mh-auth-title">Hospital Portal</h1>
+    <p class="mh-auth-sub">Sign in to manage your hospital's bed availability.</p>
+
+    <form id="loginForm" class="mh-auth-form">
+      <label class="mh-field">
+        <span>Email</span>
+        <input type="email" id="email" name="email" required autocomplete="username" />
+      </label>
+      <label class="mh-field">
+        <span>Password</span>
+        <input type="password" id="password" name="password" required autocomplete="current-password" />
+      </label>
+      <button type="submit" class="mh-btn mh-btn-primary mh-btn-block" id="loginBtn">Log in</button>
+    </form>
+
+    <p class="mh-auth-footnote">Not affiliated with a hospital? Contact your administrator.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="common.js"></script>
+  <script src="hospital-auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
