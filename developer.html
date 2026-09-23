@@ -52,17 +52,28 @@ a{color:inherit;text-decoration:none;}
 
 /* about */
 .about-text{font-size:13.5px;color:var(--ink-2);line-height:1.8;}
+.about-text + .about-text{margin-top:12px;}
 
 /* skills */
 .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
 .skill-card{background:var(--bg);border:1.5px solid var(--line-2);border-radius:12px;padding:14px;text-align:center;}
 .skill-card .si{font-size:24px;display:block;margin-bottom:8px;}
 .skill-card .sn{font-size:12px;font-weight:700;color:var(--ink-2);}
-.skill-bar-wrap{margin-top:16px;}
-.skill-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
-.skill-row .sl{font-size:12px;font-weight:600;width:110px;flex-shrink:0;color:var(--ink-2);}
-.skill-track{flex:1;height:7px;background:var(--line-2);border-radius:20px;overflow:hidden;}
-.skill-track span{display:block;height:100%;background:linear-gradient(90deg,var(--brand-light),var(--brand-dark));border-radius:20px;}
+
+/* skill categories */
+.skill-cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;}
+.skill-cat{background:var(--bg);border:1.5px solid var(--line-2);border-radius:12px;padding:14px 15px;}
+.skill-cat .sc-head{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.skill-cat .sc-icon{font-size:18px;}
+.skill-cat .sc-title{font-size:12.5px;font-weight:800;color:var(--ink);}
+.skill-cat .stags{display:flex;flex-wrap:wrap;gap:6px;}
+.skill-cat .stags span{font-size:10.5px;font-weight:600;color:var(--ink-3);background:#fff;border:1px solid var(--line-2);border-radius:20px;padding:3px 9px;}
+
+/* technical focus */
+.focus-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px;}
+.focus-item{background:var(--bg);border:1.5px solid var(--line-2);border-radius:12px;padding:14px 15px;}
+.focus-item .fi-h{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:5px;}
+.focus-item .fi-d{font-size:11.5px;color:var(--ink-3);line-height:1.55;}
 
 /* projects */
 .project-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -72,8 +83,34 @@ a{color:inherit;text-decoration:none;}
 .project-card .pt-badge{font-size:10px;font-weight:700;background:var(--brand-tint);color:var(--brand-dark);border-radius:20px;padding:3px 10px;display:inline-block;margin-bottom:9px;}
 .project-card h3{font-family:'Manrope',sans-serif;font-size:14.5px;font-weight:800;margin-bottom:6px;}
 .project-card p{font-size:12px;color:var(--ink-3);line-height:1.6;margin-bottom:10px;}
+.project-card .ptags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px;}
+.project-card .ptags span{font-size:10px;font-weight:600;color:var(--ink-3);background:#fff;border:1px solid var(--line-2);border-radius:20px;padding:3px 9px;}
 .project-card .plinks{display:flex;gap:8px;flex-wrap:wrap;}
 .project-card .plinks a{font-size:11px;font-weight:700;color:var(--brand-dark);border:1.5px solid var(--brand-light);border-radius:20px;padding:4px 11px;}
+.project-card .prole{font-size:11.5px;color:var(--ink-3);line-height:1.6;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);}
+
+.other-projects-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-4);margin:20px 0 12px;}
+.project-grid-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;}
+.project-card-mini{background:var(--bg);border:1.5px solid var(--line-2);border-radius:12px;padding:14px 15px;transition:.15s var(--ease);}
+.project-card-mini:hover{border-color:var(--brand-light);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.project-card-mini h4{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+.project-card-mini p{font-size:11.5px;color:var(--ink-3);line-height:1.6;margin-bottom:9px;}
+.project-card-mini .ptags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px;}
+.project-card-mini .ptags span{font-size:9.5px;font-weight:600;color:var(--ink-3);background:#fff;border:1px solid var(--line-2);border-radius:20px;padding:3px 8px;}
+.project-card-mini .pfocus{font-size:11px;color:var(--ink-4);line-height:1.5;}
+.project-card-mini .pfocus b{color:var(--ink-3);font-weight:700;}
+
+/* highlights */
+.highlight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;}
+.highlight-card{background:var(--bg);border:1.5px solid var(--line-2);border-radius:12px;padding:14px 15px;}
+.highlight-card .hi-i{font-size:18px;display:block;margin-bottom:8px;}
+.highlight-card .hi-t{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:5px;}
+.highlight-card .hi-d{font-size:11.5px;color:var(--ink-3);line-height:1.55;}
+
+/* role & contribution */
+.role-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px;}
+.role-list li{font-size:12.5px;color:var(--ink-2);display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+.role-list li::before{content:"✓";color:var(--brand);font-weight:800;flex-shrink:0;}
 
 /* contact strip */
 .contact-strip{display:flex;flex-wrap:wrap;gap:12px;}
@@ -84,8 +121,11 @@ a{color:inherit;text-decoration:none;}
 
 .footer-note{text-align:center;font-size:11px;color:var(--ink-4);margin-top:10px;}
 
-.edit-flag{position:fixed;bottom:16px;right:16px;background:var(--navy-950);color:#fff;font-size:11px;font-weight:700;
-  padding:9px 15px;border-radius:20px;box-shadow:var(--shadow-md);z-index:50;}
+/* footer */
+.site-footer{background:linear-gradient(180deg,var(--navy-900),var(--navy-950));padding:26px 24px;text-align:center;}
+.site-footer .sf-title{font-family:'Manrope',sans-serif;font-size:12.5px;font-weight:800;color:#fff;}
+.site-footer .sf-sub{font-size:11.5px;color:#9AA7C2;margin-top:4px;}
+.site-footer .sf-copy{font-size:10.5px;color:#6B7C9C;margin-top:12px;}
 </style>
 </head>
 <body>
@@ -103,8 +143,8 @@ a{color:inherit;text-decoration:none;}
   <!-- TODO: replace with <img src="your-photo.jpg" class="avatar-ph"> -->
   <div class="avatar-ph">👤</div>
   <h1>BALA T</h1>
-  <div class="role"> Full-Stack Developer &amp; Creator of MediHelp  Vice Chair man of TS GROUPS</div>
-  <p class="desc">[One or two sentences about who you are, what you build, and why you built MediHelp. Replace this placeholder with your own introduction.]</p>
+  <div class="role">ECE Engineer &amp; Full-Stack Developer — Creator of MediHelp</div>
+  <p class="desc">ECE Engineer and developer interested in building practical technology solutions for real-world problems. I enjoy working across web development, databases, software projects, and image-processing applications, with a focus on creating useful and accessible solutions.</p>
   <div class="social-row">
     <a class="soc-btn" href="mailto:24balat@example.com">✉️ Email</a>
     <a class="soc-btn" href="https://www.linkedin.com/in/bala-t-33609a32b" target="_blank">💼 LinkedIn</a>
@@ -118,31 +158,81 @@ a{color:inherit;text-decoration:none;}
   <!-- ═══ ABOUT ═══ -->
   <div class="card">
     <h2>👋 About</h2>
-    <p class="about-text ph">
-      [Write 2–4 sentences here: your background, what you're studying / where you work, what drew you to building an
-      emergency-healthcare platform, and what you're looking for next — internships, freelance work, collaborators, etc.
-      This whole block is a placeholder — replace it with your real story.]
+    <p class="about-text">
+      I'm an ECE Engineer with a growing interest in software development, particularly in building things that solve
+      real problems rather than just working as exercises. I spend most of my time with web technologies, Java, and
+      databases, and I like taking a project from a rough idea through to something that actually runs and holds up.
+    </p>
+    <p class="about-text">
+      My main project so far is MediHelp, an emergency healthcare platform, alongside a Digital Image Processing
+      project on melanoma and skin-lesion analysis. Both pushed me to learn beyond the classroom — location-based
+      services, backend integration, and image analysis techniques. I'm continuing to build on my programming and
+      development skills, and I'm looking for opportunities where I can learn, contribute, and build practical
+      software.
     </p>
   </div>
 
   <!-- ═══ SKILLS ═══ -->
   <div class="card">
     <h2>🛠️ Skills</h2>
-    <div class="skill-grid">
-      <div class="skill-card"><span class="si">🅰️</span><span class="sn">HTML / CSS</span></div>
-      <div class="skill-card"><span class="si">⚙️</span><span class="sn">Java</span></div>
-      <div class="skill-card"><span class="si">🐍</span><span class="sn">Vibe coding</span></div>
-      <div class="skill-card"><span class="si">🗄️</span><span class="sn">Databases</span></div>
-      <div class="skill-card"><span class="si">☁️</span><span class="sn">Cloud / APIs</span></div>
-      <div class="skill-card"><span class="si">🎨</span><span class="sn">UI / UX</span></div>
-      <!-- TODO: add / remove skill cards to match your real stack -->
+    <div class="skill-cat-grid">
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">💻</span><span class="sc-title">Programming</span></div>
+        <div class="stags"><span>Java</span><span>JavaScript</span><span>Python</span><span>SQL</span></div>
+      </div>
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">🌐</span><span class="sc-title">Web Development</span></div>
+        <div class="stags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Responsive Design</span></div>
+      </div>
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">🗄️</span><span class="sc-title">Backend &amp; Database</span></div>
+        <div class="stags"><span>Supabase</span><span>SQL</span><span>Authentication</span><span>REST APIs</span></div>
+      </div>
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">📡</span><span class="sc-title">IoT &amp; Embedded Systems</span></div>
+        <div class="stags"><span>ESP32</span><span>Sensors</span><span>Embedded Systems</span><span>Wi-Fi Comm.</span></div>
+      </div>
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">🖼️</span><span class="sc-title">Digital Image Processing</span></div>
+        <div class="stags"><span>Preprocessing</span><span>Segmentation</span><span>Feature Extraction</span><span>Classification</span></div>
+      </div>
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">🧩</span><span class="sc-title">VLSI &amp; Digital Design</span></div>
+        <div class="stags"><span>Verilog</span><span>RTL Design</span><span>AHB Protocol</span><span>SoC Concepts</span></div>
+      </div>
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">📶</span><span class="sc-title">Wireless &amp; Antenna Engineering</span></div>
+        <div class="stags"><span>Antenna Arrays</span><span>Beamforming</span><span>MATLAB</span></div>
+      </div>
+      <div class="skill-cat">
+        <div class="sc-head"><span class="sc-icon">🧰</span><span class="sc-title">Tools &amp; Platforms</span></div>
+        <div class="stags"><span>Git</span><span>GitHub</span><span>MATLAB</span><span>VS Code</span><span>Supabase</span></div>
+      </div>
     </div>
-    <div class="skill-bar-wrap">
-      <!-- TODO: replace labels & percentages with your real proficiency levels -->
-      <div class="skill-row"><span class="sl">Frontend</span><div class="skill-track"><span style="width:80%;"></span></div></div>
-      <div class="skill-row"><span class="sl">Backend</span><div class="skill-track"><span style="width:60%;"></span></div></div>
-      <div class="skill-row"><span class="sl">Databases</span><div class="skill-track"><span style="width:55%;"></span></div></div>
-      <div class="skill-row"><span class="sl">UI / Design</span><div class="skill-track"><span style="width:70%;"></span></div></div>
+
+    <!-- ═══ TECHNICAL FOCUS ═══ -->
+    <h2 style="margin-top:22px;">🎯 Technical Focus</h2>
+    <div class="focus-grid">
+      <div class="focus-item">
+        <div class="fi-h">💻 Full-Stack Web Development</div>
+        <div class="fi-d">Creating responsive web applications with HTML, CSS, JavaScript, APIs, backend services and database integration.</div>
+      </div>
+      <div class="focus-item">
+        <div class="fi-h">🖼️ Digital Image Processing &amp; AI</div>
+        <div class="fi-d">Developing image-based solutions using preprocessing, segmentation, feature extraction and classification techniques.</div>
+      </div>
+      <div class="focus-item">
+        <div class="fi-h">📡 Embedded Systems &amp; IoT</div>
+        <div class="fi-d">Building sensor-driven solutions with ESP32, microcontrollers, automation and wireless connectivity.</div>
+      </div>
+      <div class="focus-item">
+        <div class="fi-h">📶 Wireless Communication &amp; Antennas</div>
+        <div class="fi-d">Working with Wi-Fi technologies, antenna arrays, beamforming and signal enhancement using MATLAB.</div>
+      </div>
+      <div class="focus-item">
+        <div class="fi-h">🧩 VLSI &amp; RTL Design</div>
+        <div class="fi-d">Developing digital systems using Verilog, RTL design, AHB protocols, system-bus concepts and SoC architecture.</div>
+      </div>
     </div>
   </div>
 
@@ -151,22 +241,124 @@ a{color:inherit;text-decoration:none;}
     <h2>📁 Project information</h2>
     <div class="project-grid">
       <div class="project-card">
-        <span class="pt-badge">FEATURED</span>
+        <span class="pt-badge">FEATURED PROJECT</span>
         <h3>MediHelp — Emergency Healthcare Platform</h3>
-        <p>[Describe MediHelp here: the problem it solves for Salem, Tamil Nadu, the tech stack used, and your role in building it.]</p>
+        <p>MediHelp is an emergency healthcare platform designed to help users quickly discover nearby hospitals,
+          doctors, pharmacies, ambulances, blood banks and other emergency resources. The platform focuses on
+          location-based healthcare access, emergency SOS support, live location sharing and hospital bed
+          availability.</p>
+        <div class="ptags">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Supabase</span>
+          <span>Leaflet</span><span>OpenStreetMap</span><span>Overpass API</span>
+        </div>
         <div class="plinks">
           <a href="index.html">Live demo</a>
           <a href="registration.html">Try sign up</a>
-          <a href="https://github.com/your-handle/medihelp" target="_blank">Source</a>
         </div>
+        <p class="prole">My role involved developing the web interface, integrating location-based services, working
+          with the backend/database, and building healthcare-related features.</p>
       </div>
       <div class="project-card">
-        <span class="pt-badge" style="background:var(--blue-tint);color:var(--blue-dark);">PROJECT</span>
-        <h3>[Second project name]</h3>
-        <p>[Short description — replace with a real project, or delete this card if you only want to feature one.]</p>
-        <div class="plinks"><a href="#">Live demo</a><a href="#">Source</a></div>
+        <span class="pt-badge" style="background:var(--blue-tint);color:var(--blue-dark);">DIP PROJECT</span>
+        <h3>Melanoma Detection Using Digital Image Processing</h3>
+        <p>A Digital Image Processing project focused on analyzing skin images for melanoma-related patterns. The
+          project explores image preprocessing, enhancement, segmentation and feature analysis to support the
+          identification of suspicious skin lesions. It demonstrates how image-processing techniques can be applied
+          to medical-image analysis and computer-assisted screening.</p>
+        <div class="ptags">
+          <span>Digital Image Processing</span><span>Image Enhancement</span>
+          <span>Image Segmentation</span><span>Feature Extraction</span><span>Image Analysis</span>
+        </div>
       </div>
     </div>
+
+    <div class="other-projects-label">Other Projects</div>
+    <div class="project-grid-mini">
+      <div class="project-card-mini">
+        <h4>💧 EchoVein — Water Leak Detection</h4>
+        <p>IoT-based system that detects water leaks inside pipes and concrete structures using piezoelectric
+          sensors and an ESP32 to capture and process acoustic and vibration signals.</p>
+        <div class="ptags"><span>ESP32</span><span>Piezoelectric Sensors</span><span>IoT</span><span>Python</span><span>Signal Processing</span></div>
+        <div class="pfocus"><b>Focus:</b> Low-cost leak detection, acoustic sensing, IoT monitoring</div>
+      </div>
+      <div class="project-card-mini">
+        <h4>📶 Wi-Fi Signal Enhancement</h4>
+        <p>Explores improving Wi-Fi coverage and signal strength using directional antenna arrays and beamforming,
+          comparing omnidirectional and directional radiation patterns in a 2.4 GHz environment.</p>
+        <div class="ptags"><span>MATLAB</span><span>Antenna Toolbox</span><span>5G Toolbox</span></div>
+        <div class="pfocus"><b>Focus:</b> Antenna arrays, beam steering, wireless coverage</div>
+      </div>
+      <div class="project-card-mini">
+        <h4>💡 Smart Street Light</h4>
+        <p>An IoT-based Smart Street Light project focused on real-time monitoring and detection of electrical faults in street-light systems. The project uses sensor-based monitoring to identify conditions such as open-circuit and overload faults while tracking voltage and current parameters. It provides real-time location monitoring of street-light units, while fault and operating data are transmitted to the cloud and simultaneously updated on a web interface. It demonstrates the application of IoT, sensor technologies and location-based monitoring for smart infrastructure, fault detection and efficient maintenance.
+</p>
+        <div class="ptags"><span>IoT</span><span>Sensors</span><span>Microcontroller</span><span>Automation</span></div>
+        <div class="pfocus"><b>Focus:</b> Smart-city automation, energy efficiency, motion detection</div>
+      </div>
+      <div class="project-card-mini">
+        <h4>🔌 AHB Bus — VLSI Design</h4>
+        <p>VLSI project implementing the AMBA AHB protocol for SoC communication, focused on RTL-level bus
+          transactions between masters and slaves, including burst transfers and handshaking.</p>
+        <div class="ptags"><span>Verilog</span><span>RTL Design</span><span>VLSI</span></div>
+        <div class="pfocus"><b>Focus:</b> AMBA AHB protocol, bus transactions, SoC communication</div>
+     
+
+        <p>VLSI-oriented project examining high-performance system-bus communication between processors and
+          memory, covering transactions, arbitration and protocol timing.</p>
+        <div class="ptags"><span>Verilog/RTL</span><span>Digital Design</span><span>VLSI</span></div>
+        <div class="pfocus"><b>Focus:</b> System-bus architecture, arbitration, RTL design</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PROJECT HIGHLIGHTS ═══ -->
+  <div class="card">
+    <h2>✨ Project Highlights</h2>
+    <div class="highlight-grid">
+      <div class="highlight-card">
+        <span class="hi-i">🌍</span>
+        <div class="hi-t">Real-World Problem Solving</div>
+        <div class="hi-d">Projects focused on practical problems in healthcare, accessibility and technology.</div>
+      </div>
+      <div class="highlight-card">
+        <span class="hi-i">🧩</span>
+        <div class="hi-t">Full-Stack Development</div>
+        <div class="hi-d">Experience connecting frontend interfaces with databases, APIs and backend services.</div>
+      </div>
+      <div class="highlight-card">
+        <span class="hi-i">🖼️</span>
+        <div class="hi-t">Image Processing</div>
+        <div class="hi-d">Hands-on project experience in digital image processing and medical-image analysis.</div>
+      </div>
+      <div class="highlight-card">
+        <span class="hi-i">📈</span>
+        <div class="hi-t">Continuous Learning</div>
+        <div class="hi-d">Currently strengthening programming, Git/GitHub, database and software-development skills.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CURRENT FOCUS ═══ -->
+  <div class="card">
+    <h2>🔭 Current Focus</h2>
+    <p class="about-text">Improving Java and problem-solving skills, strengthening Git and GitHub workflow knowledge,
+      developing practical web applications, and exploring projects that combine software development with
+      real-world applications.</p>
+  </div>
+
+  <!-- ═══ ROLE & CONTRIBUTION ═══ -->
+  <div class="card">
+    <h2>🧑‍💻 Role &amp; Contribution</h2>
+    <ul class="role-list">
+      <li>ECE Engineer</li>
+      <li>MediHelp Project Developer</li>
+      <li>Project planning and implementation</li>
+      <li>Frontend development</li>
+      <li>Database/backend integration</li>
+      <li>API integration</li>
+      <li>UI improvement</li>
+      <li>Testing and debugging</li>
+    </ul>
   </div>
 
   <!-- ═══ CONTACT ═══ -->
@@ -180,7 +372,14 @@ a{color:inherit;text-decoration:none;}
     </div>
   </div>
 
- 
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="sf-title">MediHelp — Emergency Healthcare Platform</div>
+  <div class="sf-sub">Developed by BALA T</div>
+  <div class="sf-copy">© 2026 BALA T. All rights reserved.</div>
+</footer>
 
 </body>
 </html>
